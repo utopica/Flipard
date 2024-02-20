@@ -13,7 +13,8 @@ namespace Flipard.Domain.Entities
         public string Word { get; set; }
         public string Meaning { get; set; }
 
-
+        public Card Card { get; set; }
+        public Guid CardId { get; set; }
 
     }
 }

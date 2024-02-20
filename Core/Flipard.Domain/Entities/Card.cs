@@ -11,9 +11,14 @@ namespace Flipard.Domain.Entities
     {
         //foreign key deck id 
         //foreign key vocab id
-
+        
         public DateTimeOffset? LastReviewed { get; set; }
+
+        public Vocabulary Vocabulary { get; set; }
+        public Deck Deck { get; set; }
+        public Guid DeckId { get; set; }
 
 
     }
 }
+
