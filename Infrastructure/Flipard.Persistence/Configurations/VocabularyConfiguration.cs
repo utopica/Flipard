@@ -52,6 +52,8 @@ namespace Flipard.Persistence.Configurations
             // Meaning 
             builder.Property(x=> x.Meaning).IsRequired();
             builder.Property(x=> x.Meaning).HasMaxLength(2000);
+
+            builder.ToTable("Vocabularies");
         }
     }
 }

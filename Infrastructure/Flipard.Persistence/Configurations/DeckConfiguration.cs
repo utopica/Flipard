@@ -58,6 +58,8 @@ namespace Flipard.Persistence.Configurations
             builder.HasMany(x => x.Cards)
                 .WithOne(x => x.Deck)
                 .HasForeignKey(x=> x.DeckId);
+
+            builder.ToTable("Decks");
         }
     }
 }

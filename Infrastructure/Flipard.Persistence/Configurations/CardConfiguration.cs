@@ -55,7 +55,8 @@ namespace Flipard.Persistence.Configurations
                 .WithOne(x => x.Card)
                 .HasForeignKey<Vocabulary>(x => x.CardId);
 
-            
+            builder.ToTable("Cards");
+
         }
     }
 }

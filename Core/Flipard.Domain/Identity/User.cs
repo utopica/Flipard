@@ -15,6 +15,7 @@ namespace Flipard.Domain.Identity
         public string LastName { get; set; }
         public DateTimeOffset? Birthdate { get; set; }
         public Gender Gender { get; set; }
+        public UserSetting UserSetting { get; set; }
         public DateTimeOffset CreatedOn { get; set; }
         public string CreatedByUserId { get; set; }
         public DateTimeOffset? ModifiedOn { get; set; }
