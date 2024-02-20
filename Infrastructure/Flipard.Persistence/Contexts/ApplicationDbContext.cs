@@ -1,4 +1,5 @@
 ﻿using Flipard.Domain.Entities;
+using Flipard.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,10 @@ namespace Flipard.Persistence.Contexts
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-           
+            modelBuilder.Ignore<User>();
+            modelBuilder.Ignore<Role>();
+            modelBuilder.Ignore<UserSetting>();
+
             base.OnModelCreating(modelBuilder); 
         }
     }

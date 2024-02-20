@@ -1,4 +1,5 @@
-﻿using Flipard.Domain.Identity;
+﻿using Flipard.Domain.Entities;
+using Flipard.Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +21,9 @@ namespace Flipard.Persistence.Contexts.Identity
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            modelBuilder.Ignore<Deck>();
+            modelBuilder.Ignore<Card>();
+            modelBuilder.Ignore<Vocabulary>();
 
             base.OnModelCreating(modelBuilder);
         }

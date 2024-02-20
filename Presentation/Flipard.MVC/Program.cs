@@ -1,4 +1,5 @@
 using Flipard.Persistence.Contexts;
+using Flipard.Persistence.Contexts.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,11 @@ builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
+
+builder.Services.AddDbContext<IdentityContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });

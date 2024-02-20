@@ -64,7 +64,7 @@ namespace Flipard.Persistence.Migrations.Application
 
                     b.HasIndex("DeckId");
 
-                    b.ToTable("Cards");
+                    b.ToTable("Cards", (string)null);
                 });
 
             modelBuilder.Entity("Flipard.Domain.Entities.Deck", b =>
@@ -108,7 +108,7 @@ namespace Flipard.Persistence.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("Decks");
+                    b.ToTable("Decks", (string)null);
                 });
 
             modelBuilder.Entity("Flipard.Domain.Entities.Vocabulary", b =>
@@ -161,7 +161,7 @@ namespace Flipard.Persistence.Migrations.Application
                     b.HasIndex("CardId")
                         .IsUnique();
 
-                    b.ToTable("Vocabularies");
+                    b.ToTable("Vocabularies", (string)null);
                 });
 
             modelBuilder.Entity("Flipard.Domain.Entities.Card", b =>
