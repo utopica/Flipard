@@ -1,0 +1,99 @@
+﻿@model Flipard.MVC.ViewModels.AuthRegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .card {
+            background-color: #111;
+            border: 1px solid #444;
+            color: #fff;
+        }
+
+        .form-control {
+            background-color: #222;
+            border: 1px solid #444;
+            color: #fff;
+        }
+
+        .form-control:focus {
+            background-color: #333;
+            border: 1px solid #777;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background-color: #6c757d; 
+            border: 1px solid #6c757d; 
+        }
+
+        .btn-primary:hover {
+            background-color: #5a6268; 
+            border: 1px solid #5a6268; 
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Register</h2>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Register" method="post">
+                            <div class="form-group">
+                                <label for="FirstName">First Name</label>
+                                <input type="text" class="form-control" id="FirstName" name="FirstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="LastName">Last Name</label>
+                                <input type="text" class="form-control" id="LastName" name="LastName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Email">Email</label>
+                                <input type="email" class="form-control" id="Email" name="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Username">Username</label>
+                                <input type="text" class="form-control" id="Username" name="Username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Password">Password</label>
+                                <input type="password" class="form-control" id="Password" name="Password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Birthdate">Birthdate</label>
+                                <input type="date" class="form-control" id="Birthdate" name="Birthdate">
+                            </div>
+                            <div class="form-group">
+                                <label for="Gender">Gender</label>
+                                <select class="form-control" id="Gender" name="Gender">
+                                    <option value="@((int)Flipard.Domain.Enums.Gender.Male)">Male</option>
+                                    <option value="@((int)Flipard.Domain.Enums.Gender.Female)">Female</option>
+                                    <option value="@((int)Flipard.Domain.Enums.Gender.Unspecified)">UnSpecified</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
