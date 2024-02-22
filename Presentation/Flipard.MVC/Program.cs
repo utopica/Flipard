@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddMvc().AddNToastNotifyToastr();
+builder.Services.AddControllersWithViews()
+    .AddNToastNotifyToastr();
 
 var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
 
@@ -55,7 +55,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 
     options.SlidingExpiration = true;
-    options.ExpireTimeSpan = System.TimeSpan.FromDays(7);
+    options.ExpireTimeSpan = System.TimeSpan.FromDays(7); //remember login information for seven days.
     options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
 });
 

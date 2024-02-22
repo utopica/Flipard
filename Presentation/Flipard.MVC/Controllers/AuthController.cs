@@ -9,11 +9,14 @@ namespace Flipard.MVC.Controllers
     public class AuthController : Controller
     {
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IToastNotification _toastNotification;
 
-        public AuthController(UserManager<User> userManager)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IToastNotification toastNotification)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
+            _toastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -26,6 +29,12 @@ namespace Flipard.MVC.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction(nameof(Index), controllerName: "Main");
+
+            }
+
             var registerViewModel = new AuthRegisterViewModel();
 
             return View(registerViewModel);
@@ -34,11 +43,13 @@ namespace Flipard.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(AuthRegisterViewModel registerViewModel)
         {
-            if(ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return View(registerViewModel);
             }
+
             var userId = Guid.NewGuid();
+
             var user = new User()
             {
                 Id = userId,
@@ -46,7 +57,7 @@ namespace Flipard.MVC.Controllers
                 FirstName = registerViewModel.FirstName,
                 LastName = registerViewModel.LastName,
                 Gender = registerViewModel.Gender,
-                Birthdate = registerViewModel.Birthdate,
+                Birthdate = registerViewModel.Birthdate.Value.ToUniversalTime(),
                 UserName = registerViewModel.Username,
                 CreatedByUserId = userId.ToString(),
                 CreatedOn = DateTimeOffset.UtcNow,
@@ -55,7 +66,7 @@ namespace Flipard.MVC.Controllers
 
             var identityResult = await _userManager.CreateAsync(user, registerViewModel.Password);
 
-            if(identityResult.Succeeded)
+            if(!identityResult.Succeeded)
             {
                 //throw new Exception("An error has occurred!");
                 foreach (var error in identityResult.Errors)
@@ -74,6 +85,12 @@ namespace Flipard.MVC.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction(nameof(Index), controllerName: "Main");
+
+            }
+
             var loginViewModel = new AuthLoginViewModel();
 
             return View(loginViewModel);
@@ -82,7 +99,7 @@ namespace Flipard.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginAsync(AuthLoginViewModel loginViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(loginViewModel);
             }
@@ -97,22 +114,19 @@ namespace Flipard.MVC.Controllers
 
             }
 
+            var loginResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, true, false);
             
 
-            if (identityResult.Succeeded)
+            if(!loginResult.Succeeded)
             {
-                //throw new Exception("An error has occurred!");
-                foreach (var error in identityResult.Errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
+                _toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
 
-                return View(registerViewModel);
+                return View(loginViewModel);
+
             }
+            _toastNotification.AddSuccessToastMessage($"Welcome {user.UserName} to Flipard!");
 
-            _toastNotification.AddSuccessToastMessage("You've successfully registered to Flipard!");
-
-            return RedirectToAction(nameof(Login));
+            return RedirectToAction(nameof(Index),controllerName:"Main");
         }
     }
 }
