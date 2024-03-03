@@ -1,4 +1,5 @@
 using Flipard.Domain.Identity;
+using Flipard.MVC.Services;
 using Flipard.Persistence.Contexts;
 using Flipard.Persistence.Contexts.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<IdentityContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
+
+builder.Services.AddScoped<INToastNotifyService, NToastNotifyService>();
 
 builder.Services.AddSession();
 

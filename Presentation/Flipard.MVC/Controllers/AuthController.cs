@@ -1,8 +1,8 @@
 ﻿using Flipard.Domain.Identity;
+using Flipard.MVC.Services;
 using Flipard.MVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
 
 namespace Flipard.MVC.Controllers
 {
@@ -10,19 +10,19 @@ namespace Flipard.MVC.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IToastNotification _toastNotification;
+        private readonly INToastNotifyService _nToastNotifyService;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IToastNotification toastNotification)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, INToastNotifyService nToastNotifyService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _toastNotification = toastNotification;
+            _nToastNotifyService = nToastNotifyService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            _toastNotification.AddInfoToastMessage("You got redirected");
+            _nToastNotifyService.AddInfoToastMessage("You got redirected");
             return View();
         }
 
@@ -77,7 +77,7 @@ namespace Flipard.MVC.Controllers
                 return View(registerViewModel);
             }
 
-            _toastNotification.AddSuccessToastMessage("You've successfully registered to Flipard!");
+            _nToastNotifyService.AddSuccessToastMessage("You've successfully registered to Flipard!");
 
             return RedirectToAction(nameof(Login));
         }
@@ -108,7 +108,7 @@ namespace Flipard.MVC.Controllers
 
             if(user is null)
             {
-                _toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
+                _nToastNotifyService.AddErrorToastMessage("Your email or password is incorrect.");
 
                 return View(loginViewModel);
 
@@ -119,12 +119,12 @@ namespace Flipard.MVC.Controllers
 
             if(!loginResult.Succeeded)
             {
-                _toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
+                _nToastNotifyService.AddErrorToastMessage("Your email or password is incorrect.");
 
                 return View(loginViewModel);
 
             }
-            _toastNotification.AddSuccessToastMessage($"Welcome {user.UserName} to Flipard!");
+            _nToastNotifyService.AddSuccessToastMessage($"Welcome {user.UserName} to Flipard!");
 
             return RedirectToAction(nameof(Index),controllerName:"Main");
         }
