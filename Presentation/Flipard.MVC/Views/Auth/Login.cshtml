@@ -5,70 +5,69 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
+    <title>Flipard Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/styles.css">
     <style>
-        body {
-            background-color: #000;
-            color: #fff;
+        /* Adjust the login area to be in the middle-right */
+        .login-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
+        .image-container img {
+            max-width: 100%;
+            height: auto; /* Preserve aspect ratio */
+        }
+
+        body, html {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+        }
+        .image-container {
+            background-image: url('~/images/leftside.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100%;
+            padding-right: 0; /* Remove padding to ensure image covers entire left side */
+        }
+        
         .card {
-            background-color: #111;
-            border: 1px solid #444;
-            color: #fff;
+            height: 100%;
         }
-
-        .form-control {
-            background-color: #222;
-            border: 1px solid #444;
-            color: #fff;
-        }
-
-            .form-control:focus {
-                background-color: #333;
-                border: 1px solid #777;
-                color: #fff;
-            }
-
-        .btn-primary {
-            background-color: #6c757d;
-            border: 1px solid #6c757d;
-        }
-
-            .btn-primary:hover {
-                background-color: #5a6268;
-                border: 1px solid #5a6268;
-            }
-
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
+    <div class="container-fluid login-area">
+        <div class="row">
+            <div class="col-md-6 d-none d-md-block image-container">
+                <img src="~/images/leftside.png" alt="A person studying with flashcards.">
+            </div>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="text-center">Login</h2>
+                        
                     </div>
                     <div class="card-body">
                         <form asp-action="Login" method="post">
-                            
                             <div class="form-group">
                                 <label for="Email">Email</label>
                                 <input type="email" class="form-control" id="Email" name="Email" required>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="Password">Password</label>
                                 <input type="password" class="form-control" id="Password" name="Password" required>
                             </div>
-                           
-                           
-                            <button type="submit" class="btn btn-primary">Sign-In</button>
+                            <button type="submit" class="btn btn-primary btn-block">Sign-In</button>
                         </form>
                     </div>
                 </div>
