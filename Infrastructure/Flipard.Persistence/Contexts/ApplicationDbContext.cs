@@ -1,4 +1,5 @@
-﻿using Flipard.Domain.Entities;
+﻿using Flipard.Domain.Common;
+using Flipard.Domain.Entities;
 using Flipard.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,6 +28,26 @@ namespace Flipard.Persistence.Contexts
             modelBuilder.Ignore<UserSetting>();
 
             base.OnModelCreating(modelBuilder); 
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var datas = ChangeTracker.Entries<EntityBase<Guid>>();
+
+            foreach (var data in datas)
+            {
+                _ = data.State switch
+                {
+                    EntityState.Modified => data.Entity.ModifiedOn = DateTimeOffset.UtcNow,
+
+                    EntityState.Added => data.Entity.CreatedOn = DateTimeOffset.UtcNow,
+
+                    EntityState.Deleted => data.Entity.DeletedOn = DateTimeOffset.UtcNow,
+                };
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+
         }
     }
 }
