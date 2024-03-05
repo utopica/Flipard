@@ -9,15 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{9349353C-D3FA-46F5-9679-135C9B545948}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flipard.Domain", "Core\Flipard.Domain\Flipard.Domain.csproj", "{A1A1D6D7-60E8-4FCC-80F0-C703C41D36A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flipard.Domain", "Core\Flipard.Domain\Flipard.Domain.csproj", "{A1A1D6D7-60E8-4FCC-80F0-C703C41D36A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flipard.Application", "Core\Flipard.Application\Flipard.Application.csproj", "{F350501C-4750-4DC1-AEA0-79A83F84CC1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flipard.Application", "Core\Flipard.Application\Flipard.Application.csproj", "{F350501C-4750-4DC1-AEA0-79A83F84CC1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flipard.Infrastructure", "Infrastructure\Flipard.Infrastructure\Flipard.Infrastructure.csproj", "{EB002F4B-3279-4F8E-A88F-6F2C18D4849E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flipard.Infrastructure", "Infrastructure\Flipard.Infrastructure\Flipard.Infrastructure.csproj", "{EB002F4B-3279-4F8E-A88F-6F2C18D4849E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flipard.Persistence", "Infrastructure\Flipard.Persistence\Flipard.Persistence.csproj", "{8589607D-D7DC-4A00-8B11-AC96CA60F4DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flipard.Persistence", "Infrastructure\Flipard.Persistence\Flipard.Persistence.csproj", "{8589607D-D7DC-4A00-8B11-AC96CA60F4DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flipard.MVC", "Presentation\Flipard.MVC\Flipard.MVC.csproj", "{BA6C7A42-176B-4923-ACF5-731D19008FAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flipard.MVC", "Presentation\Flipard.MVC\Flipard.MVC.csproj", "{BA6C7A42-176B-4923-ACF5-731D19008FAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

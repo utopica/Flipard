@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Flipard.Persistence.Migrations.Application
+namespace Flipard.Persistence.Migrations.App
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -62,7 +62,7 @@ namespace Flipard.Persistence.Migrations.Application
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Word = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    Term = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     Meaning = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     CardId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),

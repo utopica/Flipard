@@ -10,52 +10,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flipard Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   
     <link rel="stylesheet" href="~/css/styles.css">
     <style>
         /* Adjust the login area to be in the middle-right */
-        .login-area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            height: auto; /* Preserve aspect ratio */
-        }
-
-        body, html {
-            height: 100%;
-        }
-
-        .container {
-            height: 100%;
-        }
-        .image-container {
-            background-image: url('~/images/leftside.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100%;
-            padding-right: 0; /* Remove padding to ensure image covers entire left side */
-        }
         
-        .card {
-            height: 100%;
-        }
+
+       
     </style>
 </head>
 <body>
-    <div class="container-fluid login-area">
+    <header class="header">
+        <div class="logo">
+            <div class="logo-circle">
+                <span class="circle circle-1"></span>
+                <span class="circle circle-2"></span>
+            </div>
+            <h2>Flipard</h2>
+        </div>
+        </header>
+    <div class="container login-area text-center">
+        
         <div class="row">
-            <div class="col-md-6 d-none d-md-block image-container">
+            <div class="image-container">
                 <img src="~/images/leftside.png" alt="A person studying with flashcards.">
             </div>
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        
+                       <br />
                     </div>
                     <div class="card-body">
                         <form asp-action="Login" method="post">

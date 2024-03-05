@@ -1,7 +1,8 @@
 using Flipard.Domain.Identity;
 using Flipard.MVC.Services;
-using Flipard.Persistence.Contexts;
+using Flipard.Persistence;
 using Flipard.Persistence.Contexts.Identity;
+using Flipard.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,17 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
     .AddNToastNotifyToastr();
 
-var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
+var configuration = builder.Configuration;
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseNpgsql(connectionString);
-});
-
-builder.Services.AddDbContext<IdentityContext>(options =>
-{
-    options.UseNpgsql(connectionString);
-});
+builder.Services.AddPersistenceServices(configuration);
 
 builder.Services.AddScoped<INToastNotifyService, NToastNotifyService>();
 

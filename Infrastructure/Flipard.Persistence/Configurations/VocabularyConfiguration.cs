@@ -45,9 +45,9 @@ namespace Flipard.Persistence.Configurations
 
             // Properties
 
-            // Word
-            builder.Property(x => x.Word).IsRequired();
-            builder.Property(x => x.Word).HasMaxLength(1000);
+            // Term
+            builder.Property(x => x.Term).IsRequired();
+            builder.Property(x => x.Term).HasMaxLength(1000);
 
             // Meaning 
             builder.Property(x=> x.Meaning).IsRequired();

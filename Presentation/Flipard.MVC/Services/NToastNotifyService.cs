@@ -1,4 +1,5 @@
-﻿using NToastNotify;
+﻿using Flipard.Persistence.Services;
+using NToastNotify;
 
 namespace Flipard.MVC.Services
 {

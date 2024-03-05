@@ -10,7 +10,7 @@ namespace Flipard.Domain.Entities
     public class Vocabulary : EntityBase<Guid>
     {
 
-        public string Word { get; set; }
+        public string Term { get; set; }
         public string Meaning { get; set; }
 
         public Card Card { get; set; }

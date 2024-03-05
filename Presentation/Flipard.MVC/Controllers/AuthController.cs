@@ -3,6 +3,7 @@ using Flipard.MVC.Services;
 using Flipard.MVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Flipard.Persistence.Services;
 
 namespace Flipard.MVC.Controllers
 {
@@ -31,7 +32,7 @@ namespace Flipard.MVC.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction(nameof(Index), controllerName: "Main");
+                return RedirectToAction(nameof(Index), controllerName: "Home");
 
             }
 
@@ -87,7 +88,7 @@ namespace Flipard.MVC.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction(nameof(Index), controllerName: "Main");
+                return RedirectToAction(nameof(Index), controllerName: "Home");
 
             }
 
@@ -126,7 +127,7 @@ namespace Flipard.MVC.Controllers
             }
             _nToastNotifyService.AddSuccessToastMessage($"Welcome {user.UserName} to Flipard!");
 
-            return RedirectToAction(nameof(Index),controllerName:"Main");
+            return RedirectToAction(nameof(Index),controllerName:"Home");
         }
     }
 }
