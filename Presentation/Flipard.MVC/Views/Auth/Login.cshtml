@@ -11,8 +11,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flipard Login</title>
-   
-    <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/Login.css">
     <style>
         /* Adjust the login area to be in the middle-right */
         
@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-    <header class="header">
+    @* <header class="header">
         <div class="logo">
             <div class="logo-circle">
                 <span class="circle circle-1"></span>
@@ -58,6 +58,56 @@
                 </div>
             </div>
         </div>
+    </div> *@
+
+    <div class="">
+
+        <div class="row">
+
+            <div class="col-md-6 sec1">
+
+                <div class="image-container">
+                    <img src="~/images/leftside.png" alt="A person studying with flashcards.">
+                </div>
+
+            </div>
+
+            <div class="col-md-6 sec2">
+
+                <div class="logo-header">
+                    <div class="logo">
+                        <div class="logo-circle">
+                            <span class="circle circle-1"></span>
+                            <span class="circle circle-2"></span>
+                        </div>
+                        <h2>Flipard</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                       <h3> Login </h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Login" method="post">
+                            <div class="form-group">
+                                <label for="Email">Email</label>
+                                <input type="email" class="form-control" id="Email" name="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="Password">Password</label>
+                                <input type="password" class="form-control" id="Password" name="Password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Sign-In</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
 </body>
 </html>
