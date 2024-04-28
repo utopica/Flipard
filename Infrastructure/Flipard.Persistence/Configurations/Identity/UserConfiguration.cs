@@ -33,16 +33,16 @@ namespace Flipard.Persistence.Configurations.Identity
             builder.Property(u => u.NormalizedEmail).HasMaxLength(256);
 
             // Name
-            builder.Property(x => x.FirstName).IsRequired();
-            builder.Property(x => x.FirstName).HasMaxLength(70);
+            //builder.Property(x => x.FirstName).IsRequired();
+            //builder.Property(x => x.FirstName).HasMaxLength(70);
 
-            // SurName
-            builder.Property(x => x.LastName).IsRequired();
-            builder.Property(x => x.LastName).HasMaxLength(70);
+            //// SurName
+            //builder.Property(x => x.LastName).IsRequired();
+            //builder.Property(x => x.LastName).HasMaxLength(70);
 
-            // Gender
-            builder.Property(x => x.Gender).IsRequired();
-            builder.Property(x => x.Gender).HasConversion<int>();
+            //// Gender
+            //builder.Property(x => x.Gender).IsRequired();
+            //builder.Property(x => x.Gender).HasConversion<int>();
 
             // BirthDate
             builder.Property(x => x.Birthdate).IsRequired(false);

@@ -203,15 +203,25 @@ body {
         color: #fff;
     }
 
-.loginToRegister{
+.btn-primary,
+.btn-outline-secondary {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Center the button */
+.center-btn {
+    display: block;
+    margin: auto;
+}
+
+
+.loginToRegister, .registerToLogin{
     margin-top: 20px;
     width: 60%;
 }
 
-.registerToLogin{
-    margin-top: 20px;
-    width: 60%;
-}
 
 
 .Birthday {

@@ -54,10 +54,7 @@ namespace Flipard.MVC.Controllers
             var user = new User()
             {
                 Id = userId,
-                Email = registerViewModel.Email,
-                FirstName = registerViewModel.FirstName,
-                LastName = registerViewModel.LastName,
-                Gender = registerViewModel.Gender,
+                Email = registerViewModel.Email,               
                 Birthdate = registerViewModel.Birthdate.Value.ToUniversalTime(),
                 UserName = registerViewModel.Username,
                 CreatedByUserId = userId.ToString(),

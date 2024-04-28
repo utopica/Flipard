@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Flipard.Persistence.Migrations.Identity
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,10 +31,7 @@ namespace Flipard.Persistence.Migrations.Identity
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
                     Birthdate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Gender = table.Column<int>(type: "integer", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
