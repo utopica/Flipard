@@ -1,0 +1,109 @@
+﻿@model Flipard.MVC.Models.UserProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.625;
+            color: rgba(255, 255, 255);
+        }
+
+        body {
+            background-color: #202124;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background-color: rgba(40, 41, 47, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Transparan border */
+            outline: 1px solid rgba(255, 255, 255, 0.1); /* Transparan outline */
+        }
+
+            .profile-card h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+                color: floralwhite;
+            }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .profile-info-label {
+            width: 120px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .profile-info-value {
+            flex: 1;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <h2>User Profile</h2>
+            <div class="profile-info">
+                <div class="profile-info-label">Username:</div>
+                <div class="profile-info-value">@Model.Username</div>
+            </div>
+            <div class="profile-info">
+                <div class="profile-info-label">Email:</div>
+                <div class="profile-info-value">@Model.Email</div>
+            </div>
+            <div class="profile-info">
+                <div class="profile-info-label">Password:</div>
+                <div class="profile-info-value">@Model.Password</div>
+            </div>
+            <div class="profile-info">
+                <div class="profile-info-label">Birthdate:</div>
+                <div class="profile-info-value">@Model.Birthdate</div>
+            </div>
+            <!-- Diğer özellikler buraya eklenebilir -->
+            <a href="#" class="btn">Edit Profile</a>
+        </div>
+    </div>
+</body>
+</html>

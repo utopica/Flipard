@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/css/Login.css">
+    <link rel="stylesheet" href="~/css/homeindex.css">
 
 </head>
 
@@ -18,22 +18,45 @@
         <div class="TopNavigation-content">
 
             <div class="TopNavigation-contentLeft">
-                <a class="hello-flipard" style="display:none" href="/hello-flipard">hello flipard</a>
+
+                <div class="logo-header">
+                    <div class="logo">
+                        <div class="logo-circle">
+                            <span class="circle circle-1"></span>
+                            <span class="circle circle-2"></span>
+                        </div>
+                        <h2>Flipard</h2>
+                    </div>
+                </div>
             
 
-                <div class="TopNavigation-hamburgerMenuWrapper" data-testid="nav-hamburger-menu">
+               
 
-                </div>
-
-                <div class="h1vx"></div>
-
-                <button type="button" aria-label="Menü" class="AssemblyButtonBase AssemblyIconButton AssemblyIconButton--tertiary AssemblyIconButton--circle AssemblyButtonBase--medium AssemblyButtonBase--circle" title="Menü"><svg aria-label="Menü" class="AssemblyIcon AssemblyIcon--medium" role="img"><noscript></noscript><use xlink:href="#menu"></use><noscript></noscript></svg></button>
 
             </div>
 
-            <div class="TopNavigation-contentMiddle"></div>
+            <div class="TopNavigation-contentMiddle">
+              
+                        <form class="search-form" action="/search" method="get" role="search">
+                            <input type="text" class="search-input" name="q" placeholder="Search...">
+                            <button type="submit" class="search-button">
+                                <img src="@Url.Content("~/images/whitesearch.svg")" alt="Search">
+                            </button>
+                        </form>
 
-            <div class="TopNavigation-contentRight"></div>
+                   
+                
+            </div>
+
+            <div class="TopNavigation-contentRight">
+                <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
+                    <button type="submit">
+                        <img src="~/images/user2.png" alt="Profile Picture" style="width: 24px; height: 24px; border-radius=50%">
+                    </button>
+                </form>
+            </div>
+
+
 
           
         </div>
