@@ -30,7 +30,7 @@ body {
     display: flex;
     align-items: center;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: 1rem;
 }
 
 .logo-circle {
@@ -68,6 +68,7 @@ body {
     display: flex;
     height: 4rem;
     padding: 0 1rem;
+    justify-content: space-between;
 }
 
 .TopNavigation-content {
@@ -78,11 +79,21 @@ body {
 
 .TopNavigation-contentLeft,
 .TopNavigation-contentRight {
-    flex: 2; /* Flipard ve sağdaki içerik iki kat genişlikte */
+    /* flex: 2; */ /* Flipard ve sağdaki içerik iki kat genişlikte */
+}
+
+.profile-button-container {
+    display: flex;
+    justify-content: flex-end; /* Positions button to the right */
+}
+
+/* Assuming your profile button is within .TopNavigation-contentRight */
+.TopNavigation-contentRight {
+    /* Wrap the button and its container in this element */
+    display: flex; /* Not strictly necessary, but maintains consistency */
 }
 
 .TopNavigation-contentMiddle {
-    flex-grow: 1;
     display: flex;
     align-items: center;
 }
@@ -118,7 +129,8 @@ body {
 .search-form {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 300px; /* Adjust this value for desired search bar width */
+    padding: 0 1rem;
 }
 
 .search-input {

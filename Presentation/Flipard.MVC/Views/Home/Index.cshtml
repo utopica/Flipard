@@ -49,11 +49,13 @@
             </div>
 
             <div class="TopNavigation-contentRight">
-                <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
-                    <button type="submit">
-                        <img src="~/images/user2.png" alt="Profile Picture" style="width: 24px; height: 24px; border-radius=50%">
-                    </button>
-                </form>
+                <div class="profile-button-container">
+                    <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
+                        <button type="submit" class="profile-button">
+                            <img src="~/images/user2.png" alt="Profile Picture" style="width: 24px; height: 24px; border-radius=50%">
+                        </button>
+                    </form>
+                </div>
             </div>
 
 
