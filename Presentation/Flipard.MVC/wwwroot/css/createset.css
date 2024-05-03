@@ -1,0 +1,270 @@
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
+@import url('https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
+
+/* General */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.625;
+}
+
+body {
+    background-color: #202124;
+    margin: 0;
+    padding: 0;
+}
+
+/* Logo */
+.logo-header {
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px;
+    color: #FBFAFB;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+.logo-circle {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+    margin-right: 6px;
+}
+
+.logo-header .logo .circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.logo-header .logo .logo-circle .circle-1 {
+    background-color: #62CBE7;
+    margin-left: 10px;
+}
+
+.logo-header .logo .logo-circle .circle-2 {
+    background-color: #B5E0D4;
+}
+
+.logo-header .logo h2 {
+    font-size: 1.5rem;
+}
+
+/* HEADER */
+.TopNavigation {
+    background-color: var(--gray-100-twilight-900);
+    border-bottom: 1px solid rgb(128, 128, 128, 0.1);
+    color: var(--gray-800-gray-100);
+    display: flex;
+    height: 4rem;
+    padding: 0 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.TopNavigation-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.profile-button-container {
+    display: flex;
+    justify-content: flex-end; /* Positions button to the right */
+}
+
+/* Assuming your profile button is within .TopNavigation-contentRight */
+.TopNavigation-contentRight {
+    /* Wrap the button and its container in this element */
+    display: flex; /* Not strictly necessary, but maintains consistency */
+}
+
+.TopNavigation-contentMiddle {
+    display: flex;
+    align-items: center;
+}
+
+.TopNavigation-contentRight .RightNavigationItem .create-button {
+    display: inline-flex;
+    height: 40px;
+    width: 40px;
+    background: #009578;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    overflow: hidden;
+    font-size: 14px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+    .TopNavigation-contentRight .RightNavigationItem .create-button .button-icon {
+        display: inline-flex;
+        color: white;
+    }
+
+    .TopNavigation-contentRight .RightNavigationItem .create-button:hover {
+        background: #008168;
+    }
+
+    .TopNavigation-contentRight .RightNavigationItem .create-button:active {
+        background: #008168;
+    }
+
+.TopNavigation-contentRight .RightNavigationItem .profile-button {
+    display: inline-flex;
+    height: 40px;
+    width: 40px;
+    background: #009578;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    overflow: hidden;
+    font-size: 14px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.TopNavigation-contentRight .RightNavigationItem .profile-form .profile-button .profile-button-icon {
+    display: inline-flex;
+    color: white;
+    font-size: 15px;
+}
+
+@media (max-width: 64rem) {
+    .TopNavigationItem.FullSeachNavigationItem {
+        padding: 0 .5rem;
+    }
+}
+
+.TopNavigationItem.FullSeachNavigationItem {
+    width: 100%;
+    padding: 0 1.5rem;
+}
+
+@media (max-width: 64rem) {
+    .TopNavigationItem {
+        padding: 0 .5rem;
+    }
+}
+
+.TopNavigationItem {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 .75rem;
+}
+
+.FullSeachNavigationItem {
+    flex: 3; /* Search bar üç kat genişlikte */
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 600px; /* Adjust this value for desired search bar width */
+    padding: 0 1rem;
+}
+
+.search-input {
+    display: block;
+    width: 100%; /* Genişlik 100% olarak ayarlandı */
+    padding: 8px;
+    background-color: rgba(40, 41, 47, 0.5); /* Açık gri renk, %50 opaklık */
+    border: none; /* No border */
+    outline: none; /* Remove outline */
+    color: rgb(223, 219, 219);
+}
+
+.search-button {
+    padding: 8px;
+    background: none;
+    background-color: rgba(40, 41, 47, 0.5);
+    border: none;
+    cursor: pointer;
+}
+
+    .search-button .button-icon {
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        margin-right: 5px;
+    }
+
+
+/* End Header */
+
+/* Main */
+
+.create-card {
+    display: flex;
+    background: #202124;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-card-text {
+    color: #fff;
+    margin: 100px 200px 50px 200px;
+}
+
+.create-button {
+    background: #016752;
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    font-weight: larger;
+    border-radius: 20px;
+    margin: 100px 200px 50px 200px;
+}
+
+    .create-button:hover, .create-button:active {
+        background: #005645;
+    }
+
+    .create-button .button-text {
+        font-weight: 500;
+        color: #ffffff;
+    }
+
+.create-deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #202124;
+    width: 100%;
+    height: 100%;
+}
+
+.deck-name {
+    margin-bottom: 20px;
+}
+
+.deck-name-input, .deck-desc-input {
+    background-color: #323338;
+    width: 71rem;
+    height: 3rem;
+    display: block;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* End Main */
