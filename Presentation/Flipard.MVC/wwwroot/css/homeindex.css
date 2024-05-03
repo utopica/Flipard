@@ -1,5 +1,6 @@
 ﻿
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
+@import url('https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
 
 /* General */
 * {
@@ -98,6 +99,56 @@ body {
     align-items: center;
 }
 
+.TopNavigation-contentRight .RightNavigationItem .create-button {
+    display: inline-flex;
+    height: 40px;
+    width: 40px;
+    background: #009578;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    overflow: hidden;
+    font-size: 14px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+    .TopNavigation-contentRight .RightNavigationItem .create-button .button-icon {
+        display: inline-flex;
+        color: white;
+    }
+
+        .TopNavigation-contentRight .RightNavigationItem .create-button:hover {
+            background: #008168;
+        }
+
+        .TopNavigation-contentRight .RightNavigationItem .create-button:active {
+            background: #008168;
+        }
+
+.TopNavigation-contentRight .RightNavigationItem .profile-button {
+    display: inline-flex;
+    height: 40px;
+    width: 40px;
+    background: #009578;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    overflow: hidden;
+    font-size: 14px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.TopNavigation-contentRight .RightNavigationItem .profile-form .profile-button .profile-button-icon {
+    display: inline-flex;
+    color: white;
+    font-size: 15px;
+}
+
 @media (max-width: 64rem) {
     .TopNavigationItem.FullSeachNavigationItem {
         padding: 0 .5rem;
@@ -129,7 +180,7 @@ body {
 .search-form {
     display: flex;
     align-items: center;
-    width: 300px; /* Adjust this value for desired search bar width */
+    width: 600px; /* Adjust this value for desired search bar width */
     padding: 0 1rem;
 }
 

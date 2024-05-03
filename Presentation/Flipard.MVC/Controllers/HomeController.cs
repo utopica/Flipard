@@ -1,3 +1,4 @@
+using Flipard.Domain.Entities;
 using Flipard.MVC.Models;
 using Flipard.MVC.ViewModels;
 using Flipard.Persistence.Contexts;
@@ -48,6 +49,13 @@ namespace Flipard.MVC.Controllers
 
 
             return View(userProfile);
+        }
+
+        [Authorize]
+        public IActionResult CreateSet() 
+        { 
+          
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

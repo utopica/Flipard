@@ -10,7 +10,7 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/homeindex.css">
-
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 </head>
 
 <body>
@@ -49,10 +49,29 @@
             </div>
 
             <div class="TopNavigation-contentRight">
-                <div class="profile-button-container">
+
+                <div class="TopNavigationItem RightNavigationItem">
+                    <form action="@Url.Action("CreateSet", "Home")" method="get">
+                        <button type="button" class="create-button">
+                            <span class="button-icon">
+                                <i class="fi fi-br-plus"></i>
+                            </span>
+
+                        </button>
+                    </form>
+                </div>
+
+                <div class="TopNavigationItem RightNavigationItem">
+
+                </div>
+
+                <div class="TopNavigationItem RightNavigationItem">
                     <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
                         <button type="submit" class="profile-button">
-                            <img src="~/images/user2.png" alt="Profile Picture" style="width: 24px; height: 24px; border-radius=50%">
+                            <span class="profile-button-icon">
+                                <i class="fi fi-sr-user"></i>
+
+                            </span>
                         </button>
                     </form>
                 </div>
