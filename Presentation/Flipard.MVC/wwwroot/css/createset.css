@@ -1,4 +1,4 @@
-﻿
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
 @import url('https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
 
@@ -82,13 +82,12 @@ body {
 
 .profile-button-container {
     display: flex;
-    justify-content: flex-end; /* Positions button to the right */
+    justify-content: flex-end;
 }
 
-/* Assuming your profile button is within .TopNavigation-contentRight */
+
 .TopNavigation-contentRight {
-    /* Wrap the button and its container in this element */
-    display: flex; /* Not strictly necessary, but maintains consistency */
+    display: flex;
 }
 
 .TopNavigation-contentMiddle {
@@ -139,6 +138,7 @@ body {
     align-items: center;
     justify-content: center;
     margin: 10px;
+    padding-top: 5px;
 }
 
 .TopNavigation-contentRight .RightNavigationItem .profile-form .profile-button .profile-button-icon {
@@ -172,23 +172,23 @@ body {
 }
 
 .FullSeachNavigationItem {
-    flex: 3; /* Search bar üç kat genişlikte */
+    flex: 3;
 }
 
 .search-form {
     display: flex;
     align-items: center;
-    width: 600px; /* Adjust this value for desired search bar width */
+    width: 600px;
     padding: 0 1rem;
 }
 
 .search-input {
     display: block;
-    width: 100%; /* Genişlik 100% olarak ayarlandı */
+    width: 100%;
     padding: 8px;
-    background-color: rgba(40, 41, 47, 0.5); /* Açık gri renk, %50 opaklık */
-    border: none; /* No border */
-    outline: none; /* Remove outline */
+    background-color: rgba(40, 41, 47, 0.5);
+    border: none;
+    outline: none;
     color: rgb(223, 219, 219);
 }
 
@@ -223,7 +223,7 @@ body {
 
 .create-card-text {
     color: #fff;
-    margin: 100px 200px 50px 200px;
+    margin: 100px 250px 50px 250px;
 }
 
 .create-button {
@@ -233,7 +233,8 @@ body {
     font-size: 16px;
     font-weight: larger;
     border-radius: 20px;
-    margin: 100px 200px 50px 200px;
+    padding-top: 5px;
+    margin: 100px 250px 50px 250px;
 }
 
     .create-button:hover, .create-button:active {
@@ -254,17 +255,117 @@ body {
     height: 100%;
 }
 
-.deck-name {
+.deck-name .deck-desc {
     margin-bottom: 20px;
 }
 
 .deck-name-input, .deck-desc-input {
     background-color: #323338;
+    color: #d2d1d1;
     width: 71rem;
     height: 3rem;
-    display: block;
-    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
     padding: 20px;
+    border: 1px solid #8d90a0b0;
 }
+
+.deck-desc-input {
+    height: 10rem;
+}
+
+.user-deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #202124;
+}
+
+.user-deck-card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 71rem;
+    height: 3rem;
+    margin-top: 10px;
+    margin-bottom: 3px;
+    padding: 20px;
+    background-color: #323338;
+    color: #d2d1d1;
+    font-size: 18px;
+    border-top: 1px solid #8d90a0b0;
+    border-left: 1px solid #8d90a0b0;
+    border-right: 1px solid #8d90a0b0;
+    border-bottom: none;
+}
+
+.card-number {
+    margin-right: auto;
+}
+
+#add-card-button {
+    background: #016752;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 71rem;
+    height: 3rem;
+    font-size: 16px;
+    font-weight: larger;
+    margin: 20px auto;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.card-image-button,
+.card-delete-button {
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 20px;
+    background: none;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.user-deck-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 71rem;
+}
+
+.user-deck-card-term,
+.user-deck-card-definition {
+    width: 35.43rem;
+    height: 7rem;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+    .user-deck-card-term textarea,
+    .user-deck-card-definition textarea {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        border: none;
+        outline: none;
+        background-color: #323338;
+        color: #d2d1d1;
+        font-size: 16px;
+    }
+
+        .user-deck-card-term textarea::placeholder,
+        .user-deck-card-definition textarea::placeholder {
+            color: #d2d1d1;
+        }
+
+        .user-deck-card-term textarea:focus,
+        .user-deck-card-definition textarea:focus {
+            background-color: #52555C;
+        }
 
 /* End Main */
