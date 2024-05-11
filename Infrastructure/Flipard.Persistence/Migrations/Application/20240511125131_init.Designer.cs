@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Flipard.Persistence.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240427142823_init")]
+    [Migration("20240511125131_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -50,7 +50,6 @@ namespace Flipard.Persistence.Migrations.Application
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool?>("IsDeleted")
-                        .IsRequired()
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LastReviewed")
@@ -95,7 +94,6 @@ namespace Flipard.Persistence.Migrations.Application
                         .HasColumnType("text");
 
                     b.Property<bool?>("IsDeleted")
-                        .IsRequired()
                         .HasColumnType("boolean");
 
                     b.Property<string>("ModifiedByUserId")
@@ -139,7 +137,6 @@ namespace Flipard.Persistence.Migrations.Application
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool?>("IsDeleted")
-                        .IsRequired()
                         .HasColumnType("boolean");
 
                     b.Property<string>("Meaning")

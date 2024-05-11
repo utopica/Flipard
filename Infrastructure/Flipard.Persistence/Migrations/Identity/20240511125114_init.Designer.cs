@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Flipard.Persistence.Migrations.Identity
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240427142859_init")]
+    [Migration("20240511125114_init")]
     partial class init
     {
         /// <inheritdoc />

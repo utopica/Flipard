@@ -1,4 +1,9 @@
-﻿
+﻿@model Flipard.MVC.ViewModels.HomeCreateSetViewModel
+
+@{
+    ViewData["Title"] = "Create Set";
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +62,7 @@
 
 
                 <div class="TopNavigationItem RightNavigationItem">
-                    <form class="profile-form" method="get">
+                    <form class="profile-form" method="get" action="@Url.Action("Profile","Home")">
                         <button type="submit" class="profile-button">
                             <span class="profile-button-icon">
                                 <i class="fi fi-sr-user"></i>
@@ -76,30 +81,33 @@
 
 
     <main>
+        <form asp-action="CreateSet" id="createSetForm" method="post">
         <div class="CreateSetPage">
             <div class="create-card">
-                <!-- row -->
+           
                 <div class="create-card-text">
                     <h5>Yeni çalışma seti oluştur</h5>
                 </div>
                 <div class="create-card-button">
-                    <button type="button" class="create-button">
+                    <button type="submit" class="create-button">
                         <span class="button-text">
                             Oluştur
                         </span>
 
                     </button>
+
+                        
                 </div>
 
             </div>
 
             <div class="create-deck">
                 <div class="deck-name">
-                    <input type="text" class="deck-name-input" placeholder="Çalışma seti adını yazın.">
+                    <input type="text" class="deck-name-input" id="Name" name="Name" placeholder="Çalışma seti adını yazın.">
                 </div>
 
                 <div class="deck-desc">
-                    <input type="text" class="deck-desc-input" placeholder="Açıklama yazın.">
+                        <input type="text" class="deck-desc-input" id="Description" name="Description" placeholder="Açıklama yazın.">
                 </div>
             </div>
 
@@ -128,18 +136,70 @@
             <div class="user-deck-card">
 
                 <div class="user-deck-card-term">
-                    <textarea class="user-deck-card-term-input" placeholder="Terim"></textarea>
+                    <textarea class="user-deck-card-term-input" id="Term" name="Term" placeholder="Terim"></textarea>
                 </div>
 
                 <div class="user-deck-card-definition">
-                    <textarea class="user-deck-card-definition-input" placeholder="Tanım"></textarea>
+                    <textarea class="user-deck-card-definition-input" id="Meaning" name="Meaning"placeholder="Tanım"></textarea>
 
                 </div>
             </div>
 
         </div>
+        </form>
 
         <button id="add-card-button">Kart Ekle</button>
 
     </main>
+    <script>
+        var cardNumber = 2;
+
+        document.getElementById("add-card-button").addEventListener("click", function () {
+
+            var newCardHtml = `
+                                    <div class="user-deck">
+                                        <div class="user-deck-card-info">
+                                            <!--card number, delete card button, add image button-->
+                                            <span class="card-number">${cardNumber}</span>
+                                            <div>
+                                                <button type="button" class="card-delete-button">
+                                                    <span class="button-card-delete-icon">
+                                                        <i class="fi fi-sr-trash"></i>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="card-image-button">
+                                                    <span class="button-card-image-icon">
+                                                        <i class="fi fi-sr-add-image"></i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="user-deck-card">
+                                            <div class="user-deck-card-term">
+                                                <textarea class="user-deck-card-term-input" name="Term" placeholder="Terim"></textarea>
+                                            </div>
+                                            <div class="user-deck-card-definition">
+                                                <textarea class="user-deck-card-definition-input" name="Meaning" placeholder="Tanım"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+
+
+            var newCardContainer = document.createElement("div");
+
+
+            newCardContainer.innerHTML = newCardHtml;
+
+
+            document.querySelector(".user-deck").appendChild(newCardContainer);
+
+
+            cardNumber++;
+        });
+    </script>
+
+
+
 </body>
+</html>

@@ -12,7 +12,7 @@ namespace Flipard.Domain.Common
         public DateTimeOffset CreatedOn { get; set; }
         public string CreatedByUserId { get; set; }
         public DateTimeOffset? ModifiedOn { get; set; }
-        public string ModifiedByUserId { get;  set; }
+        public string? ModifiedByUserId { get;  set; }
         public DateTimeOffset? DeletedOn { get; set; }
         public string? DeletedByUserId { get;  set; }
         public bool? IsDeleted { get; set; }

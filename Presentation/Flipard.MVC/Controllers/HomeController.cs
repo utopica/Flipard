@@ -14,11 +14,12 @@ namespace Flipard.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IdentityContext _context;
-
-        public HomeController(ILogger<HomeController> logger, IdentityContext context)
+        private readonly ApplicationDbContext _Appcontext;
+        public HomeController(ILogger<HomeController> logger, IdentityContext context, ApplicationDbContext appcontext)
         {
             _logger = logger;
             _context = context;
+            _Appcontext = appcontext;
         }
 
         public IActionResult Index()
@@ -51,12 +52,67 @@ namespace Flipard.MVC.Controllers
             return View(userProfile);
         }
 
-        [Authorize]
-        public IActionResult CreateSet() 
-        { 
-          
-            return View();
+       
+        [HttpGet]
+        public IActionResult CreateSet()
+        {
+            var createSetViewModel = new HomeCreateSetViewModel();  
+
+            return View(createSetViewModel);
         }
+
+        [HttpPost]
+        public IActionResult CreateSet(HomeCreateSetViewModel homeCreateSetViewModel) 
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(homeCreateSetViewModel);
+            }
+
+
+            var cardId = Guid.NewGuid();
+            
+
+            var vocabulary = new Vocabulary
+            {
+                Id = Guid.NewGuid(),
+                Term = homeCreateSetViewModel.Term,
+                Meaning = homeCreateSetViewModel.Meaning,
+                CardId = cardId,
+                CreatedOn = DateTimeOffset.UtcNow,
+                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+
+            };
+
+            var card = new Card
+            {
+                Id = cardId,
+                Vocabulary = vocabulary,
+                CreatedOn = DateTimeOffset.UtcNow,
+                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+            };
+
+            
+            var deck = new Deck
+            {
+                Id = Guid.NewGuid(),
+                Name = homeCreateSetViewModel.Name,
+                Description = homeCreateSetViewModel.Description,
+                Cards = new List<Card> { card },
+                CreatedOn = DateTimeOffset.UtcNow,
+                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+            };
+
+            _Appcontext.Vocabularies.Add(vocabulary);
+            _Appcontext.Cards.Add(card);
+            _Appcontext.Decks.Add(deck);
+
+            _Appcontext.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+          
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

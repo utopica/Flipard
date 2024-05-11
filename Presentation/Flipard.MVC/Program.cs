@@ -81,6 +81,6 @@ app.UseNToastNotify();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Auth}/{action=Register}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();

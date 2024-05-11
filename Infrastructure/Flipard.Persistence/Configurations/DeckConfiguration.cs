@@ -41,7 +41,7 @@ namespace Flipard.Persistence.Configurations
             builder.Property(x => x.DeletedOn).IsRequired(false);
 
             // IsDeleted
-            builder.Property(x => x.IsDeleted).IsRequired();
+            builder.Property(x => x.IsDeleted).IsRequired(false);
 
             // Properties
 

@@ -24,7 +24,7 @@ namespace Flipard.Persistence.Migrations.Application
                     ModifiedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
                     DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     DeletedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,7 +44,7 @@ namespace Flipard.Persistence.Migrations.Application
                     ModifiedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
                     DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     DeletedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,7 +71,7 @@ namespace Flipard.Persistence.Migrations.Application
                     ModifiedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
                     DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     DeletedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: true)
                 },
                 constraints: table =>
                 {
