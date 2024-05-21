@@ -17,195 +17,53 @@ body {
     padding: 0;
 }
 
-/* Logo */
-.logo-header {
-    display: inline-flex;
-    align-items: flex-start;
+.label-deck h4 {
+    color: rgb(251, 250, 251);
+    margin: 50px;
+}
+
+.deck-list {
+    background-color: rgb(36, 37, 42);
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    padding: 10px;
-    color: #FBFAFB;
-    text-align: center;
+    align-content :center;
+    margin: 0 40px;
+    padding: 20px;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 1rem;
+.deck-card-body-left {
+    margin: 15px;
 }
 
-.logo-circle {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 8px;
-    margin-right: 6px;
-}
-
-.logo-header .logo .circle {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-.logo-header .logo .logo-circle .circle-1 {
-    background-color: #62CBE7;
-    margin-left: 10px;
-}
-
-.logo-header .logo .logo-circle .circle-2 {
-    background-color: #B5E0D4;
-}
-
-.logo-header .logo h2 {
-    font-size: 1.5rem;
-}
-
-/* HEADER */
-.TopNavigation {
-    background-color: var(--gray-100-twilight-900);
-    border-bottom: .0625rem solid var(--gray-300-gray-800);
-    color: var(--gray-800-gray-100);
-    display: flex;
-    height: 4rem;
-    padding: 0 1rem;
-    justify-content: space-between;
-}
-
-.TopNavigation-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.TopNavigation-contentLeft,
-.TopNavigation-contentRight {
-    /* flex: 2; */ /* Flipard ve sağdaki içerik iki kat genişlikte */
-}
-
-.profile-button-container {
-    display: flex;
-    justify-content: flex-end; /* Positions button to the right */
-}
-
-/* Assuming your profile button is within .TopNavigation-contentRight */
-.TopNavigation-contentRight {
-    /* Wrap the button and its container in this element */
-    display: flex; /* Not strictly necessary, but maintains consistency */
-}
-
-.TopNavigation-contentMiddle {
-    display: flex;
-    align-items: center;
-}
-
-.TopNavigation-contentRight .RightNavigationItem .create-button {
-    display: inline-flex;
-    height: 40px;
-    width: 40px;
-    background: #009578;
+.deck-card-button {
+    text-decoration: none;
+    background-color: transparent;
     border: none;
-    outline: none;
-    border-radius: 50%;
-    overflow: hidden;
-    font-size: 14px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    margin: 10px;
-    padding: 5px;
+    color: rgb(251, 250, 251);
+    margin: 10px; /* Added margin to create space between cards */
 }
-    .TopNavigation-contentRight .RightNavigationItem .create-button .button-icon {
-        display: inline-flex;
-        color: white;
+
+.deck-card {
+    background-color: #282a2f;
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px; /* Adjust this value to fit more cards in a row */
+    height: 150px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+    .deck-card:hover {
+        transform: translateY(-5px);
     }
 
-        .TopNavigation-contentRight .RightNavigationItem .create-button:hover {
-            background: #008168;
-        }
-
-        .TopNavigation-contentRight .RightNavigationItem .create-button:active {
-            background: #008168;
-        }
-
-.TopNavigation-contentRight .RightNavigationItem .profile-button {
-    display: inline-flex;
-    height: 40px;
-    width: 40px;
-    background: #009578;
-    border: none;
-    outline: none;
-    border-radius: 50%;
-    overflow: hidden;
-    font-size: 14px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    margin: 10px;
-    padding: 5px;
+.deck-card-header h5 {
+    font-size: 1.2rem;
+    color: #fff;
 }
 
-.TopNavigation-contentRight .RightNavigationItem .profile-form .profile-button .profile-button-icon {
-    display: inline-flex;
-    color: white;
-    font-size: 15px;
+.deck-card-body-left span {
+    color: #b5b5b5;
 }
-
-@media (max-width: 64rem) {
-    .TopNavigationItem.FullSeachNavigationItem {
-        padding: 0 .5rem;
-    }
-}
-
-.TopNavigationItem.FullSeachNavigationItem {
-    width: 100%;
-    padding: 0 1.5rem;
-}
-
-@media (max-width: 64rem) {
-    .TopNavigationItem {
-        padding: 0 .5rem;
-    }
-}
-
-.TopNavigationItem {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 .75rem;
-}
-
-.FullSeachNavigationItem {
-    flex: 3; /* Search bar üç kat genişlikte */
-}
-
-.search-form {
-    display: flex;
-    align-items: center;
-    width: 600px; /* Adjust this value for desired search bar width */
-    padding: 0 1rem;
-}
-
-.search-input {
-    display: block;
-    width: 100%; /* Genişlik 100% olarak ayarlandı */
-    padding: 8px;
-    background-color: rgba(40, 41, 47, 0.5); /* Açık gri renk, %50 opaklık */
-    border: none; /* No border */
-    outline: none; /* Remove outline */
-    color: rgb(223, 219, 219);
-}
-
-.search-button {
-    padding: 8px;
-    background: none;
-    background-color: rgba(40, 41, 47, 0.5);
-    border: none;
-    cursor: pointer;
-}
-
-    .search-button img {
-        width: 20px;
-        height: 20px;
-        fill: #fff; /* Adjust color of the search icon */
-    }

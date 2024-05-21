@@ -2,204 +2,106 @@
 
 @{
     ViewData["Title"] = "Create Set";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/createset.css">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 </head>
-
-<body>
-    <header class="TopNavigation" itemscope itemtype="http://schema.org/WPHeader" role="banner">
-        <div class="TopNavigation-content">
-
-            <div class="TopNavigation-contentLeft">
-
-                <div class="logo-header">
-                    <div class="logo">
-                        <div class="logo-circle">
-                            <span class="circle circle-1"></span>
-                            <span class="circle circle-2"></span>
-                        </div>
-                        <h2>Flipard</h2>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="TopNavigation-contentMiddle">
-
-                <form class="search-form" action="/search" method="get" role="search">
-                    <input type="text" class="search-input" name="q" placeholder="Search...">
-                    <button type="submit" class="search-button">
-                        <span class="button-icon">
-                            <i class="fi fi-br-search"></i>
-                        </span>
-                    </button>
-                </form>
-
-
-
-            </div>
-
-            <div class="TopNavigation-contentRight">
-
-                <div class="TopNavigationItem RightNavigationItem">
-
-                    <button type="button" class="create-button">
-                        <span class="button-icon">
-                            <i class="fi fi-br-plus"></i>
-                        </span>
-
-                    </button>
-
-                </div>
-
-
-                <div class="TopNavigationItem RightNavigationItem">
-                    <form class="profile-form" method="get" action="@Url.Action("Profile","Home")">
-                        <button type="submit" class="profile-button">
-                            <span class="profile-button-icon">
-                                <i class="fi fi-sr-user"></i>
-
-                            </span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-
-
-
-        </div>
-    </header>
-
-
-    <main>
-        <form asp-action="CreateSet" id="createSetForm" method="post">
+<main>
+    <form asp-controller="Home" asp-action="CreateSet" method="post">
         <div class="CreateSetPage">
             <div class="create-card">
-           
                 <div class="create-card-text">
                     <h5>Yeni çalışma seti oluştur</h5>
                 </div>
                 <div class="create-card-button">
                     <button type="submit" class="create-button">
-                        <span class="button-text">
-                            Oluştur
-                        </span>
-
+                        <span class="button-text">Oluştur</span>
                     </button>
-
-                        
                 </div>
-
             </div>
-
             <div class="create-deck">
                 <div class="deck-name">
                     <input type="text" class="deck-name-input" id="Name" name="Name" placeholder="Çalışma seti adını yazın.">
                 </div>
-
                 <div class="deck-desc">
-                        <input type="text" class="deck-desc-input" id="Description" name="Description" placeholder="Açıklama yazın.">
+                    <input type="text" class="deck-desc-input" id="Description" name="Description" placeholder="Açıklama yazın.">
                 </div>
             </div>
-
         </div>
 
-        <div class="user-deck">
-            <div class="user-deck-card-info">
-                <!--card number, delete card button, add image button-->
-                <span class="card-number">1</span>
-                <div>
-                    <button type="button" class="card-delete-button">
-                        <span class="button-card-delete-icon">
-                            <i class="fi fi-sr-trash"></i>
-
-                        </span>
-                    </button>
-
-                    <button type="button" class="card-image-button">
-                        <span class="button-card-image-icon">
-                            <i class="fi fi-sr-add-image"></i>
-
-                        </span>
-                    </button>
+        <div id="cards-container">
+            <div class="user-deck">
+                <div class="user-deck-card-info">
+                    <!--card number, delete card button, add image button-->
+                    <span class="card-number">1</span>
+                    <div>
+                        <button type="button" class="card-delete-button">
+                            <span class="button-card-delete-icon">
+                                <i class="fi fi-sr-trash"></i>
+                            </span>
+                        </button>
+                        <button type="button" class="card-image-button">
+                            <span class="button-card-image-icon">
+                                <i class="fi fi-sr-add-image"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="user-deck-card">
+                    <div class="user-deck-card-term">
+                        <textarea class="user-deck-card-term-input" name="TermMeanings[0].Term" placeholder="Terim"></textarea>
+                    </div>
+                    <div class="user-deck-card-definition">
+                        <textarea class="user-deck-card-definition-input" name="TermMeanings[0].Meaning" placeholder="Tanım"></textarea>
+                    </div>
                 </div>
             </div>
-            <div class="user-deck-card">
-
-                <div class="user-deck-card-term">
-                    <textarea class="user-deck-card-term-input" id="Term" name="Term" placeholder="Terim"></textarea>
-                </div>
-
-                <div class="user-deck-card-definition">
-                    <textarea class="user-deck-card-definition-input" id="Meaning" name="Meaning"placeholder="Tanım"></textarea>
-
-                </div>
-            </div>
-
         </div>
-        </form>
 
-        <button id="add-card-button">Kart Ekle</button>
-
-    </main>
+        <button id="add-card-button" type="button">Kart Ekle</button>
+    </form>
+</main>
     <script>
-        var cardNumber = 2;
+        var cardNumber = 1;
 
         document.getElementById("add-card-button").addEventListener("click", function () {
-
             var newCardHtml = `
-                                    <div class="user-deck">
-                                        <div class="user-deck-card-info">
-                                            <!--card number, delete card button, add image button-->
-                                            <span class="card-number">${cardNumber}</span>
-                                            <div>
-                                                <button type="button" class="card-delete-button">
-                                                    <span class="button-card-delete-icon">
-                                                        <i class="fi fi-sr-trash"></i>
-                                                    </span>
-                                                </button>
-                                                <button type="button" class="card-image-button">
-                                                    <span class="button-card-image-icon">
-                                                        <i class="fi fi-sr-add-image"></i>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="user-deck-card">
-                                            <div class="user-deck-card-term">
-                                                <textarea class="user-deck-card-term-input" name="Term" placeholder="Terim"></textarea>
-                                            </div>
-                                            <div class="user-deck-card-definition">
-                                                <textarea class="user-deck-card-definition-input" name="Meaning" placeholder="Tanım"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-
+                <div class="user-deck">
+                    <div class="user-deck-card-info">
+                        <!--card number, delete card button, add image button-->
+                        <span class="card-number">${cardNumber + 1}</span>
+                        <div>
+                            <button type="button" class="card-delete-button">
+                                <span class="button-card-delete-icon">
+                                    <i class="fi fi-sr-trash"></i>
+                                </span>
+                            </button>
+                            <button type="button" class="card-image-button">
+                                <span class="button-card-image-icon">
+                                    <i class="fi fi-sr-add-image"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="user-deck-card">
+                        <div class="user-deck-card-term">
+                            <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
+                        </div>
+                        <div class="user-deck-card-definition">
+                            <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
+                        </div>
+                   </div>
+                </div>
+            `;
 
             var newCardContainer = document.createElement("div");
-
-
             newCardContainer.innerHTML = newCardHtml;
-
-
-            document.querySelector(".user-deck").appendChild(newCardContainer);
-
-
+            document.getElementById("cards-container").appendChild(newCardContainer);
             cardNumber++;
         });
     </script>
 
-
-
-</body>
-</html>

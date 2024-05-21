@@ -1,4 +1,4 @@
-using Flipard.Domain.Entities;
+ï»¿using Flipard.Domain.Entities;
 using Flipard.MVC.Models;
 using Flipard.MVC.ViewModels;
 using Flipard.Persistence.Contexts;
@@ -22,12 +22,31 @@ namespace Flipard.MVC.Controllers
             _Appcontext = appcontext;
         }
 
+        //public IActionResult Index()
+        //{
+
+        //    return View();
+        //}
+
         public IActionResult Index()
         {
-            return View();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var decks = _Appcontext.Decks
+                .Where(d => d.CreatedByUserId == userId)
+                .Select(d => new HomeDeckDetailsViewModel
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    CardCount = d.Cards.Count()
+                })
+                .ToList();
+
+            return View(decks);
         }
 
-        [Authorize] // Sadece oturum açmýþ kullanýcýlar eriþebilir
+
+        [Authorize] // Sadece oturum aï¿½mï¿½ï¿½ kullanï¿½cï¿½lar eriï¿½ebilir
         public IActionResult Profile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -36,7 +55,7 @@ namespace Flipard.MVC.Controllers
 
             if (user == null)
             {
-                return NotFound("Kullanýcý bulunamadý.");
+                return NotFound("Kullan bulunamadï¿½.");
             }
 
             var userProfile = new UserProfileModel
@@ -52,67 +71,77 @@ namespace Flipard.MVC.Controllers
             return View(userProfile);
         }
 
-       
+
         [HttpGet]
         public IActionResult CreateSet()
         {
-            var createSetViewModel = new HomeCreateSetViewModel();  
-
+            var createSetViewModel = new HomeCreateSetViewModel();
             return View(createSetViewModel);
         }
 
         [HttpPost]
-        public IActionResult CreateSet(HomeCreateSetViewModel homeCreateSetViewModel) 
+        public IActionResult CreateSet(HomeCreateSetViewModel homeCreateSetViewModel)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(homeCreateSetViewModel);
             }
 
+            var deck = _Appcontext.Decks.FirstOrDefault(d => d.Id == homeCreateSetViewModel.Id);
 
-            var cardId = Guid.NewGuid();
-            
-
-            var vocabulary = new Vocabulary
+            if (deck == null)
             {
-                Id = Guid.NewGuid(),
-                Term = homeCreateSetViewModel.Term,
-                Meaning = homeCreateSetViewModel.Meaning,
-                CardId = cardId,
-                CreatedOn = DateTimeOffset.UtcNow,
-                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                // Create a new deck if it doesn't exist
+                deck = new Deck
+                {
+                    Id = Guid.NewGuid(),
+                    Name = homeCreateSetViewModel.Name,
+                    Description = homeCreateSetViewModel.Description,
+                    Cards = new List<Card>(),
+                    CreatedOn = DateTimeOffset.UtcNow,
+                    CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                };
 
-            };
+                _Appcontext.Decks.Add(deck);
+            }
 
-            var card = new Card
+            foreach (var termMeaning in homeCreateSetViewModel.TermMeanings)
             {
-                Id = cardId,
-                Vocabulary = vocabulary,
-                CreatedOn = DateTimeOffset.UtcNow,
-                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-            };
+                var cardId = Guid.NewGuid();
 
-            
-            var deck = new Deck
-            {
-                Id = Guid.NewGuid(),
-                Name = homeCreateSetViewModel.Name,
-                Description = homeCreateSetViewModel.Description,
-                Cards = new List<Card> { card },
-                CreatedOn = DateTimeOffset.UtcNow,
-                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-            };
+                var vocabulary = new Vocabulary
+                {
+                    Id = Guid.NewGuid(),
+                    Term = termMeaning.Term,
+                    Meaning = termMeaning.Meaning,
+                    CardId = cardId,
+                    CreatedOn = DateTimeOffset.UtcNow,
+                    CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                };
 
-            _Appcontext.Vocabularies.Add(vocabulary);
-            _Appcontext.Cards.Add(card);
-            _Appcontext.Decks.Add(deck);
+                var card = new Card
+                {
+                    Id = cardId,
+                    Vocabulary = vocabulary,
+                    Deck = deck,
+                    DeckId = deck.Id,
+                    CreatedOn = DateTimeOffset.UtcNow,
+                    CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                };
+
+                deck.Cards.Add(card);
+
+                _Appcontext.Vocabularies.Add(vocabulary);
+                _Appcontext.Cards.Add(card);
+            }
 
             _Appcontext.SaveChanges();
 
             return RedirectToAction("Index", "Home");
         }
 
-          
+        
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

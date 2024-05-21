@@ -1,85 +1,43 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Flipard.MVC.ViewModels.HomeDeckDetailsViewModel>
 
+@{
+    ViewData["Title"] = "Home Page";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <link rel="stylesheet" href="~/css/homeindex.css">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
 </head>
-
 <body>
-    <header class="TopNavigation" itemscope itemtype ="http://schema.org/WPHeader" role="banner">
-        <div class="TopNavigation-content">
 
-            <div class="TopNavigation-contentLeft">
-
-                <div class="logo-header">
-                    <div class="logo">
-                        <div class="logo-circle">
-                            <span class="circle circle-1"></span>
-                            <span class="circle circle-2"></span>
-                        </div>
-                        <h2>Flipard</h2>
-                    </div>
-                </div>
-            
-
-               
-
-
-            </div>
-
-            <div class="TopNavigation-contentMiddle">
-              
-                        <form class="search-form" action="/search" method="get" role="search">
-                            <input type="text" class="search-input" name="q" placeholder="Search...">
-                            <button type="submit" class="search-button">
-                                <img src="@Url.Content("~/images/whitesearch.svg")" alt="Search">
-                            </button>
-                        </form>
-
-                   
-                
-            </div>
-
-            <div class="TopNavigation-contentRight">
-
-                <div class="TopNavigationItem RightNavigationItem">
-                    <form action="@Url.Action("CreateSet", "Home")" method="get">
-                        <button type="submit" class="create-button">
-                            <span class="button-icon">
-                                <i class="fi fi-br-plus"></i>
-                            </span>
-                        </button>
-                    </form>
-                </div>
-
-
-                <div class="TopNavigationItem RightNavigationItem">
-
-                </div>
-
-                <div class="TopNavigationItem RightNavigationItem">
-                    <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
-                        <button type="submit" class="profile-button">
-                            <span class="profile-button-icon">
-                                <i class="fi fi-sr-user"></i>
-
-                            </span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-
-
-          
+    <content>
+        <div class="label-deck">
+            <h4>Çalışma setleriniz</h4>
         </div>
-    </header>
+
+        <div class="deck-list">
+            @foreach (var deck in Model)
+            {
+                <button type="button" class="deck-card-button">
+                    <div class="deck-card">
+                        <div class="deck-card-header">
+                            <h5>@deck.Name</h5>
+                        </div>
+                        <div class="deck-card-body">
+                            <div class="deck-card-body-left">
+                                <span>@deck.CardCount Kart</span>
+                            </div>
+                            <div class="deck-card-body-right"></div>
+                        </div>
+                    </div>
+                </button>
+            }
+        </div>
+    </content>
 </body>
+</html>

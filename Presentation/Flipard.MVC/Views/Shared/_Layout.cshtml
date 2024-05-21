@@ -1,21 +1,71 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
 <html>
 <head>
-    <title>@ViewData["Title"] - Layout</title>
-    <!-- Add your common CSS, meta tags, etc. here -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/header.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 </head>
-<body>
-
-    <!-- Common header content -->
-    <header>
-        
+    <header class="TopNavigation" itemscope itemtype="http://schema.org/WPHeader" role="banner">
+        <div class="TopNavigation-content">
+           
+            <div class="TopNavigation-contentLeft">
+                
+                <form asp-controller="Home" asp-action="Index" method="get">
+                    <button class = "flipard-logo">
+                        <div class="logo-header">
+                            <div class="logo">
+                                <div class="logo-circle">
+                                    <span class="circle circle-1"></span>
+                                    <span class="circle circle-2"></span>
+                                </div>
+                                <h2>Flipard</h2>
+                            </div>
+                        </div>
+                     </button>
+                </form>
+            </div>
+            
+            <div class="TopNavigation-contentMiddle">
+                <form class="search-form" action="/search" method="get" role="search">
+                    <input type="text" class="search-input" name="q" placeholder="Search...">
+                    <button type="submit" class="search-button">
+                        <span class="button-icon">
+                            <i class="fi fi-br-search"></i>
+                        </span>
+                    </button>
+                </form>
+            </div>
+            <div class="TopNavigation-contentRight">
+                <div class="TopNavigationItem RightNavigationItem">
+                    <form action="@Url.Action("CreateSet", "Home")" method="get">
+                        <button type="submit" class="create-button">
+                            <span class="button-icon">
+                                <i class="fi fi-br-plus"></i>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+                <div class="TopNavigationItem RightNavigationItem"></div>
+                <div class="TopNavigationItem RightNavigationItem">
+                    <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
+                        <button type="submit" class="profile-button">
+                            <span class="profile-button-icon">
+                                <i class="fi fi-sr-user"></i>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </header>
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
+    @RenderSection("Scripts", required: false)
 
-    <!-- Render the content of individual views -->
-    @RenderBody()
-
-    
-    @await Component.InvokeAsync("NToastNotify")
-    <!-- Add your common scripts here -->
-</body>
 </html>
