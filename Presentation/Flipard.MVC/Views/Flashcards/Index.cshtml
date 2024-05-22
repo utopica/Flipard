@@ -1,0 +1,95 @@
+﻿@using Flipard.MVC.ViewModels
+
+@model HomeCreateSetViewModel
+
+@{
+    ViewData["Title"] = "Flashcards";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/displayPage.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+</head>
+<body>
+    <content>
+        <div class="deck-card">
+            <div class="deck-card-header">
+                <h5>@Model.Name</h5>
+            </div>
+        </div>
+
+        <div class="display-card">
+            <button type="button" class="card-button" id="previous-button" onclick="showPreviousCard()">
+                <span class="button-text">
+                    <i class="fi fi-bs-angle-left"></i>
+                </span>
+            </button>
+
+            <div class="current-card" id="current-card">
+                <div class="term">@Model?.TermMeanings?.FirstOrDefault()?.Term ?? "No term available"</div>
+                <div class="meaning">@Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"</div>
+            </div>
+
+            <button type="button" class="card-button" id="next-button" onclick="showNextCard()">
+                <span class="button-text">
+                    <i class="fi fi-bs-angle-right"></i>
+                </span>
+            </button>
+        </div>
+
+        <div class="card-list">
+            @if (Model?.TermMeanings != null)
+            {
+                @foreach (var card in Model.TermMeanings)
+                {
+                    <div class="card">
+                        <div class="card-term">
+                            <h5>@card.Term</h5>
+                        </div>
+                        <div class="card-meaning">
+                            <text>@card.Meaning</text>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No cards available</p>
+            }
+        </div>
+    </content>
+
+    <script type="text/javascript">
+        var currentIndex = 0;
+        var cards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
+
+        function showCard(index) {
+            if (index >= 0 && index < cards.length) {
+                currentIndex = index;
+                document.getElementById("current-card").innerHTML =
+                    `<div class="term">${cards[currentIndex].Term}</div>
+                        <div class="meaning">${cards[currentIndex].Meaning}</div>`;
+            }
+        }
+
+        function showPreviousCard() {
+            if (currentIndex > 0) {
+                showCard(currentIndex - 1);
+            }
+        }
+
+        function showNextCard() {
+            if (currentIndex < cards.length - 1) {
+                showCard(currentIndex + 1);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            showCard(currentIndex);
+        });
+    </script>
+</body>
+</html>

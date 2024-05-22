@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
+
+
+.deck-card-header h5 {
+    color: rgb(251, 250, 251);
+    margin: 50px;
+}
+
+.display-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.card-button {
+    margin: 10px;
+    font-size: 20px;
+    background: none;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+}
+
+.card-button:hover {
+    color: #016752;
+}
+
+.current-card {
+    background-color: #323338;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    height: 300px;
+    align-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    margin: 20px;
+    color: white;
+    font-size: font-size: 2rem;
+    justify-content: center;
+}
+
+.current-card:hover {
+    transform: translateY(-5px);
+}
+
+.card {
+    background-color: #323338;
+    border-radius: 10px;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-top : 0;
+    width: 71rem;
+    height: 10rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    color: aliceblue;
+    justify-content: center;
+    font-size: 1rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-term{
+    margin-bottom:20px;
+}
+.current-card term{
+    color: white;
+    font-size: 2rem;
+    padding: 10px;
+    border: none;
+    outline: none;
+    justify-content:center;
+}

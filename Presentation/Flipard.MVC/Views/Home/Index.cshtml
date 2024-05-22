@@ -2,42 +2,70 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    // Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
 <html>
 
 <head>
-
     <link rel="stylesheet" href="~/css/homeindex.css">
-
 </head>
 <body>
-
     <content>
         <div class="label-deck">
             <h4>Çalışma setleriniz</h4>
         </div>
 
-        <div class="deck-list">
-            @foreach (var deck in Model)
-            {
-                <button type="button" class="deck-card-button">
-                    <div class="deck-card">
-                        <div class="deck-card-header">
-                            <h5>@deck.Name</h5>
-                        </div>
-                        <div class="deck-card-body">
-                            <div class="deck-card-body-left">
-                                <span>@deck.CardCount Kart</span>
+        <div class="deck-container">
+            <button type="button" class="card-button" id="previous-button" onclick="showPreviousCard()">
+                <span class="button-text">
+                    <i class="fi fi-bs-angle-left"></i>
+                </span>
+            </button>
+
+            <div class="deck-list">
+                @foreach (var deck in Model)
+                {
+                    <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id')">
+                        <div class="deck-card">
+                            <div class="deck-card-header">
+                                <h5>@deck.Name</h5>
                             </div>
-                            <div class="deck-card-body-right"></div>
+                            <div class="deck-card-body">
+                                <div class="deck-card-body-left">
+                                    <span>@deck.CardCount Kart</span>
+                                </div>
+                                <div class="deck-card-body-right"></div>
+                            </div>
                         </div>
-                    </div>
-                </button>
-            }
+                    </button>
+                }
+            </div>
+
+            <button type="button" class="card-button" id="next-button" onclick="scrollDecks('next')">
+                <span class="button-text">
+                    <i class="fi fi-bs-angle-right"></i>
+                </span>
+            </button>
         </div>
     </content>
+
+    <script type="text/javascript">
+        function navigateToDeck(deckId) {
+            window.location.href = '/Flashcards/Index/' + deckId;
+        }
+
+        function scrollDecks(direction) {
+            const deckList = document.querySelector('.deck-list');
+            const scrollAmount = 300; // Adjust this value based on your preference
+
+            if (direction === 'next') {
+                deckList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            } else if (direction === 'previous') {
+                deckList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            }
+        }
+    </script>
 </body>
 </html>
