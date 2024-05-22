@@ -4,5 +4,5 @@ document.getElementById("registerToLogin").addEventListener("click", function ()
 });
 
 document.getElementById("loginToRegister").addEventListener("click", function () {
-    window.location.href = "Register"; 
+    window.location.href = "Auth/Register"; 
 });

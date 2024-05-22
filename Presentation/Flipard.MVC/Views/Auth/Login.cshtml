@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Sign-In";
-    Layout = "_Layout";
+    Layout = "";
 }
 
 <!DOCTYPE html>
@@ -13,12 +13,6 @@
     <title>Flipard Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/Login.css">
-    <style>
-        /* Adjust the login area to be in the middle-right */
-        
-
-       
-    </style>
 </head>
 <body>
 
@@ -27,15 +21,12 @@
         <div class="row ">
 
             <div class="col-md-6 sec1">
-
                 <div class="image-container">
                     <img src="~/images/leftside.png" alt="A person studying with flashcards.">
                 </div>
-
             </div>
 
             <div class="col-md-6 sec2">
-
                 <div class="logo-header">
                     <div class="logo">
                         <div class="logo-circle">
@@ -48,10 +39,10 @@
 
                 <div class="card">
                     <div class="card-header">
-                       <h3> Login </h3>
+                        <h3> Login </h3>
                     </div>
                     <div class="card-body">
-                        <form asp-action="Login" method="post">
+                        <form asp-controller="Auth" asp-action="Login" method="post">
                             <div class="form-group">
                                 <label for="Email">Email</label>
                                 <input type="email" class="form-control" id="Email" name="Email" placeholder="Enter email or username" required>
@@ -66,23 +57,21 @@
                 </div>
 
                 <div class="card loginToRegister">
+                    <a id="registerLink" asp-controller="Auth" asp-action="Register" style="display: none;"></a>
                     <button type="button" id="loginToRegister" class="btn btn-outline-secondary">New Flipard? Create an account</button>
                 </div>
-
-                <div class="card registerToLogin">
-                    <button type="button" id="registerToLogin" class="btn btn-outline-secondary">Already have an account? Sign in!</button>
-                </div>
-
             </div>
-
         </div>
 
     </div>
 
 </body>
-
+<script>
+    document.getElementById("loginToRegister").addEventListener("click", function () {
+        document.getElementById("registerLink").click();
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="~/js/LoginRegister.js"></script>
 
 </html>
