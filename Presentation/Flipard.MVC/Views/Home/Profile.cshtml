@@ -38,8 +38,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 30px;
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Transparan border */
-            outline: 1px solid rgba(255, 255, 255, 0.1); /* Transparan outline */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Transparent border */
+            outline: 1px solid rgba(255, 255, 255, 0.1); /* Transparent outline */
         }
 
             .profile-card h2 {
@@ -79,7 +79,29 @@
             .btn:hover {
                 background-color: #0056b3;
             }
+
+        .btn-logout {
+            display: inline-block;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+            .btn-logout:hover {
+                background-color: #c82333;
+            }
     </style>
+    <script>
+        function editProfile() {
+            window.location.href = '@Url.Action("EditProfile", "Auth")';
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -101,8 +123,11 @@
                 <div class="profile-info-label">Birthdate:</div>
                 <div class="profile-info-value">@Model.Birthdate</div>
             </div>
-            <!-- Diğer özellikler buraya eklenebilir -->
-            <a href="#" class="btn">Edit Profile</a>
+
+            <button type="button" class="btn" onclick="editProfile()">Edit Profile</button>
+            <form asp-controller="Auth" asp-action="Logout" method="post" style="display: inline;">
+                <button type="submit" class="btn-logout">Log out</button>
+            </form>
         </div>
     </div>
 </body>
