@@ -28,7 +28,7 @@
                 </span>
             </button>
 
-            <div class="current-card" id="current-card">
+            <div class="current-card" id="current-card" onclick="flipCard()">
                 <div class="term">@Model?.TermMeanings?.FirstOrDefault()?.Term ?? "No term available"</div>
                 <div class="meaning">@Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"</div>
             </div>
@@ -52,6 +52,10 @@
                         <div class="card-meaning">
                             <text>@card.Meaning</text>
                         </div>
+                        
+                        <div class="card-image">
+                            <img src="@card.ImageUrl" alt="Card image">
+                        </div>
                     </div>
                 }
             }
@@ -65,13 +69,32 @@
     <script type="text/javascript">
         var currentIndex = 0;
         var cards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
+        var showingTerm = true;
 
         function showCard(index) {
             if (index >= 0 && index < cards.length) {
                 currentIndex = index;
-                document.getElementById("current-card").innerHTML =
-                    `<div class="term">${cards[currentIndex].Term}</div>
-                        <div class="meaning">${cards[currentIndex].Meaning}</div>`;
+                document.querySelector("#current-card .term").innerText = cards[currentIndex].Term;
+                document.querySelector("#current-card .meaning").innerText = cards[currentIndex].Meaning;
+                showTerm();
+            }
+        }
+
+        function showTerm() {
+            document.querySelector("#current-card").classList.remove("flipped");
+            showingTerm = true;
+        }
+
+        function showMeaning() {
+            document.querySelector("#current-card").classList.add("flipped");
+            showingTerm = false;
+        }
+
+        function flipCard() {
+            if (showingTerm) {
+                showMeaning();
+            } else {
+                showTerm();
             }
         }
 
@@ -90,6 +113,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             showCard(currentIndex);
         });
+
     </script>
 </body>
 </html>
