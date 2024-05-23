@@ -22,14 +22,6 @@ body {
 }
 
 .deck-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 40px;
-    position: relative;
-}
-
-.deck-list {
     background-color: rgb(36, 37, 42);
     border-radius: 10px;
     display: flex;
@@ -37,9 +29,17 @@ body {
     scroll-behavior: smooth;
     padding: 20px;
     flex-wrap: nowrap;
-    align-items: flex-start;
-    justify-content: flex-start;
+    /*align-items: center;
+    justify-content: flex-start;*/
     margin: 0 20px;
+
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.deck-list {
+   
 }
 
 .deck-card-body-left {
@@ -95,6 +95,7 @@ body {
 
 #previous-button {
     left: 0;
+    color:white;
 }
 
 #next-button {

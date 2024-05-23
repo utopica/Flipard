@@ -46,6 +46,9 @@ namespace Flipard.Persistence.Migrations.Application
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("boolean");
 

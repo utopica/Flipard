@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Flipard.Persistence.Migrations.Application
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class cardImage : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,7 @@ namespace Flipard.Persistence.Migrations.Application
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     LastReviewed = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     DeckId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
                     CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),

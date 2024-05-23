@@ -13,8 +13,7 @@ namespace Flipard.Domain.Entities
         public Vocabulary Vocabulary { get; set; }
         public Deck Deck { get; set; }
         public Guid DeckId { get; set; }
-
-
+        public string? ImageUrl { get; set; }
     }
 }
 

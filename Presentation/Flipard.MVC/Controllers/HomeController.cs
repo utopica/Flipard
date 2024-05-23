@@ -22,12 +22,7 @@ namespace Flipard.MVC.Controllers
             _Appcontext = appcontext;
         }
 
-        //public IActionResult Index()
-        //{
-
-        //    return View();
-        //}
-
+       
         public IActionResult Index()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -46,7 +41,7 @@ namespace Flipard.MVC.Controllers
         }
 
 
-        [Authorize] // Sadece oturum a�m�� kullan�c�lar eri�ebilir
+        [Authorize] 
         public IActionResult Profile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -55,7 +50,7 @@ namespace Flipard.MVC.Controllers
 
             if (user == null)
             {
-                return NotFound("Kullan bulunamad�.");
+                return NotFound("Kullanıcı bulunamadı.");
             }
 
             var userProfile = new UserProfileModel
@@ -127,6 +122,7 @@ namespace Flipard.MVC.Controllers
                     DeckId = deck.Id,
                     CreatedOn = DateTimeOffset.UtcNow,
                     CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                    ImageUrl = termMeaning.ImageUrl // Save the image URL
                 };
 
                 deck.Cards.Add(card);
@@ -140,7 +136,6 @@ namespace Flipard.MVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

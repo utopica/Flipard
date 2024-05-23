@@ -9,9 +9,11 @@
 <html>
 <head>
     <link rel="stylesheet" href="~/css/createset.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
+
 </head>
 <main>
-    <form asp-controller="Home" asp-action="CreateSet" method="post">
+    <form asp-controller="Home" asp-action="CreateSet" method="post" enctype="multipart/form-data">
         <div class="CreateSetPage">
             <div class="create-card">
                 <div class="create-card-text">
@@ -29,7 +31,13 @@
                 </div>
                 <div class="deck-desc">
                     <input type="text" class="deck-desc-input" id="Description" name="Description" placeholder="Açıklama yazın.">
+                    
+
                 </div>
+                
+               
+                
+                
             </div>
         </div>
 
@@ -44,11 +52,13 @@
                                 <i class="fi fi-sr-trash"></i>
                             </span>
                         </button>
+
                         <button type="button" class="card-image-button">
                             <span class="button-card-image-icon">
                                 <i class="fi fi-sr-add-image"></i>
                             </span>
                         </button>
+                        <input type="file" class="card-image-input" name="TermMeanings[0].Image" style="display: none;">
                     </div>
                 </div>
                 <div class="user-deck-card">
@@ -58,20 +68,27 @@
                     <div class="user-deck-card-definition">
                         <textarea class="user-deck-card-definition-input" name="TermMeanings[0].Meaning" placeholder="Tanım"></textarea>
                     </div>
+                    <div class="user-deck-card-image">
+                        <img class="image-preview" style="display:none;" />
+                        <i class="fi fi-tr-graphic-style"></i>
+                        <input type="hidden" name="TermMeanings[0].ImageUrl" class="card-image-url" />
+                    </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
+        
 
         <button id="add-card-button" type="button">Kart Ekle</button>
     </form>
 </main>
 </html>
 
-    <script>
-        var cardNumber = 1;
+<script>
+    var cardNumber = 1;
 
-        document.getElementById("add-card-button").addEventListener("click", function () {
-            var newCardHtml = `
+    document.getElementById("add-card-button").addEventListener("click", function () {
+        var newCardHtml = `
                 <div class="user-deck">
                     <div class="user-deck-card-info">
                         <!--card number, delete card button, add image button-->
@@ -87,6 +104,7 @@
                                     <i class="fi fi-sr-add-image"></i>
                                 </span>
                             </button>
+                            <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
                         </div>
                     </div>
                     <div class="user-deck-card">
@@ -96,14 +114,52 @@
                         <div class="user-deck-card-definition">
                             <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
                         </div>
-                   </div>
+                        <div class="user-deck-card-image">
+                            <img class="image-preview" style="display:none;" />
+                            <i class="fi fi-tr-graphic-style"></i>
+                            <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url" />
+                        </div>
+                    </div>
                 </div>
             `;
 
-            var newCardContainer = document.createElement("div");
-            newCardContainer.innerHTML = newCardHtml;
-            document.getElementById("cards-container").appendChild(newCardContainer);
-            cardNumber++;
-        });
-    </script>
+        var newCardContainer = document.createElement("div");
+        newCardContainer.innerHTML = newCardHtml;
+        document.getElementById("cards-container").appendChild(newCardContainer);
+        cardNumber++;
+    });
 
+    document.addEventListener("click", function (event) {
+        if (event.target.closest(".card-image-button")) {
+            var imageButton = event.target.closest(".card-image-button");
+            var fileInput = imageButton.nextElementSibling;
+            fileInput.click();
+        }
+    });
+
+    document.addEventListener("change", function (event) {
+        if (event.target.classList.contains("card-image-input")) {
+            var fileInput = event.target;
+            var card = fileInput.closest(".user-deck");
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var imgPreview = card.querySelector(".image-preview");
+                if (!imgPreview) {
+                    imgPreview = document.createElement("img");
+                    imgPreview.classList.add("image-preview");
+                    card.querySelector(".user-deck-card-image").appendChild(imgPreview);
+                }
+                imgPreview.src = e.target.result;
+                imgPreview.style.display = 'block'; // Show the image
+                card.querySelector(".fi-tr-graphic-style").style.display = 'none'; // Hide the icon
+
+                // Set the hidden input with the base64 image URL
+                var imageUrlInput = card.querySelector(".card-image-url");
+                imageUrlInput.value = e.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    });
+
+
+</script>

@@ -49,6 +49,10 @@ namespace Flipard.Persistence.Configurations
             // LastReviewed
             builder.Property(x => x.LastReviewed).IsRequired(false);
 
+            // ImageUrl
+            builder.Property(x => x.ImageUrl).IsRequired(false);
+
+
             // Relationships
 
             builder.HasOne(x => x.Vocabulary)

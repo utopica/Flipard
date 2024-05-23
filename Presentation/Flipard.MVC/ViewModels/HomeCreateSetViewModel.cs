@@ -16,5 +16,7 @@ namespace Flipard.MVC.ViewModels
         public Guid Id { get; set; }
         public string Term { get; set; }
         public string Meaning { get; set; }
+        public string? LastReviewed { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }
