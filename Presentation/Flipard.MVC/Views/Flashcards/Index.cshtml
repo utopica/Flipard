@@ -40,16 +40,14 @@
             </button>
         </div>
 
-        
-            
-
-            @if (Model?.TermMeanings != null)
-            {
-                @foreach (var card in Model.TermMeanings)
+        @if (Model?.TermMeanings != null)
+        {
+            <div class="card-list">
+                @for (var i = 0; i < Model.TermMeanings.Count; i++)
                 {
-                <div class="card-list">
+                    var card = Model.TermMeanings[i];
                     <div class="card-edit-bar">
-                        <span class="card-number">1</span>
+                        <span class="card-number">@(i+1)</span>
                         <div>
                             <button type="button" class="card-delete-button">
                                 <span class="button-card-delete-icon">
@@ -61,38 +59,32 @@
                                     <i class="fi fi-sr-pencil"></i>
                                 </span>
                             </button>
-                            
                         </div>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-term-meaning">
-
                             <div class="card-term">
                                 <h5>@card.Term</h5>
                             </div>
-
                             <div class="card-meaning">
                                 <text>@card.Meaning</text>
                             </div>
                         </div>
-
                         <div class="card-image">
-                            <span class="button-text">
+                            @* <span class="button-text">
                                 <i class="fi fi-sr-add-image"></i>
-                            </span>
+                            </span> *@
+                            <img src = @card.ImageUrl/>
                         </div>
-                        
                     </div>
-
-                </div>
                 }
-            }
-            else
-            {
-                <p>No cards available</p>
-            }
-        
+            </div>
+        }
+        else
+        {
+            <p>No cards available</p>
+        }
     </content>
 
     <script type="text/javascript">
@@ -142,7 +134,6 @@
         document.addEventListener("DOMContentLoaded", function () {
             showCard(currentIndex);
         });
-
     </script>
 </body>
 </html>
