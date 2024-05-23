@@ -10,7 +10,6 @@
 <head>
     <link rel="stylesheet" href="~/css/createset.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
-
 </head>
 <main>
     <form asp-controller="Home" asp-action="CreateSet" method="post" enctype="multipart/form-data">
@@ -31,13 +30,7 @@
                 </div>
                 <div class="deck-desc">
                     <input type="text" class="deck-desc-input" id="Description" name="Description" placeholder="Açıklama yazın.">
-                    
-
                 </div>
-                
-               
-                
-                
             </div>
         </div>
 
@@ -52,7 +45,6 @@
                                 <i class="fi fi-sr-trash"></i>
                             </span>
                         </button>
-
                         <button type="button" class="card-image-button">
                             <span class="button-card-image-icon">
                                 <i class="fi fi-sr-add-image"></i>
@@ -73,11 +65,9 @@
                         <i class="fi fi-tr-graphic-style"></i>
                         <input type="hidden" name="TermMeanings[0].ImageUrl" class="card-image-url" />
                     </div>
-
-                    </div>
                 </div>
             </div>
-        
+        </div>
 
         <button id="add-card-button" type="button">Kart Ekle</button>
     </form>
@@ -89,44 +79,45 @@
 
     document.getElementById("add-card-button").addEventListener("click", function () {
         var newCardHtml = `
-                <div class="user-deck">
-                    <div class="user-deck-card-info">
-                        <!--card number, delete card button, add image button-->
-                        <span class="card-number">${cardNumber + 1}</span>
-                        <div>
-                            <button type="button" class="card-delete-button">
-                                <span class="button-card-delete-icon">
-                                    <i class="fi fi-sr-trash"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="card-image-button">
-                                <span class="button-card-image-icon">
-                                    <i class="fi fi-sr-add-image"></i>
-                                </span>
-                            </button>
-                            <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
+                    <div class="user-deck">
+                        <div class="user-deck-card-info">
+                            <!--card number, delete card button, add image button-->
+                            <span class="card-number">${cardNumber + 1}</span>
+                            <div>
+                                <button type="button" class="card-delete-button">
+                                    <span class="button-card-delete-icon">
+                                        <i class="fi fi-sr-trash"></i>
+                                    </span>
+                                </button>
+                                <button type="button" class="card-image-button">
+                                    <span class="button-card-image-icon">
+                                        <i class="fi fi-sr-add-image"></i>
+                                    </span>
+                                </button>
+                                <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="user-deck-card">
+                            <div class="user-deck-card-term">
+                                <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
+                            </div>
+                            <div class="user-deck-card-definition">
+                                <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
+                            </div>
+                            <div class="user-deck-card-image">
+                                <img class="image-preview" style="display:none;" />
+                                <i class="fi fi-tr-graphic-style"></i>
+                                <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url" />
+                            </div>
                         </div>
                     </div>
-                    <div class="user-deck-card">
-                        <div class="user-deck-card-term">
-                            <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
-                        </div>
-                        <div class="user-deck-card-definition">
-                            <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
-                        </div>
-                        <div class="user-deck-card-image">
-                            <img class="image-preview" style="display:none;" />
-                            <i class="fi fi-tr-graphic-style"></i>
-                            <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url" />
-                        </div>
-                    </div>
-                </div>
-            `;
+                `;
 
         var newCardContainer = document.createElement("div");
         newCardContainer.innerHTML = newCardHtml;
         document.getElementById("cards-container").appendChild(newCardContainer);
         cardNumber++;
+        updateDeleteButtonListeners();
     });
 
     document.addEventListener("click", function (event) {
@@ -161,5 +152,26 @@
         }
     });
 
+    function updateDeleteButtonListeners() {
+        document.querySelectorAll('.card-delete-button').forEach(button => {
+            button.removeEventListener('click', handleDeleteCard);
+            button.addEventListener('click', handleDeleteCard);
+        });
+    }
 
+    function handleDeleteCard(event) {
+        var cardElement = event.target.closest('.user-deck');
+        cardElement.remove();
+        updateCardNumbers();
+    }
+
+    function updateCardNumbers() {
+        document.querySelectorAll('.user-deck .card-number').forEach((element, index) => {
+            element.textContent = index + 1;
+        });
+        cardNumber = document.querySelectorAll('.user-deck').length;
+    }
+
+    // Initial call to set delete button listeners on existing cards
+    updateDeleteButtonListeners();
 </script>
