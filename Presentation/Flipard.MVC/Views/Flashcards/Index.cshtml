@@ -40,30 +40,59 @@
             </button>
         </div>
 
-        <div class="card-list">
+        
+            
+
             @if (Model?.TermMeanings != null)
             {
                 @foreach (var card in Model.TermMeanings)
                 {
-                    <div class="card">
-                        <div class="card-term">
-                            <h5>@card.Term</h5>
-                        </div>
-                        <div class="card-meaning">
-                            <text>@card.Meaning</text>
-                        </div>
-                        
-                        <div class="card-image">
-                            <img src="@card.ImageUrl" alt="Card image">
+                <div class="card-list">
+                    <div class="card-edit-bar">
+                        <span class="card-number">1</span>
+                        <div>
+                            <button type="button" class="card-delete-button">
+                                <span class="button-card-delete-icon">
+                                    <i class="fi fi-sr-trash"></i>
+                                </span>
+                            </button>
+                            <button type="button" class="card-edit-button">
+                                <span class="button-card-edit-icon">
+                                    <i class="fi fi-sr-pencil"></i>
+                                </span>
+                            </button>
+                            
                         </div>
                     </div>
+                    
+                    <div class="card">
+                        <div class="card-term-meaning">
+
+                            <div class="card-term">
+                                <h5>@card.Term</h5>
+                            </div>
+
+                            <div class="card-meaning">
+                                <text>@card.Meaning</text>
+                            </div>
+                        </div>
+
+                        <div class="card-image">
+                            <span class="button-text">
+                                <i class="fi fi-sr-add-image"></i>
+                            </span>
+                        </div>
+                        
+                    </div>
+
+                </div>
                 }
             }
             else
             {
                 <p>No cards available</p>
             }
-        </div>
+        
     </content>
 
     <script type="text/javascript">
