@@ -19,11 +19,12 @@
         </div>
 
         <div class="deck-container">
-            <button type="button" class="card-button" id="previous-button" onclick="showPreviousCard()">
+            <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('previous')">
                 <span class="button-text">
                     <i class="fi fi-bs-angle-left"></i>
                 </span>
             </button>
+
 
             <div class="deck-list">
                 @foreach (var deck in Model)
@@ -59,7 +60,7 @@
 
         function scrollDecks(direction) {
             const deckList = document.querySelector('.deck-list');
-            const scrollAmount = 300; // Adjust this value based on your preference
+            const scrollAmount = 300; 
 
             if (direction === 'next') {
                 deckList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
@@ -67,6 +68,7 @@
                 deckList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
             }
         }
+
     </script>
 </body>
 </html>
