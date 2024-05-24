@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Flipard.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 public class FlashcardsController : Controller
 {
@@ -39,5 +40,21 @@ public class FlashcardsController : Controller
         };
 
         return View(model);
+    }
+
+    [HttpDelete]
+    public IActionResult DeleteCard(Guid id)
+    {
+        var card = _Appcontext.Cards.FirstOrDefault(c => c.Vocabulary.Id == id);
+
+        if (card == null)
+        {
+            return NotFound();
+        }
+
+        _Appcontext.Cards.Remove(card);
+        _Appcontext.SaveChanges();
+
+        return Ok();
     }
 }

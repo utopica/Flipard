@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = "Flashcards";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var antiforgery = Html.AntiForgeryToken();
 }
 
 <!DOCTYPE html>
@@ -14,6 +15,7 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 </head>
 <body>
+    @antiforgery
     <content>
         <div class="deck-card">
             <div class="deck-card-header">
@@ -47,13 +49,14 @@
                 {
                     var card = Model.TermMeanings[i];
                     <div class="card-edit-bar">
-                        <span class="card-number">@(i+1)</span>
+                        <span class="card-number">@(i + 1)</span>
                         <div>
-                            <button type="button" class="card-delete-button">
+                            <button type="button" class="card-delete-button" data-card-id="@card.Id" onclick="deleteCard(this)">
                                 <span class="button-card-delete-icon">
                                     <i class="fi fi-sr-trash"></i>
                                 </span>
                             </button>
+
                             <button type="button" class="card-edit-button">
                                 <span class="button-card-edit-icon">
                                     <i class="fi fi-sr-pencil"></i>
@@ -71,9 +74,7 @@
                                 <text>@card.Meaning</text>
                             </div>
                         </div>
-                        
-                            
-                          
+
                         <div class="card-image">
                             @if (!string.IsNullOrEmpty(card.ImageUrl))
                             {
@@ -86,7 +87,7 @@
                                     <i class="fi fi-sr-add-image"></i>
                                 </span>
                             }
-                            
+
                         </div>
                     </div>
                 }
@@ -140,6 +141,31 @@
             if (currentIndex < cards.length - 1) {
                 showCard(currentIndex + 1);
             }
+        }
+
+        function deleteCard(button) {
+            var cardId = button.getAttribute("data-card-id");
+
+            fetch(`/Flashcards/DeleteCard/${cardId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Remove the card from the DOM
+                        button.closest('.card-edit-bar').nextElementSibling.remove();
+                        button.closest('.card-edit-bar').remove();
+                    } else {
+                        alert('Failed to delete card.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the card.');
+                });
         }
 
         document.addEventListener("DOMContentLoaded", function () {
