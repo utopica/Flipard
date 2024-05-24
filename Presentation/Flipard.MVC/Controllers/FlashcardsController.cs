@@ -57,4 +57,21 @@ public class FlashcardsController : Controller
 
         return Ok();
     }
+
+    [HttpPost]
+    public IActionResult DeleteDeck(Guid id)
+    {
+        var deck = _Appcontext.Decks.FirstOrDefault(d => d.Id == id);
+
+        if (deck == null)
+        {
+            return NotFound();
+        }
+
+        _Appcontext.Decks.Remove(deck);
+        _Appcontext.SaveChanges();
+
+        return RedirectToAction(nameof(Index), "Home");
+    }
+
 }

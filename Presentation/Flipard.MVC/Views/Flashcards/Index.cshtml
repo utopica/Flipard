@@ -21,6 +21,10 @@
             <div class="deck-card-header">
                 <h5>@Model.Name</h5>
             </div>
+            
+            <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
+                Delete Set
+            </button>
         </div>
 
         <div class="display-card">
@@ -155,7 +159,6 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        // Remove the card from the DOM
                         button.closest('.card-edit-bar').nextElementSibling.remove();
                         button.closest('.card-edit-bar').remove();
                     } else {
@@ -167,6 +170,28 @@
                     alert('An error occurred while deleting the card.');
                 });
         }
+
+        function deleteDeck(deckId) {
+            fetch(`/Flashcards/DeleteDeck/${deckId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/Home/Index'; 
+                    } else {
+                        alert('Failed to delete deck.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the deck.');
+                });
+        }
+
 
         document.addEventListener("DOMContentLoaded", function () {
             showCard(currentIndex);
