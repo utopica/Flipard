@@ -127,10 +127,21 @@
 }
 
 .card-edit-button,
-.card-delete-button {
+.card-delete-button, .card-save-button, .card-cancel-button {
     margin-top: 10px;
     margin-left: 25px;
-    font-size: 18px;
+    font-size: 17px;
+    background: none;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.card-save-button {
+    display: none;
+    margin-top: 10px;
+    margin-left: 25px;
+    font-size: 17px;
     background: none;
     color: #fff;
     border: none;
@@ -151,10 +162,32 @@
 }
 
 .card-term {
-    padding-top: 25px;
+    padding-top: 10px;
 }
 
+.card .card-term-meaning .card-term input {
+    margin: auto;
+    background-color: #323338;
+    color:  #fff;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    align-content: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
 
+.card .card-term-meaning .card-meaning input {
+    background-color: #323338;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    align-content: center;
+    font-size: 1.1rem;
+}
 .card-image {
     background-color: #323338;
     display: flex;

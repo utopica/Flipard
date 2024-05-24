@@ -74,4 +74,27 @@ public class FlashcardsController : Controller
         return RedirectToAction(nameof(Index), "Home");
     }
 
+    [HttpPost]
+    public IActionResult UpdateCard([FromBody] TermMeaningViewModel updatedCard)
+    {
+        if (updatedCard == null || updatedCard.Id == Guid.Empty)
+        {
+            return BadRequest("Invalid card data.");
+        }
+
+        var card = _Appcontext.Cards.Include(c => c.Vocabulary).FirstOrDefault(c => c.Vocabulary.Id == updatedCard.Id);
+
+        if (card == null)
+        {
+            return NotFound();
+        }
+
+        card.Vocabulary.Term = updatedCard.Term;
+        card.Vocabulary.Meaning = updatedCard.Meaning;
+
+        _Appcontext.SaveChanges();
+
+        return Ok();
+    }
+
 }

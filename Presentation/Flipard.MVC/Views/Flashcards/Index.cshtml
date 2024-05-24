@@ -21,7 +21,7 @@
             <div class="deck-card-header">
                 <h5>@Model.Name</h5>
             </div>
-            
+
             <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
                 Delete Set
             </button>
@@ -61,9 +61,15 @@
                                 </span>
                             </button>
 
-                            <button type="button" class="card-edit-button">
+                            <button type="button" class="card-edit-button" onclick="editCard('@card.Id')">
                                 <span class="button-card-edit-icon">
                                     <i class="fi fi-sr-pencil"></i>
+                                </span>
+                            </button>
+
+                            <button type="button" class="card-save-button" onclick="saveCard('@card.Id')" style="display: none;">
+                                <span class="button-card-save-icon">
+                                    <i class="fi fi-sr-disk"></i>
                                 </span>
                             </button>
                         </div>
@@ -72,10 +78,12 @@
                     <div class="card">
                         <div class="card-term-meaning">
                             <div class="card-term">
-                                <h5>@card.Term</h5>
+                                <span id="card-term-display-@card.Id">@card.Term</span>
+                                <input class="card-term" type="text" id="card-term-@card.Id" value="@card.Term" style="display: none;" />
                             </div>
                             <div class="card-meaning">
-                                <text>@card.Meaning</text>
+                                <span id="card-meaning-display-@card.Id">@card.Meaning</span>
+                                <input class="card-term" type="text" id="card-meaning-@card.Id" value="@card.Meaning" style="display: none;" />
                             </div>
                         </div>
 
@@ -91,7 +99,6 @@
                                     <i class="fi fi-sr-add-image"></i>
                                 </span>
                             }
-
                         </div>
                     </div>
                 }
@@ -173,15 +180,15 @@
 
         function deleteDeck(deckId) {
             fetch(`/Flashcards/DeleteDeck/${deckId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                    }
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
                 .then(response => {
                     if (response.ok) {
-                        window.location.href = '/Home/Index'; 
+                        window.location.href = '/Home/Index';
                     } else {
                         alert('Failed to delete deck.');
                     }
@@ -192,6 +199,54 @@
                 });
         }
 
+        function editCard(cardId) {
+            document.querySelector(`#card-term-display-${cardId}`).style.display = 'none';
+            document.querySelector(`#card-meaning-display-${cardId}`).style.display = 'none';
+            document.querySelector(`#card-term-${cardId}`).style.display = 'block';
+            document.querySelector(`#card-meaning-${cardId}`).style.display = 'block';
+            document.querySelector(`#card-term-${cardId}`).focus();
+            document.querySelector(`.card-edit-bar .card-edit-button[onclick="editCard('${cardId}')"]`).style.display = 'none';
+            document.querySelector(`.card-edit-bar .card-save-button[onclick="saveCard('${cardId}')"]`).style.display = 'inline-block';
+        }
+
+        function saveCard(cardId) {
+            var term = document.querySelector(`#card-term-${cardId}`).value;
+            var meaning = document.querySelector(`#card-meaning-${cardId}`).value;
+
+            var updatedCard = {
+                Id: cardId,
+                Term: term,
+                Meaning: meaning,
+            };
+
+            fetch(`/Flashcards/UpdateCard`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify(updatedCard)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Card updated successfully.');
+                        document.querySelector(`#card-term-display-${cardId}`).innerText = term;
+                        document.querySelector(`#card-meaning-display-${cardId}`).innerText = meaning;
+                        document.querySelector(`#card-term-display-${cardId}`).style.display = 'block';
+                        document.querySelector(`#card-meaning-display-${cardId}`).style.display = 'block';
+                        document.querySelector(`#card-term-${cardId}`).style.display = 'none';
+                        document.querySelector(`#card-meaning-${cardId}`).style.display = 'none';
+                        document.querySelector(`.card-edit-bar .card-edit-button[onclick="editCard('${cardId}')"]`).style.display = 'inline-block';
+                        document.querySelector(`.card-edit-bar .card-save-button[onclick="saveCard('${cardId}')"]`).style.display = 'none';
+                    } else {
+                        alert('Failed to update card.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating the card.');
+                });
+        }
 
         document.addEventListener("DOMContentLoaded", function () {
             showCard(currentIndex);
