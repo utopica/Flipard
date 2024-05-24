@@ -158,16 +158,18 @@
             var cardId = button.getAttribute("data-card-id");
 
             fetch(`/Flashcards/DeleteCard/${cardId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                }
-            })
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
                 .then(response => {
                     if (response.ok) {
                         button.closest('.card-edit-bar').nextElementSibling.remove();
                         button.closest('.card-edit-bar').remove();
+                        
+                        updateCardNumbers();
                     } else {
                         alert('Failed to delete card.');
                     }
@@ -177,6 +179,16 @@
                     alert('An error occurred while deleting the card.');
                 });
         }
+
+        function updateCardNumbers() {
+           
+            var cardNumbers = document.querySelectorAll('.card-number');
+           
+            cardNumbers.forEach((number, index) => {
+                number.textContent = index + 1;
+            });
+        }
+
 
         function deleteDeck(deckId) {
             fetch(`/Flashcards/DeleteDeck/${deckId}`, {
