@@ -14,26 +14,25 @@
     margin: 50px;
 }
 
-.deck-delete-button {
+.deck-delete-button, .deck-quiz-button {
     margin: 10px;
     margin-right: 45px;
     font-size: 1rem;
-    background: #3e7e72;
-    color: #fff;
+    font-weight: 500;
+    background: #62cbe7;
+    color: #35373b;
     border: none;
     cursor: pointer;
     width: auto;
     height: auto;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     padding: 10px 15px;
     cursor: pointer;
     text-decoration: none;
 }
 
-    .deck-delete-button:hover {
-        background-color: #016752;
+    .deck-delete-button:hover, .deck-quiz-button:hover {
+        background-color: #b5e0d4;
     }
 
 .display-card {
@@ -49,6 +48,7 @@
     background: none;
     color: #fff;
     border: none;
+    outline: none;
     cursor: pointer;
     width: 50px;
     height: 50px;
@@ -56,7 +56,7 @@
 }
 
     .card-button:hover {
-        color: #016752;
+        color: #36c3ea;
     }
 
 .current-card {
@@ -81,6 +81,18 @@
     .current-card:hover {
         transform: translateY(-5px);
     }
+
+#previous-button {
+    left: 0;
+    border: none;
+    outline: none;
+}
+
+#next-button {
+    right: 0;
+    border: none;
+    outline: none;
+}
 
 .card {
     background-color: #202124;

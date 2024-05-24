@@ -21,10 +21,17 @@
             <div class="deck-card-header">
                 <h5>@Model.Name</h5>
             </div>
+            
+            <div class="deck-buttons">
+                <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
+                    Delete Set
+                </button>
+                
+                <button type="button" class="deck-quiz-button" onclick="redirectToQuiz()">
+                    Quiz
+                </button>
 
-            <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
-                Delete Set
-            </button>
+            </div>
         </div>
 
         <div class="display-card">
@@ -258,6 +265,10 @@
                     console.error('Error:', error);
                     alert('An error occurred while updating the card.');
                 });
+        }
+
+        function redirectToQuiz() {
+            window.location.href = '/Flashcards/CreateQuiz';
         }
 
         document.addEventListener("DOMContentLoaded", function () {

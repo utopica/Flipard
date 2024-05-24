@@ -97,4 +97,10 @@ public class FlashcardsController : Controller
         return Ok();
     }
 
+    [HttpGet]
+    public IActionResult CreateQuiz()
+    {
+        return View();
+    }
+
 }
