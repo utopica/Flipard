@@ -18,5 +18,6 @@ namespace Flipard.MVC.ViewModels
         public string Meaning { get; set; }
         public string? LastReviewed { get; set; }
         public string? ImageUrl { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

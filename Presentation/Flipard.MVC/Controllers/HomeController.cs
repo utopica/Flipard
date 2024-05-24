@@ -15,14 +15,16 @@ namespace Flipard.MVC.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IdentityContext _context;
         private readonly ApplicationDbContext _Appcontext;
-        public HomeController(ILogger<HomeController> logger, IdentityContext context, ApplicationDbContext appcontext)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public HomeController(ILogger<HomeController> logger, IdentityContext context, ApplicationDbContext appcontext, IWebHostEnvironment hostingEnvironment)
         {
             _logger = logger;
             _context = context;
             _Appcontext = appcontext;
+            _hostingEnvironment = hostingEnvironment;
         }
 
-       
+
         public IActionResult Index()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -39,6 +41,7 @@ namespace Flipard.MVC.Controllers
 
             return View(decks);
         }
+
 
 
         [Authorize] 
@@ -75,7 +78,7 @@ namespace Flipard.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateSet(HomeCreateSetViewModel homeCreateSetViewModel)
+        public async Task<IActionResult> CreateSet(HomeCreateSetViewModel homeCreateSetViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -86,7 +89,6 @@ namespace Flipard.MVC.Controllers
 
             if (deck == null)
             {
-                // Create a new deck if it doesn't exist
                 deck = new Deck
                 {
                     Id = Guid.NewGuid(),
@@ -103,6 +105,27 @@ namespace Flipard.MVC.Controllers
             foreach (var termMeaning in homeCreateSetViewModel.TermMeanings)
             {
                 var cardId = Guid.NewGuid();
+                var imageUrl = "";
+
+                if (termMeaning.Image != null)
+                {
+                    var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+
+                    // Ensure the uploads directory exists
+                    if (!Directory.Exists(uploads))
+                    {
+                        Directory.CreateDirectory(uploads);
+                    }
+
+                    var filePath = Path.Combine(uploads, termMeaning.Image.FileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await termMeaning.Image.CopyToAsync(fileStream);
+                    }
+
+                    imageUrl = "/uploads/" + termMeaning.Image.FileName;
+                }
 
                 var vocabulary = new Vocabulary
                 {
@@ -122,7 +145,7 @@ namespace Flipard.MVC.Controllers
                     DeckId = deck.Id,
                     CreatedOn = DateTimeOffset.UtcNow,
                     CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                    ImageUrl = termMeaning.ImageUrl // Save the image URL
+                    ImageUrl = imageUrl,
                 };
 
                 deck.Cards.Add(card);

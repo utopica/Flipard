@@ -71,11 +71,22 @@
                                 <text>@card.Meaning</text>
                             </div>
                         </div>
+                        
+                            
+                          
                         <div class="card-image">
-                            @* <span class="button-text">
-                                <i class="fi fi-sr-add-image"></i>
-                            </span> *@
-                            <img src = @card.ImageUrl/>
+                            @if (!string.IsNullOrEmpty(card.ImageUrl))
+                            {
+                                <img class="image-preview" src="@card.ImageUrl" />
+                            }
+
+                            @if (string.IsNullOrEmpty(card.ImageUrl))
+                            {
+                                <span class="button-text">
+                                    <i class="fi fi-sr-add-image"></i>
+                                </span>
+                            }
+                            
                         </div>
                     </div>
                 }

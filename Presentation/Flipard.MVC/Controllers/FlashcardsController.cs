@@ -33,7 +33,8 @@ public class FlashcardsController : Controller
             {
                 Id = c.Vocabulary.Id,
                 Term = c.Vocabulary.Term,
-                Meaning = c.Vocabulary.Meaning
+                Meaning = c.Vocabulary.Meaning,
+                ImageUrl = c.ImageUrl,
             }).ToList()
         };
 

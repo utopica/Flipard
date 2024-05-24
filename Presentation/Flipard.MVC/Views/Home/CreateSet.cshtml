@@ -79,39 +79,39 @@
 
     document.getElementById("add-card-button").addEventListener("click", function () {
         var newCardHtml = `
-                    <div class="user-deck">
-                        <div class="user-deck-card-info">
-                            <!--card number, delete card button, add image button-->
-                            <span class="card-number">${cardNumber + 1}</span>
-                            <div>
-                                <button type="button" class="card-delete-button">
-                                    <span class="button-card-delete-icon">
-                                        <i class="fi fi-sr-trash"></i>
-                                    </span>
-                                </button>
-                                <button type="button" class="card-image-button">
-                                    <span class="button-card-image-icon">
-                                        <i class="fi fi-sr-add-image"></i>
-                                    </span>
-                                </button>
-                                <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
+                        <div class="user-deck">
+                            <div class="user-deck-card-info">
+                                <!--card number, delete card button, add image button-->
+                                <span class="card-number">${cardNumber + 1}</span>
+                                <div>
+                                    <button type="button" class="card-delete-button">
+                                        <span class="button-card-delete-icon">
+                                            <i class="fi fi-sr-trash"></i>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="card-image-button">
+                                        <span class="button-card-image-icon">
+                                            <i class="fi fi-sr-add-image"></i>
+                                        </span>
+                                    </button>
+                                    <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="user-deck-card">
+                                <div class="user-deck-card-term">
+                                    <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
+                                </div>
+                                <div class="user-deck-card-definition">
+                                    <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
+                                </div>
+                                <div class="user-deck-card-image">
+                                    <img class="image-preview" style="display:none;" />
+                                    <i class="fi fi-tr-graphic-style"></i>
+                                    <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url" />
+                                </div>
                             </div>
                         </div>
-                        <div class="user-deck-card">
-                            <div class="user-deck-card-term">
-                                <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
-                            </div>
-                            <div class="user-deck-card-definition">
-                                <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
-                            </div>
-                            <div class="user-deck-card-image">
-                                <img class="image-preview" style="display:none;" />
-                                <i class="fi fi-tr-graphic-style"></i>
-                                <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url" />
-                            </div>
-                        </div>
-                    </div>
-                `;
+                    `;
 
         var newCardContainer = document.createElement("div");
         newCardContainer.innerHTML = newCardHtml;
