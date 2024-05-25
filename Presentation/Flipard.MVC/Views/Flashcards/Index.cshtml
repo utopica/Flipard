@@ -8,7 +8,6 @@
     var antiforgery = Html.AntiForgeryToken();
 }
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,22 +21,25 @@
             <div class="deck-card-header">
                 <h5>@Model.Name</h5>
             </div>
-            
+
             <div class="deck-buttons">
-                
-                <button type="button" class="deck-edit-button">
-                    Edit
-                </button>
-               
+                @if (!Model.IsReadOnly)
+                {
+                    <button type="button" class="deck-edit-button">
+                        Edit
+                    </button>
+                }
 
                 <button type="button" class="deck-quiz-button" onclick="redirectToQuiz('@Model.Id')">
                     Quiz
                 </button>
 
-                <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
-                    Delete Set
-                </button>
-
+                @if (!Model.IsReadOnly)
+                {
+                    <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
+                        Delete Set
+                    </button>
+                }
             </div>
         </div>
 
@@ -69,23 +71,26 @@
                     <div class="card-edit-bar">
                         <span class="card-number">@(i + 1)</span>
                         <div>
-                            <button type="button" class="card-delete-button" data-card-id="@card.Id" onclick="deleteCard(this)">
-                                <span class="button-card-delete-icon">
-                                    <i class="fi fi-sr-trash"></i>
-                                </span>
-                            </button>
+                            @if (!Model.IsReadOnly)
+                            {
+                                <button type="button" class="card-delete-button" data-card-id="@card.Id" onclick="deleteCard(this)">
+                                    <span class="button-card-delete-icon">
+                                        <i class="fi fi-sr-trash"></i>
+                                    </span>
+                                </button>
 
-                            <button type="button" class="card-edit-button" onclick="editCard('@card.Id')">
-                                <span class="button-card-edit-icon">
-                                    <i class="fi fi-sr-pencil"></i>
-                                </span>
-                            </button>
+                                <button type="button" class="card-edit-button" onclick="editCard('@card.Id')">
+                                    <span class="button-card-edit-icon">
+                                        <i class="fi fi-sr-pencil"></i>
+                                    </span>
+                                </button>
 
-                            <button type="button" class="card-save-button" onclick="saveCard('@card.Id')" style="display: none;">
-                                <span class="button-card-save-icon">
-                                    <i class="fi fi-sr-disk"></i>
-                                </span>
-                            </button>
+                                <button type="button" class="card-save-button" onclick="saveCard('@card.Id')" style="display: none;">
+                                    <span class="button-card-save-icon">
+                                        <i class="fi fi-sr-disk"></i>
+                                    </span>
+                                </button>
+                            }
                         </div>
                     </div>
 
@@ -93,11 +98,17 @@
                         <div class="card-term-meaning">
                             <div class="card-term">
                                 <span id="card-term-display-@card.Id">@card.Term</span>
-                                <input class="card-term" type="text" id="card-term-@card.Id" value="@card.Term" style="display: none;" />
+                                @if (!Model.IsReadOnly)
+                                {
+                                    <input class="card-term" type="text" id="card-term-@card.Id" value="@card.Term" style="display: none;" />
+                                }
                             </div>
                             <div class="card-meaning">
                                 <span id="card-meaning-display-@card.Id">@card.Meaning</span>
-                                <input class="card-term" type="text" id="card-meaning-@card.Id" value="@card.Meaning" style="display: none;" />
+                                @if (!Model.IsReadOnly)
+                                {
+                                    <input class="card-term" type="text" id="card-meaning-@card.Id" value="@card.Meaning" style="display: none;" />
+                                }
                             </div>
                         </div>
 
@@ -107,7 +118,7 @@
                                 <img class="image-preview" src="@card.ImageUrl" />
                             }
 
-                            @if (string.IsNullOrEmpty(card.ImageUrl))
+                            @if (string.IsNullOrEmpty(card.ImageUrl) && !Model.IsReadOnly)
                             {
                                 <span class="button-text">
                                     <i class="fi fi-sr-add-image"></i>
@@ -172,17 +183,17 @@
             var cardId = button.getAttribute("data-card-id");
 
             fetch(`/Flashcards/DeleteCard/${cardId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                    }
-                })
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
                 .then(response => {
                     if (response.ok) {
                         button.closest('.card-edit-bar').nextElementSibling.remove();
                         button.closest('.card-edit-bar').remove();
-                        
+
                         updateCardNumbers();
                     } else {
                         alert('Failed to delete card.');
@@ -195,14 +206,13 @@
         }
 
         function updateCardNumbers() {
-           
+
             var cardNumbers = document.querySelectorAll('.card-number');
-           
+
             cardNumbers.forEach((number, index) => {
                 number.textContent = index + 1;
             });
         }
-
 
         function deleteDeck(deckId) {
             fetch(`/Flashcards/DeleteDeck/${deckId}`, {
@@ -242,7 +252,7 @@
             var updatedCard = {
                 Id: cardId,
                 Term: term,
-                Meaning: meaning,
+                Meaning: meaning
             };
 
             fetch(`/Flashcards/UpdateCard`, {
@@ -255,7 +265,6 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        alert('Card updated successfully.');
                         document.querySelector(`#card-term-display-${cardId}`).innerText = term;
                         document.querySelector(`#card-meaning-display-${cardId}`).innerText = meaning;
                         document.querySelector(`#card-term-display-${cardId}`).style.display = 'block';
@@ -265,12 +274,12 @@
                         document.querySelector(`.card-edit-bar .card-edit-button[onclick="editCard('${cardId}')"]`).style.display = 'inline-block';
                         document.querySelector(`.card-edit-bar .card-save-button[onclick="saveCard('${cardId}')"]`).style.display = 'none';
                     } else {
-                        alert('Failed to update card.');
+                        alert('Failed to save card.');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while updating the card.');
+                    alert('An error occurred while saving the card.');
                 });
         }
 

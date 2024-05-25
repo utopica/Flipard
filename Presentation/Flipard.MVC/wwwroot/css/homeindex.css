@@ -38,12 +38,20 @@ body {
 .deck-list {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: flex-start; 
-    overflow-x: auto; 
-    padding: 0; 
-    margin: 0; 
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0;
+    margin: 0;
 }
 
+.deck-list-other {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0;
+    margin: 0;
+}
 
 .deck-card-body-left {
     margin: 15px;
@@ -54,22 +62,22 @@ body {
     background-color: transparent;
     border: none;
     color: rgb(251, 250, 251);
-    margin: 10px; 
+    margin: 10px;
 }
 
 .deck-card {
     background-color: #282a2f;
     border-radius: 10px;
     padding: 20px;
-    width: 250px; 
+    width: 250px;
     height: 150px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s;
 }
 
-    .deck-card:hover {
-        transform: translateY(-5px);
-    }
+.deck-card:hover {
+    transform: translateY(-5px);
+}
 
 .deck-card-header h5 {
     font-size: 1.2rem;
@@ -82,32 +90,4 @@ body {
 
 .card-button {
     margin: 10px;
-    font-size: 20px;
-    background: none;
-    color: #fff;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-}
-
-    .card-button:hover {
-        color: #b5e0d4
-    }
-
-#previous-button {
-    left: 0;
-    border: none;
-    outline: none;
-}
-
-#next-button {
-    right: 0;
-    border: none;
-    outline: none;
-}
-
-.deck-list::-webkit-scrollbar {
-    display: none;
-}
-
+    font-size

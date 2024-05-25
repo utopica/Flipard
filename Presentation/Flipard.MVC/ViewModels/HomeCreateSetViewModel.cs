@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Flipard.MVC.ViewModels
 {
@@ -9,6 +10,7 @@ namespace Flipard.MVC.ViewModels
         public string Name { get; set; }
         public string? Description { get; set; }
         public List<TermMeaningViewModel> TermMeanings { get; set; } = new List<TermMeaningViewModel>();
+        public bool IsReadOnly { get; set; } // Added IsReadOnly property
     }
 
     public class TermMeaningViewModel

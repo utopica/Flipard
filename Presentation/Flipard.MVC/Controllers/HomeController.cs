@@ -29,7 +29,8 @@ namespace Flipard.MVC.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var decks = _Appcontext.Decks
+            // Fetch current user's decks
+            var userDecks = _Appcontext.Decks
                 .Where(d => d.CreatedByUserId == userId)
                 .Select(d => new HomeDeckDetailsViewModel
                 {
@@ -39,8 +40,28 @@ namespace Flipard.MVC.Controllers
                 })
                 .ToList();
 
-            return View(decks);
+            // Fetch decks from another random user
+            var randomUserDecks = _Appcontext.Decks
+                .Where(d => d.CreatedByUserId != userId)
+                .OrderBy(r => Guid.NewGuid())
+                .Select(d => new HomeDeckDetailsViewModel
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    CardCount = d.Cards.Count()
+                })
+                .Take(5) // Just an example to limit the number of random decks
+                .ToList();
+
+            var viewModel = new HomePageViewModel
+            {
+                UserDecks = userDecks,
+                RandomUserDecks = randomUserDecks
+            };
+
+            return View(viewModel);
         }
+
 
 
 

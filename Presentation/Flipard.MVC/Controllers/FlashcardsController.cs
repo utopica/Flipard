@@ -3,19 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Flipard.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 
 public class FlashcardsController : Controller
 {
-    private readonly ApplicationDbContext _Appcontext;
+    private readonly ApplicationDbContext _appContext;
 
     public FlashcardsController(ApplicationDbContext appContext)
     {
-        _Appcontext = appContext;
+        _appContext = appContext;
     }
 
-    public IActionResult Index(Guid id)
+    public IActionResult Index(Guid id, bool isReadOnly = false)
     {
-        var deck = _Appcontext.Decks
+        var deck = _appContext.Decks
             .Include(d => d.Cards)
             .ThenInclude(c => c.Vocabulary)
             .FirstOrDefault(d => d.Id == id);
@@ -36,7 +37,8 @@ public class FlashcardsController : Controller
                 Term = c.Vocabulary.Term,
                 Meaning = c.Vocabulary.Meaning,
                 ImageUrl = c.ImageUrl,
-            }).ToList()
+            }).ToList(),
+            IsReadOnly = isReadOnly // Set IsReadOnly property
         };
 
         return View(model);
@@ -45,15 +47,15 @@ public class FlashcardsController : Controller
     [HttpDelete]
     public IActionResult DeleteCard(Guid id)
     {
-        var card = _Appcontext.Cards.FirstOrDefault(c => c.Vocabulary.Id == id);
+        var card = _appContext.Cards.FirstOrDefault(c => c.Vocabulary.Id == id);
 
         if (card == null)
         {
             return NotFound();
         }
 
-        _Appcontext.Cards.Remove(card);
-        _Appcontext.SaveChanges();
+        _appContext.Cards.Remove(card);
+        _appContext.SaveChanges();
 
         return Ok();
     }
@@ -61,15 +63,15 @@ public class FlashcardsController : Controller
     [HttpPost]
     public IActionResult DeleteDeck(Guid id)
     {
-        var deck = _Appcontext.Decks.FirstOrDefault(d => d.Id == id);
+        var deck = _appContext.Decks.FirstOrDefault(d => d.Id == id);
 
         if (deck == null)
         {
             return NotFound();
         }
 
-        _Appcontext.Decks.Remove(deck);
-        _Appcontext.SaveChanges();
+        _appContext.Decks.Remove(deck);
+        _appContext.SaveChanges();
 
         return RedirectToAction(nameof(Index), "Home");
     }
@@ -82,7 +84,7 @@ public class FlashcardsController : Controller
             return BadRequest("Invalid card data.");
         }
 
-        var card = _Appcontext.Cards.Include(c => c.Vocabulary).FirstOrDefault(c => c.Vocabulary.Id == updatedCard.Id);
+        var card = _appContext.Cards.Include(c => c.Vocabulary).FirstOrDefault(c => c.Vocabulary.Id == updatedCard.Id);
 
         if (card == null)
         {
@@ -92,16 +94,15 @@ public class FlashcardsController : Controller
         card.Vocabulary.Term = updatedCard.Term;
         card.Vocabulary.Meaning = updatedCard.Meaning;
 
-        _Appcontext.SaveChanges();
+        _appContext.SaveChanges();
 
         return Ok();
     }
 
-
     [HttpGet]
     public IActionResult CreateQuiz(Guid id)
     {
-        var deck = _Appcontext.Decks
+        var deck = _appContext.Decks
             .Include(d => d.Cards)
             .ThenInclude(c => c.Vocabulary)
             .FirstOrDefault(d => d.Id == id);
@@ -127,8 +128,4 @@ public class FlashcardsController : Controller
 
         return View(model);
     }
-
-    
-
-
 }

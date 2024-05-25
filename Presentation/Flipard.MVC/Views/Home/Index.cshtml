@@ -1,33 +1,50 @@
-﻿@model IEnumerable<Flipard.MVC.ViewModels.HomeDeckDetailsViewModel>
+﻿@using Flipard.MVC.ViewModels
+
+@model Flipard.MVC.ViewModels.HomePageViewModel
 
 @{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var antiforgery = Html.AntiForgeryToken();
 }
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <link rel="stylesheet" href="~/css/homeindex.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 </head>
+
+<style>
+    .deck-list-other {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 0;
+        margin: 0;
+    }
+
+    .deck-list-other::-webkit-scrollbar {
+        display: none; 
+    }
+</style>
 <body>
+    @antiforgery
     <content>
         <div class="label-deck">
             <h4>Çalışma setleriniz</h4>
         </div>
 
         <div class="deck-container">
-            <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('previous')">
+            <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('.deck-list', 'previous')">
                 <span class="button-text">
                     <i class="fi fi-bs-angle-left"></i>
                 </span>
             </button>
 
-
             <div class="deck-list">
-                @foreach (var deck in Model)
+                @foreach (var deck in Model.UserDecks)
                 {
                     <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id')">
                         <div class="deck-card">
@@ -45,7 +62,45 @@
                 }
             </div>
 
-            <button type="button" class="card-button" id="next-button" onclick="scrollDecks('next')">
+            <button type="button" class="card-button" id="next-button" onclick="scrollDecks('.deck-list', 'next')">
+                <span class="button-text">
+                    <i class="fi fi-bs-angle-right"></i>
+                </span>
+            </button>
+        </div>
+
+
+        <div class="label-deck">
+            <h4>Diğer kullanıcıların setleri</h4>
+        </div>
+
+        <div class="deck-container">
+            <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('.deck-list-other', 'previous')">
+                <span class="button-text">
+                    <i class="fi fi-bs-angle-left"></i>
+                </span>
+            </button>
+
+            <div class="deck-list-other">
+                @foreach (var deck in Model.RandomUserDecks)
+                {
+                    <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id', true)">
+                        <div class="deck-card">
+                            <div class="deck-card-header">
+                                <h5>@deck.Name</h5>
+                            </div>
+                            <div class="deck-card-body">
+                                <div class="deck-card-body-left">
+                                    <span>@deck.CardCount Kart</span>
+                                </div>
+                                <div class="deck-card-body-right"></div>
+                            </div>
+                        </div>
+                    </button>
+                }
+            </div>
+
+            <button type="button" class="card-button" id="next-button" onclick="scrollDecks('.deck-list-other', 'next')">
                 <span class="button-text">
                     <i class="fi fi-bs-angle-right"></i>
                 </span>
@@ -54,13 +109,13 @@
     </content>
 
     <script type="text/javascript">
-        function navigateToDeck(deckId) {
-            window.location.href = '/Flashcards/Index/' + deckId;
+        function navigateToDeck(deckId, isReadOnly) {
+            window.location.href = '/Flashcards/Index/' + deckId + (isReadOnly ? '?readonly=true' : '');
         }
 
-        function scrollDecks(direction) {
-            const deckList = document.querySelector('.deck-list');
-            const scrollAmount = 300; 
+        function scrollDecks(deckListClass, direction) {
+            const deckList = document.querySelector(deckListClass);
+            const scrollAmount = 300;
 
             if (direction === 'next') {
                 deckList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
