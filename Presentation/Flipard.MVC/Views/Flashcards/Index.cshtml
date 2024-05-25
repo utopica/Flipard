@@ -30,7 +30,7 @@
                 </button>
                
 
-                <button type="button" class="deck-quiz-button" onclick="redirectToQuiz()">
+                <button type="button" class="deck-quiz-button" onclick="redirectToQuiz('@Model.Id')">
                     Quiz
                 </button>
 
@@ -274,8 +274,8 @@
                 });
         }
 
-        function redirectToQuiz() {
-            window.location.href = '/Flashcards/CreateQuiz';
+        function redirectToQuiz(deckId) {
+            window.location.href = '/Flashcards/CreateQuiz/' + deckId;
         }
 
         document.addEventListener("DOMContentLoaded", function () {

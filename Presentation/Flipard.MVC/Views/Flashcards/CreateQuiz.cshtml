@@ -1,65 +1,116 @@
-﻿@{
-    ViewData["Title"] = "Flashcards";
+﻿@using Flipard.MVC.ViewModels
+
+@model HomeCreateSetViewModel
+
+@{
+    ViewData["Title"] = "Create Quiz";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var antiforgery = Html.AntiForgeryToken();
 }
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/createQuiz.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
-
-
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 </head>
-<style>
 
+<style>
     body {
         background-color: #202124;
         margin: 0;
         padding: 0;
     }
+
 </style>
 <body>
-
+    @antiforgery
     <content>
         <div class="quiz-card">
-
             <div class="card-heading">
                 <p>Tanım</p>
+                <p id="progress">
+                    @(Model.TermMeanings != null && Model.TermMeanings.Count > 0 ? "1/" + Model.TermMeanings.Count : "0/0")
+                </p>
 
-                <p>1/30</p>
             </div>
 
             <div class="question-card">
-                        
-
                 <div class="card-meaning-content">
-
-                    <div class="card-meaning-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel ipsum quos harum totam aspernatur!</div>
-
-                    <div class="card-meaning-image">Resim</div>
-
+                    <div class="card-meaning-text" id="card-meaning-text">
+                        @Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"
+                    </div>
+                    @if (!string.IsNullOrEmpty(@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl))
+                    {
+                        <div class="card-meaning-image">
+                            <img src="@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl" alt="Image">
+                        </div>
+                    }
                 </div>
             </div>
 
             <div class="answer-card">
                 <div class="card-term-content">
-
-                    <p  class="card-term-text">Lorem ipsum</p>
-
-
+                    <input type="text" class="card-term-text" id="term-input" placeholder="Terimi girin">
                 </div>
             </div>
 
-            
+            <div class="quiz-buttons">
+                <button type="button" class="quiz-prev-button" onclick="showPreviousCard()">
+                    <span class="prev-button">
+                        <i class="fi fi-rr-arrow-small-left"></i>
+                    </span>
+                </button>
+                <button type="button" class="quiz-next-button" onclick="submitAnswer()">
+                    <span class="next-button">
+                        <i class="fi fi-rr-arrow-small-right"></i>
+                    </span>
+                </button>
+            </div>
         </div>
-
     </content>
 
+    <script type="text/javascript">
+        var currentIndex = 0;
+        var cards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
 
 
+        function showCard(index) {
+            if (index >= 0 && index < cards.length) {
+                currentIndex = index;
+                document.getElementById("card-meaning-text").innerText = cards[currentIndex].Meaning;
+                document.getElementById("term-input").value = "";
+                document.querySelector(".card-heading #progress").innerText = (currentIndex + 1) + "/" + cards.length;
+            }
+        }
+
+        function showPreviousCard() {
+            if (currentIndex > 0) {
+                showCard(currentIndex - 1);
+            }
+        }
+
+        function submitAnswer() {
+            var userTerm = document.getElementById("term-input").value;
+            if (userTerm.trim() === "") {
+                alert("Please enter a term.");
+                return;
+            }
+
+            // Here you would typically send the answer to the server or handle it as needed
+            console.log("Submitted term for card " + currentIndex + ": " + userTerm);
+
+            if (currentIndex < cards.length - 1) {
+                showCard(currentIndex + 1);
+            } else {
+                alert("Quiz complete!");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            showCard(currentIndex);
+        });
+    </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
 
-/* General */
+/* CREATE QUIZ CSS */
 * {
     margin: 0;
     padding: 0;
@@ -23,8 +23,8 @@ content {
 .quiz-card {
     background-color: #323338;
     display: flex;
-    width: 500px;
-    height: 350px;
+    width: 600px;
+    height:500px;
     border-radius: 10px;
     color: aliceblue;
     margin-top: 50px;
@@ -43,7 +43,7 @@ content {
     margin: 10px;
     padding: 5px;
     color: aliceblue;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -60,21 +60,30 @@ content {
     padding: 10px 20px;
 }
 
-.card-meaning-image {
-    width: 100px;
-    height: 100px;
+.card-meaning-image{
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
+    object-fit: scale-down;
+    border-radius: inherit;
 }
 
+    .card-meaning-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
 .card-meaning-text {
+   
     width: 350px;
     overflow: auto;
     text-overflow: ellipsis;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .answer-card {
@@ -90,16 +99,28 @@ content {
     color: white;
     padding: 10px 20px;
 }
-
+    .card-term-content input {
+        background: #323338;
+        border: 2px solid #5f616b;
+        outline: none;
+        border-radius: 10px;
+        color: white;
+        padding: 10px;
+    }
 .card-term-text {
     width: 100%;
     height: 100%;
     color: white;
     overflow: auto;
     word-wrap: break-word;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     margin: 0;
+    
 }
+
+    .card-term-text input {
+        background: #5f616b;
+    }
 
     .card-term-text::-webkit-scrollbar, .card-meaning-text::-webkit-scrollbar {
         width: 12px;
@@ -118,3 +139,37 @@ content {
         .card-term-text::-webkit-scrollbar-thumb:hover, .card-meaning-text::-webkit-scrollbar-thumb:hover {
             background-color: #888;
         }
+
+
+.quiz-buttons {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #d2d1d1;
+}
+
+
+
+
+.quiz-prev-button, .quiz-next-button {
+    font-size: 50px;
+    background: none;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    
+}
+    .quiz-prev-button:hover, .quiz-next-button:hover {
+        color: #62CBE7;
+    }
+.quiz-prev-button {
+    margin-right: 20px;
+}
+
+.quiz-next-button {
+    margin-left: 20px;
+}

@@ -97,10 +97,38 @@ public class FlashcardsController : Controller
         return Ok();
     }
 
+
     [HttpGet]
-    public IActionResult CreateQuiz()
+    public IActionResult CreateQuiz(Guid id)
     {
-        return View();
+        var deck = _Appcontext.Decks
+            .Include(d => d.Cards)
+            .ThenInclude(c => c.Vocabulary)
+            .FirstOrDefault(d => d.Id == id);
+
+        if (deck == null)
+        {
+            return NotFound();
+        }
+
+        var model = new HomeCreateSetViewModel
+        {
+            Id = deck.Id,
+            Name = deck.Name,
+            Description = deck.Description,
+            TermMeanings = deck.Cards.Select(c => new TermMeaningViewModel
+            {
+                Id = c.Vocabulary.Id,
+                Term = c.Vocabulary.Term,
+                Meaning = c.Vocabulary.Meaning,
+                ImageUrl = c.ImageUrl,
+            }).ToList()
+        };
+
+        return View(model);
     }
+
+    
+
 
 }
