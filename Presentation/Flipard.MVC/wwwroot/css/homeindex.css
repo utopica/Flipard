@@ -84,6 +84,37 @@ body {
     color: #fff;
 }
 
+.card-button {
+    margin: 10px;
+    font-size: 20px;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+}
+
+.card-button:hover {
+    color: #b5e0d4
+}
+
+#previous-button {
+    left: 0;
+    border: none;
+    outline: none;
+}
+
+#next-button {
+    right: 0;
+    border: none;
+    outline: none;
+}
+
+.deck-list::-webkit-scrollbar {
+    display: none;
+}
+
 .deck-card-body-left span {
     color: #b5b5b5;
 }
