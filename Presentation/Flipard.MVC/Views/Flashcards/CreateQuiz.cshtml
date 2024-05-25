@@ -33,7 +33,6 @@
                 <p id="progress">
                     @(Model.TermMeanings != null && Model.TermMeanings.Count > 0 ? "1/" + Model.TermMeanings.Count : "0/0")
                 </p>
-
             </div>
 
             <div class="question-card">
@@ -41,12 +40,12 @@
                     <div class="card-meaning-text" id="card-meaning-text">
                         @Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"
                     </div>
-                    @if (!string.IsNullOrEmpty(@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl))
-                    {
-                        <div class="card-meaning-image">
-                            <img src="@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl" alt="Image">
-                        </div>
-                    }
+                    <div class="card-meaning-image" id="card-meaning-image">
+                        @if (!string.IsNullOrEmpty(@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl))
+                        {
+                            <img src="@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl" alt="Image" id="meaning-image">
+                        }
+                    </div>
                 </div>
             </div>
 
@@ -75,15 +74,36 @@
         var currentIndex = 0;
         var cards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
 
-
         function showCard(index) {
             if (index >= 0 && index < cards.length) {
                 currentIndex = index;
                 document.getElementById("card-meaning-text").innerText = cards[currentIndex].Meaning;
                 document.getElementById("term-input").value = "";
                 document.querySelector(".card-heading #progress").innerText = (currentIndex + 1) + "/" + cards.length;
+
+                var imageElement = document.getElementById("meaning-image");
+                if (cards[currentIndex].ImageUrl) {
+                    if (!imageElement) {
+                        var img = document.createElement("img");
+                        img.id = "meaning-image";
+                        img.src = cards[currentIndex].ImageUrl;
+                        img.alt = "Image";
+                        document.getElementById("card-meaning-image").appendChild(img);
+                    } else {
+                        imageElement.src = cards[currentIndex].ImageUrl;
+                        imageElement.style.display = "block";
+                    }
+                } else {
+                    if (imageElement) {
+                        imageElement.style.display = "none";
+                    }
+                }
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            showCard(currentIndex);
+        });
 
         function showPreviousCard() {
             if (currentIndex > 0) {
@@ -98,7 +118,6 @@
                 return;
             }
 
-            // Here you would typically send the answer to the server or handle it as needed
             console.log("Submitted term for card " + currentIndex + ": " + userTerm);
 
             if (currentIndex < cards.length - 1) {
@@ -107,10 +126,6 @@
                 alert("Quiz complete!");
             }
         }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            showCard(currentIndex);
-        });
     </script>
 </body>
 </html>

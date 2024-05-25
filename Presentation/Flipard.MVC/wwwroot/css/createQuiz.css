@@ -149,6 +149,8 @@ content {
     justify-content: center;
     align-items: center;
     color: #d2d1d1;
+    outline: none;
+    border: none;
 }
 
 
@@ -165,7 +167,15 @@ content {
 }
     .quiz-prev-button:hover, .quiz-next-button:hover {
         color: #62CBE7;
+        outline: none;
+        border: none;
     }
+
+.quiz-prev-button:focus, .quiz-next-button:focus {
+    color: #62CBE7;
+    outline: none;
+    border: none;
+}
 .quiz-prev-button {
     margin-right: 20px;
 }
