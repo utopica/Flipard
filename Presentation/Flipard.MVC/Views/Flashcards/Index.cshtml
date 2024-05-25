@@ -23,12 +23,18 @@
             </div>
             
             <div class="deck-buttons">
-                <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
-                    Delete Set
-                </button>
                 
+                <button type="button" class="deck-edit-button">
+                    Edit
+                </button>
+               
+
                 <button type="button" class="deck-quiz-button" onclick="redirectToQuiz()">
                     Quiz
+                </button>
+
+                <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
+                    Delete Set
                 </button>
 
             </div>

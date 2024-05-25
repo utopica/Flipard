@@ -14,13 +14,15 @@
     margin: 50px;
 }
 
-.deck-delete-button, .deck-quiz-button {
-    margin: 10px;
+.deck-buttons {
     margin-right: 45px;
+}
+.deck-delete-button, .deck-quiz-button, .deck-edit-button {
+    margin: 10px;
     font-size: 1rem;
     font-weight: 500;
     background: #62cbe7;
-    color: #35373b;
+    color: #1e1e1e;
     border: none;
     cursor: pointer;
     width: auto;
@@ -31,7 +33,7 @@
     text-decoration: none;
 }
 
-    .deck-delete-button:hover, .deck-quiz-button:hover {
+    .deck-delete-button:hover, .deck-quiz-button:hover, .deck-edit-button:hover{
         background-color: #b5e0d4;
     }
 
