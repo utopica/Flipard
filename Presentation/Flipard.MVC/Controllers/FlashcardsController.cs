@@ -38,7 +38,7 @@ public class FlashcardsController : Controller
                 Meaning = c.Vocabulary.Meaning,
                 ImageUrl = c.ImageUrl,
             }).ToList(),
-            IsReadOnly = isReadOnly // Set IsReadOnly property
+            IsReadOnly = isReadOnly 
         };
 
         return View(model);
