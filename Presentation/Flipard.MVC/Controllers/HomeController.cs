@@ -181,7 +181,7 @@ namespace Flipard.MVC.Controllers
         [HttpGet]
         public JsonResult SearchDecks(string query)
         {
-            var decks = _Appcontext.Decks // Adjust according to your database context and model
+            var decks = _Appcontext.Decks 
                 .Where(d => d.Name.Contains(query))
                 .Select(d => new { d.Id, d.Name })
                 .ToList();

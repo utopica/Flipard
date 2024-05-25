@@ -23,13 +23,7 @@
             </div>
 
             <div class="deck-buttons">
-                @if (!Model.IsReadOnly)
-                {
-                    <button type="button" class="deck-edit-button">
-                        Edit
-                    </button>
-                }
-
+                
                 <button type="button" class="deck-quiz-button" onclick="redirectToQuiz('@Model.Id')">
                     Quiz
                 </button>
