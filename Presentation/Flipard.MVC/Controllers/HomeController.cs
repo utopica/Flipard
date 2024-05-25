@@ -178,6 +178,16 @@ namespace Flipard.MVC.Controllers
         }
 
 
+        [HttpGet]
+        public JsonResult SearchDecks(string query)
+        {
+            var decks = _Appcontext.Decks // Adjust according to your database context and model
+                .Where(d => d.Name.Contains(query))
+                .Select(d => new { d.Id, d.Name })
+                .ToList();
+
+            return Json(decks);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

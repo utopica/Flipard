@@ -141,10 +141,9 @@
                     card.querySelector(".user-deck-card-image").appendChild(imgPreview);
                 }
                 imgPreview.src = e.target.result;
-                imgPreview.style.display = 'block'; // Show the image
+                imgPreview.style.display = 'block'; 
                 card.querySelector(".fi-tr-graphic-style").style.display = 'none'; // Hide the icon
 
-                // Set the hidden input with the base64 image URL
                 var imageUrlInput = card.querySelector(".card-image-url");
                 imageUrlInput.value = e.target.result;
             };
@@ -176,7 +175,6 @@
         cardNumber = document.querySelectorAll('.user-deck').length;
     }
 
-    // Initial call to set delete button listeners on existing cards
     updateDeleteButtonListeners();
 </script>
 
