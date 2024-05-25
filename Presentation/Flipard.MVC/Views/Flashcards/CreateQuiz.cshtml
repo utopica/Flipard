@@ -23,6 +23,39 @@
         padding: 0;
     }
 
+    .wrong-answer, .correct-answer {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .wrong-answer {
+        color: red;
+    }
+
+    .correct-answer {
+        color: green;
+    }
+
+    .answer-feedback {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        gap: 0.5em;
+    }
+
+    .answer-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    .card-term-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+    }
 </style>
 <body>
     @antiforgery
@@ -51,6 +84,7 @@
 
             <div class="answer-card">
                 <div class="card-term-content">
+                    <div id="answer-feedback" class="answer-feedback"></div>
                     <input type="text" class="card-term-text" id="term-input" placeholder="Terimi girin">
                 </div>
             </div>
@@ -73,6 +107,7 @@
     <script type="text/javascript">
         var currentIndex = 0;
         var cards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
+        var showAnswer = false;
 
         function showCard(index) {
             if (index >= 0 && index < cards.length) {
@@ -80,6 +115,7 @@
                 document.getElementById("card-meaning-text").innerText = cards[currentIndex].Meaning;
                 document.getElementById("term-input").value = "";
                 document.querySelector(".card-heading #progress").innerText = (currentIndex + 1) + "/" + cards.length;
+                document.getElementById("answer-feedback").innerHTML = "";
 
                 var imageElement = document.getElementById("meaning-image");
                 if (cards[currentIndex].ImageUrl) {
@@ -98,6 +134,7 @@
                         imageElement.style.display = "none";
                     }
                 }
+                showAnswer = false;
             }
         }
 
@@ -112,9 +149,21 @@
         }
 
         function submitAnswer() {
-            var userTerm = document.getElementById("term-input").value;
-            if (userTerm.trim() === "") {
+            var userTerm = document.getElementById("term-input").value.trim();
+            var correctTerm = cards[currentIndex].Term;
+            var answerFeedback = document.getElementById("answer-feedback");
+
+            if (userTerm === "") {
                 alert("Please enter a term.");
+                return;
+            }
+
+            if (userTerm.toLowerCase() !== correctTerm.toLowerCase() && !showAnswer) {
+                answerFeedback.innerHTML = `
+                            <div class="wrong-answer">${userTerm} <i class="fi fi-rr-cross-small"></i></div>
+                            <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
+                document.getElementById("term-input").value = correctTerm;
+                showAnswer = true;
                 return;
             }
 
