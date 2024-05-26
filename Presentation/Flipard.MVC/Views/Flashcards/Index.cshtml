@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="~/css/displayPage.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 </head>
+<style>
+
+</style>
 <body>
     @antiforgery
     <content>
@@ -58,10 +61,11 @@
 
         @if (Model?.TermMeanings != null)
         {
-            <div class="card-list">
                 @for (var i = 0; i < Model.TermMeanings.Count; i++)
                 {
+                
                     var card = Model.TermMeanings[i];
+                <div class="card-list">
                     <div class="card-edit-bar">
                         <span class="card-number">@(i + 1)</span>
                         <div>
@@ -120,8 +124,9 @@
                             }
                         </div>
                     </div>
+                </div>
                 }
-            </div>
+            
         }
         else
         {

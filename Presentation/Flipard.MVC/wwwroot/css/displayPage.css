@@ -250,4 +250,26 @@
     transform: rotateY(180deg);
 }
 
+@media (max-width: 1524px) {
+
+    .card {
+        width: 90%;
+    }
+
+    .card-edit-bar {
+        width: 90%;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .card {
+        width: 90%;
+    }
+
+    .card-edit-bar {
+        width: 90%;
+    }
+}
+
 
