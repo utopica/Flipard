@@ -60,7 +60,7 @@ public class FlashcardsController : Controller
         return Ok();
     }
 
-    [HttpPost]
+    [HttpDelete]
     public IActionResult DeleteDeck(Guid id)
     {
         var deck = _appContext.Decks.FirstOrDefault(d => d.Id == id);
@@ -76,7 +76,7 @@ public class FlashcardsController : Controller
         return RedirectToAction(nameof(Index), "Home");
     }
 
-    [HttpPost]
+    [HttpPut]
     public IActionResult UpdateCard([FromBody] TermMeaningViewModel updatedCard)
     {
         if (updatedCard == null || updatedCard.Id == Guid.Empty)
@@ -84,7 +84,8 @@ public class FlashcardsController : Controller
             return BadRequest("Invalid card data.");
         }
 
-        var card = _appContext.Cards.Include(c => c.Vocabulary).FirstOrDefault(c => c.Vocabulary.Id == updatedCard.Id);
+        var card = _appContext.Cards.Include(c => c.Vocabulary).
+            FirstOrDefault(c => c.Vocabulary.Id == updatedCard.Id);
 
         if (card == null)
         {
