@@ -102,7 +102,7 @@
                                 }
                             </div>
                             <div class="card-meaning">
-                                <span id="card-meaning-display-@card.Id">@card.Meaning</span>
+                                <span class="card-meaning" id="card-meaning-display-@card.Id">@card.Meaning</span>
                                 @if (!Model.IsReadOnly)
                                 {
                                     <input class="card-term" type="text" id="card-meaning-@card.Id" value="@card.Meaning" style="display: none;" />

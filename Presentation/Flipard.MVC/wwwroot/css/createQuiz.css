@@ -184,3 +184,58 @@ content {
     margin-left: 20px;
 }
 
+@media (max-width: 768px) {
+    .quiz-card {
+        width: 500px;
+        height: 458px;
+        padding: 10px;
+        margin: 20px 0;
+    }
+
+    .card-meaning-text {
+        width: 280px;
+        height: auto;
+    }
+
+    .card-meaning-image {
+        width: 140px;
+        height: 140px;
+    }
+
+    .card-meaning-text,
+    .card-term-text {
+        font-size: 0.9rem;
+    }
+
+    .quiz-next-button, .quiz-prev-button {
+        font-size: 3rem;
+    }
+}
+
+
+@media (max-width: 500px) {
+    .quiz-card {
+        width: 450px;
+        height: 417px;
+        padding: 10px;
+        margin: 20px 0;
+    }
+
+    .card-meaning-text {
+        width: 220px;
+        height: auto;
+    }
+
+    .card-meaning-image {
+        width: 110px;
+        height: 110px;
+    }
+
+  
+    .card-meaning-text,
+    .card-term-text {
+        font-size: 0.85rem;
+    }
+}
+
+
