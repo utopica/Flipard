@@ -6,11 +6,14 @@ using Flipard.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
     .AddNToastNotifyToastr();
+
+builder.Services.AddMvc().AddNToastNotifyToastr();
 
 var configuration = builder.Configuration;
 

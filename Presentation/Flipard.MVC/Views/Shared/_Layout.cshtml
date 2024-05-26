@@ -55,82 +55,84 @@
     </style>
 </head>
 <body>
-    <header class="TopNavigation" itemscope itemtype="http://schema.org/WPHeader" role="banner">
-        <div class="TopNavigation-content">
-            <div class="TopNavigation-contentLeft">
-                <form asp-controller="Home" asp-action="Index" method="get">
-                    <button class="flipard-logo">
-                        <div class="logo-header">
-                            <div class="logo">
-                                <div class="logo-circle">
-                                    <span class="circle circle-1"></span>
-                                    <span class="circle circle-2"></span>
-                                </div>
-                                <h2>Flipard</h2>
+@await Component.InvokeAsync("NToastNotify")
+<header class="TopNavigation" itemscope itemtype="http://schema.org/WPHeader" role="banner">
+    <div class="TopNavigation-content">
+        <div class="TopNavigation-contentLeft">
+            <form asp-controller="Home" asp-action="Index" method="get">
+                <button class="flipard-logo">
+                    <div class="logo-header">
+                        <div class="logo">
+                            <div class="logo-circle">
+                                <span class="circle circle-1"></span>
+                                <span class="circle circle-2"></span>
                             </div>
+                            <h2>Flipard</h2>
                         </div>
-                    </button>
-                </form>
-            </div>
-            <div class="TopNavigation-contentMiddle">
-                <form class="search-form" method="get" role="search">
-                    <input type="text" class="search-input" name="q" placeholder="Search..." id="search-input">
-                    <button type="submit" class="search-button">
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="TopNavigation-contentMiddle">
+            <form class="search-form" method="get" role="search">
+                <input type="text" class="search-input" name="q" placeholder="Search..." id="search-input">
+                <button type="submit" class="search-button">
+                    <span class="button-icon">
+                        <i class="fi fi-br-search"></i>
+                    </span>
+                </button>
+                <ul id="search-results" class="dropdown-menu"></ul>
+            </form>
+        </div>
+        <div class="TopNavigation-contentRight">
+            <div class="TopNavigationItem RightNavigationItem">
+                <form action="@Url.Action("CreateSet", "Home")" method="get">
+                    <button type="submit" class="create-button">
                         <span class="button-icon">
-                            <i class="fi fi-br-search"></i>
+                            <i class="fi fi-br-plus"></i>
                         </span>
                     </button>
-                    <ul id="search-results" class="dropdown-menu"></ul>
                 </form>
             </div>
-            <div class="TopNavigation-contentRight">
-                <div class="TopNavigationItem RightNavigationItem">
-                    <form action="@Url.Action("CreateSet", "Home")" method="get">
-                        <button type="submit" class="create-button">
-                            <span class="button-icon">
-                                <i class="fi fi-br-plus"></i>
-                            </span>
-                        </button>
-                    </form>
-                </div>
-                <div class="TopNavigationItem RightNavigationItem"></div>
-                <div class="TopNavigationItem RightNavigationItem">
-                    <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
-                        <button type="submit" class="profile-button">
-                            <span class="profile-button-icon">
-                                <i class="fi fi-sr-user"></i>
-                            </span>
-                        </button>
-                    </form>
-                </div>
+            <div class="TopNavigationItem RightNavigationItem"></div>
+            <div class="TopNavigationItem RightNavigationItem">
+                <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
+                    <button type="submit" class="profile-button">
+                        <span class="profile-button-icon">
+                            <i class="fi fi-sr-user"></i>
+                        </span>
+                    </button>
+                </form>
             </div>
         </div>
-    </header>
-    <main role="main" class="container">
-        @RenderBody()
-    </main>
-    @RenderSection("Scripts", required: false)
+    </div>
+</header>
+<main role="main" class="container">
+    @RenderBody()
+</main>
+@RenderSection("Scripts", required: false)
 
-    <script>
-        $(document).ready(function () {
-            $('#search-input').on('keyup', function () {
+<script>
+    $(document).ready(function() {
+        $('#search-input').on('keyup',
+            function() {
                 var query = $(this).val();
                 if (query.length > 2) {
                     $.ajax({
                         url: '/Home/SearchDecks',
                         type: 'GET',
                         data: { query: query },
-                        success: function (data) {
+                        success: function(data) {
                             $('#search-results').empty().show();
                             if (data.length > 0) {
-                                data.forEach(function (deck) {
+                                data.forEach(function(deck) {
                                     $('#search-results').append('<li class="dropdown-item"><a href="/Flashcards/Index/' + deck.id + '">' + deck.name + '</a></li>');
                                 });
                             } else {
                                 $('#search-results').append('<li class="dropdown-item">No results found</li>');
                             }
                         },
-                        error: function () {
+                        error: function() {
                             $('#search-results').hide();
                         }
                     });
@@ -139,13 +141,14 @@
                 }
             });
 
-            $(document).on('click', function (e) {
+        $(document).on('click',
+            function(e) {
                 if (!$(e.target).closest('.search-form').length) {
                     $('#search-results').hide();
                 }
             });
-        });
-    </script>
+    });
+</script>
 
 </body>
 </html>

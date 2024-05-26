@@ -120,7 +120,6 @@ namespace Flipard.MVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _nToastNotifyService.AddSuccessToastMessage("You've been logged out.");
             return RedirectToAction(nameof(Login));
         }
 
