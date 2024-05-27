@@ -112,7 +112,8 @@ body {
 .add-card-button-div {
     display: flex;
     width: 100%;
-    height: 100%
+    height: 100%;
+    justify-content: center;
 }
 
 #add-card-button {
@@ -291,11 +292,13 @@ body {
         font-size: 14px;
     }
 
+
+
     #add-card-button {
-        width: 42rem;
+        width: 45rem;
         height: 3rem;
-        font-size: 16px;
     }
+    
 
     .create-card-text h5 {
         font-size: 18px;
@@ -333,13 +336,22 @@ body {
         font-size: 14px;
     }
 
+    .add-card-button-div {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
     #add-card-button {
        
         width: 42rem;
-        height: 3rem;
+        height: 2.5rem;
         font-size: 16px;
     
     }
+
+
 
     .create-card-text h5 {
         font-size: 18px;
