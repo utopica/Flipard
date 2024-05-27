@@ -25,7 +25,8 @@ body {
 
 .create-card-text {
     color: #fff;
-    margin: 100px 250px 50px 250px;
+     margin: 100px 50px 50px 50px; 
+    /*width: 300px;*/
 }
 
 .create-button {
@@ -33,10 +34,9 @@ body {
     width: 100px;
     height: 40px;
     font-size: 16px;
-    font-weight: larger;
     border-radius: 20px;
     padding-top: 5px;
-    margin: 100px 250px 50px 250px;
+     margin: 100px 50px 50px 50px; 
 }
 
     .create-button:hover, .create-button:active {
@@ -109,15 +109,17 @@ body {
     margin-right: auto;
 }
 
+.add-card-button-div {
+    display: flex;
+    width: 100%;
+    height: 100%
+}
+
 #add-card-button {
     background: #016752;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70rem;
+    width: 71rem;
     height: 3rem;
     font-size: 16px;
-    margin: 20px auto;
     color: #fff;
     cursor: pointer;
 }
@@ -386,6 +388,10 @@ body {
 
     .create-card-text h5 {
         font-size: 18px;
+    }
+
+    .create-card-text {
+        width: 10px;
     }
 }
 

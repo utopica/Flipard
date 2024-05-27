@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="~/css/createset.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
 </head>
+
+<body>
 <main>
     <form asp-controller="Home" asp-action="CreateSet" method="post" enctype="multipart/form-data">
         <div class="CreateSetPage">
@@ -68,10 +70,15 @@
                 </div>
             </div>
         </div>
-
-        <button id="add-card-button" type="button">Kart Ekle</button>
+        <div class="add-card-button-div">
+            <button id="add-card-button" type="button">Kart Ekle</button>
+        </div>
+       
+        
     </form>
+
 </main>
+</body>
 </html>
 
 <script>
