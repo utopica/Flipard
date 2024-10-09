@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Flipard.Domain.Interfaces;
+using Flipard.Persistence.Concretes;
 
 namespace Flipard.Persistence
 {
@@ -39,6 +41,7 @@ namespace Flipard.Persistence
 
             services.AddScoped<IVocabularyReadRepository, VocabularyReadRepository>();
             services.AddScoped<IVocabularyWriteRepository, VocabularyWriteRepository>();
+
 
         }
     }

@@ -1,11 +1,11 @@
-using Auth0.AspNetCore.Authentication;
 using Flipard.Domain.Identity;
+using Flipard.Domain.Interfaces;
 using Flipard.MVC.Services;
 using Flipard.Persistence;
+using Flipard.Persistence.Concretes;
 using Flipard.Persistence.Contexts.Identity;
 using Flipard.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Google;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +21,8 @@ var configuration = builder.Configuration;
 builder.Services.AddPersistenceServices(configuration);
 
 builder.Services.AddScoped<INToastNotifyService, NToastNotifyService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 builder.Services.AddSession();
 
@@ -57,13 +59,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
     options.ExpireTimeSpan = System.TimeSpan.FromDays(7); //remember login information for seven days.
     options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
-});
-
-builder.Services.AddAuth0WebAppAuthentication(options =>
-{
-    options.Domain = builder.Configuration["Auth0:Domain"];
-    options.ClientId = builder.Configuration["Auth0:ClientId"];
-    options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
 });
 
 var app = builder.Build(); 

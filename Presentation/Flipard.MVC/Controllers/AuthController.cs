@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Flipard.Domain.Identity;
+using Flipard.Domain.Interfaces;
 using Flipard.MVC.Services;
 using Flipard.MVC.ViewModels;
 using Flipard.Persistence.Services;
@@ -13,12 +14,14 @@ namespace Flipard.MVC.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly INToastNotifyService _nToastNotifyService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, INToastNotifyService nToastNotifyService)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, INToastNotifyService nToastNotifyService, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _nToastNotifyService = nToastNotifyService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -113,6 +116,9 @@ namespace Flipard.MVC.Controllers
             }
 
             _nToastNotifyService.AddSuccessToastMessage($"Welcome {user.UserName} to Flipard!");
+
+            if (user.Email != null) await _emailService.SendEmailAsync(user.Email, "flipard@elifokms.dev", "ornektir");
+
             return RedirectToAction(nameof(Index), "Home");
         }
 

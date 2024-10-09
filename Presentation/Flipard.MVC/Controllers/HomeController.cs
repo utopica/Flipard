@@ -59,11 +59,7 @@ namespace Flipard.MVC.Controllers
 
             return View(viewModel);
         }
-
-
-
-
-        [Authorize] 
+        
         public IActionResult Profile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
