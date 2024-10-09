@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flipard.Domain.Enums
+namespace Flipard.Domain.Enums;
+
+public enum Gender
 {
-    public enum Gender
-    {
-        Male = 0,
-        Female = 1,
-        Unspecified = 2, 
-    }
+    Male = 0,
+    Female = 1,
+    Unspecified = 2,
 }

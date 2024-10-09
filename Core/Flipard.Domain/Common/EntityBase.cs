@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flipard.Domain.Common
+namespace Flipard.Domain.Common;
+
+public class EntityBase<TKey> : IEntityBase<TKey>, ICreatedByEntity, IDeletedByEntity, IModifiedByEntity
 {
-    public class EntityBase<TKey> : IEntityBase<TKey>, ICreatedByEntity, IDeletedByEntity, IModifiedByEntity
-    {
-        public TKey Id { get; set; }
-        public DateTimeOffset CreatedOn { get; set; }
-        public string CreatedByUserId { get; set; }
-        public DateTimeOffset? ModifiedOn { get; set; }
-        public string? ModifiedByUserId { get;  set; }
-        public DateTimeOffset? DeletedOn { get; set; }
-        public string? DeletedByUserId { get;  set; }
-        public bool? IsDeleted { get; set; }
-    }
+    public TKey Id { get; set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public string CreatedByUserId { get; set; }
+    public DateTimeOffset? ModifiedOn { get; set; }
+    public string? ModifiedByUserId { get; set; }
+    public DateTimeOffset? DeletedOn { get; set; }
+    public string? DeletedByUserId { get; set; }
+    public bool? IsDeleted { get; set; }
 }

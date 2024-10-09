@@ -1,10 +1,11 @@
+using Auth0.AspNetCore.Authentication;
 using Flipard.Domain.Identity;
 using Flipard.MVC.Services;
 using Flipard.Persistence;
 using Flipard.Persistence.Contexts.Identity;
 using Flipard.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Google;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +59,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
 });
 
-
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = builder.Configuration["Auth0:Domain"];
+    options.ClientId = builder.Configuration["Auth0:ClientId"];
+    options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+});
 
 var app = builder.Build(); 
 

@@ -1,5 +1,4 @@
-﻿
-namespace Flipard.Persistence.Services
+﻿namespace Flipard.Persistence.Services
 {
     public interface INToastNotifyService
     {

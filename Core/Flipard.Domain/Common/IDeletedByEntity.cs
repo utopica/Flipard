@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flipard.Domain.Common
+namespace Flipard.Domain.Common;
+
+public interface IDeletedByEntity
 {
-    public interface IDeletedByEntity
-    {
-        public DateTimeOffset? DeletedOn { get; set; }
-        string? DeletedByUserId { get; set; }
-        bool? IsDeleted { get; set; }
-    }
+    public DateTimeOffset? DeletedOn { get; set; }
+    string? DeletedByUserId { get; set; }
+    bool? IsDeleted { get; set; }
 }
