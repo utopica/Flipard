@@ -16,17 +16,14 @@
 </head>
 <body>
 @await Component.InvokeAsync("NToastNotify")
-    <div class="LoginArea">
-
-        <div class="row ">
-
-            <div class="col-md-6 sec1">
-                <div class="image-container">
+    <div class="login-container">
+            <div class="col-md-6 login-image-section">
+                <div class="image-wrapper">
                     <img src="~/images/leftside.png" alt="A person studying with flashcards.">
                 </div>
             </div>
 
-            <div class="col-md-6 sec2">
+            <div class="col-md-6 login-form-section">
                 <div class="logo-header">
                     <div class="logo">
                         <div class="logo-circle">
@@ -37,7 +34,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card login-card">
                     <div class="card-header">
                         <h3> Login </h3>
                     </div>
@@ -56,18 +53,16 @@
                     </div>
                 </div>
 
-                <div class="card loginToRegister">
+                <div class="card registration-card">
                     <a id="registerLink" asp-controller="Auth" asp-action="Register" style="display: none;"></a>
-                    <button type="button" id="loginToRegister" class="btn btn-outline-secondary">New Flipard? Create an account</button>
+                    <button type="button" id="navigateToRegister" class="btn btn-outline-secondary">New Flipard? Create an account</button>
                 </div>
             </div>
-        </div>
-
     </div>
 
 </body>
 <script>
-    document.getElementById("loginToRegister").addEventListener("click", function () {
+    document.getElementById("navigateToRegister").addEventListener("click", function () {
         document.getElementById("registerLink").click();
     });
 </script>
