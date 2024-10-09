@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Flipard.Persistence.Migrations.Identity
+namespace Flipard.Persistence.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240522194611_init")]
-    partial class init
+    [Migration("20241009110843_InitialIdentity")]
+    partial class InitialIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

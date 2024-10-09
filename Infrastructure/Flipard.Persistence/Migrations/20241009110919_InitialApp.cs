@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Flipard.Persistence.Migrations.Application
+namespace Flipard.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class cardImage : Migration
+    public partial class InitialApp : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
