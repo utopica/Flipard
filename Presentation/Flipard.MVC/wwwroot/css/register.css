@@ -115,10 +115,6 @@ body {
     margin: 0px;
 }
 
-.register-card-body{
-    flex: auto;
-}
-
 /* Form Control */
 .form-control {
     background-color: #222;
@@ -163,10 +159,12 @@ body {
     margin: 1rem auto;
 }
 
-.Birthday {
-    display: flex;
-    height: 40px;
-    gap: 10px;
-    color: white;
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(40%) sepia(50%) saturate(3000%) hue-rotate(180deg) brightness(100%) contrast(80%);
+}
+
+.form-check-label {
+    margin-bottom: 0;
+    font-size: 0.75rem;
 }
 

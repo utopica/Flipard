@@ -57,7 +57,7 @@ namespace Flipard.MVC.Controllers
             {
                 Id = userId,
                 Email = registerViewModel.Email,
-                Birthdate = registerViewModel.Birthdate.Value.ToUniversalTime(),
+                Birthdate = registerViewModel.Birthdate?.ToUniversalTime(),
                 UserName = registerViewModel.Username,
                 CreatedByUserId = userId.ToString(),
                 CreatedOn = DateTimeOffset.UtcNow,
@@ -99,11 +99,19 @@ namespace Flipard.MVC.Controllers
                 return View(loginViewModel);
             }
 
-            var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
-
+            User user;
+            
+            if (loginViewModel.UserIdentifier.Contains("@"))
+            {
+                user = await _userManager.FindByEmailAsync(loginViewModel.UserIdentifier);
+            }
+            else
+            {
+                user = await _userManager.FindByNameAsync(loginViewModel.UserIdentifier);
+            }
             if (user == null)
             {
-                _nToastNotifyService.AddErrorToastMessage("Your email or password is incorrect.");
+                _nToastNotifyService.AddErrorToastMessage("Your email/username or password is incorrect.");
                 return View(loginViewModel);
             }
 
@@ -111,7 +119,7 @@ namespace Flipard.MVC.Controllers
 
             if (!loginResult.Succeeded)
             {
-                _nToastNotifyService.AddErrorToastMessage("Your email or password is incorrect.");
+                _nToastNotifyService.AddErrorToastMessage("Your email/username or password is incorrect.");
                 return View(loginViewModel);
             }
 

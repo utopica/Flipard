@@ -6,95 +6,89 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/css/Login.css">
+    <link rel="stylesheet" href="~/css/register.css">
 
 </head>
 <body>
 @await Component.InvokeAsync("NToastNotify")
-    <div class="RegisterArea">
-
-        <div class="row ">
-
-            <div class="col-md-6 sec1">
-
-                <div class="image-container">
-                    <img src="~/images/leftside.png" alt="A person studying with flashcards.">
-                </div>
-
-            </div>
-
-            <div class="col-md-6 sec2">
-
-                <div class="logo-header">
-                    <div class="logo">
-                        <div class="logo-circle">
-                            <span class="circle circle-1"></span>
-                            <span class="circle circle-2"></span>
-                        </div>
-                        <h2>Flipard</h2>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="text-center">Register</h2>
-                    </div>
-                    <div class="card-body">
-                        <form asp-action="Register" method="post"> 
-                            <div class="form-group">
-                                <label for="Email">Email</label>
-                                <input type="email" class="form-control" id="Email" name="Email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="Username">Username</label>
-                                <input type="text" class="form-control" id="Username" name="Username" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="Password">Password</label>
-                                <input type="password" class="form-control" id="Password" name="Password" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="Birthdate">Birthdate</label>
-                                <input type="date" class="form-control" id="Birthdate" name="Birthdate">
-                            </div>
-                            
-                            <div class="form-check new">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    I want to receive news, promotional emails, news and tips on how to use Quizlet
-                                </label>
-                            </div>
-
-                            <div class="form-check terms">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    I accept Flipard's terms of service and privacy policy
-                                </label>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary center-btn">Üye Olun</button>
-
-                        </form>
-                    </div>
-                </div>
-                <div class="card registerToLogin">
-                    <button type="button" id="registerToLogin" class="btn btn-outline-secondary">Already have an account? Sign in!</button>
-                </div>
-
-            </div>
-
+<div class="register-container">
+    <div class="register-image-section">
+        <div class="image-wrapper">
+            <img src="~/images/leftside.png" alt="A person studying with flashcards.">
         </div>
-
     </div>
 
-</body>
+    <div class="register-image-section register-form-section ">
+        <div class="logo-header">
+            <div class="logo">
+                <div class="logo-circle">
+                    <span class="circle circle-1"></span>
+                    <span class="circle circle-2"></span>
+                </div>
+                <h2>Flipard</h2>
+            </div>
+        </div>
 
+        <div class="card">
+            <div class="card-header">
+                <h3> Register </h3>
+            </div>
+            <div class="card-body">
+                <form asp-action="Register" method="post">
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <input type="email" class="form-control" id="Email" name="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Username">Username</label>
+                        <input type="text" class="form-control" id="Username" name="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <input type="password" class="form-control" id="Password" name="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Birthdate">Birthdate</label>
+                        <input type="date" class="form-control" id="Birthdate" name="Birthdate">
+                    </div>
+
+                    <div class="form-check new">
+                        <input class="form-check-input" type="checkbox" id="gridCheck">
+                        <label class="form-check-label" for="gridCheck">
+                            I want to receive news, promotional emails, news and tips on how to use Quizlet
+                        </label>
+                    </div>
+
+                    <div class="form-check terms">
+                        <input class="form-check-input" type="checkbox" id="gridCheck">
+                        <label class="form-check-label" for="gridCheck">
+                            I accept Flipard's terms of service and privacy policy
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary center-btn">Sign Up</button>
+
+                </form>
+            </div>
+        </div>
+        <div class="card login-card">
+            <a id="loginLink" asp-controller="Auth" asp-action="Login" style="display: none;"></a>
+            <button type="button" id="navigateToLogin" class="btn btn-outline-secondary">Already have an account? Sign in!</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    document.getElementById("navigateToLogin").addEventListener("click", function () {
+        document.getElementById("loginLink").click();
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="~/js/LoginRegister.js"></script>
 </html>
