@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using Flipard.Domain.Identity;
+using Flipard.Domain.Interfaces;
+using Flipard.Persistence.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Flipard.MVC.Controllers
 {
@@ -14,14 +18,21 @@ namespace Flipard.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IdentityContext _context;
-        private readonly ApplicationDbContext _Appcontext;
+        private readonly ApplicationDbContext _appcontext;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public HomeController(ILogger<HomeController> logger, IdentityContext context, ApplicationDbContext appcontext, IWebHostEnvironment hostingEnvironment)
+        private readonly UserManager<User> _userManager;
+        private readonly IEmailService _emailService;
+        private readonly INToastNotifyService _nToastNotifyService;
+        
+        public HomeController(ILogger<HomeController> logger, IdentityContext context, ApplicationDbContext appcontext, IWebHostEnvironment hostingEnvironment, IEmailService emailService, UserManager<User> userManager, INToastNotifyService nToastNotifyService)
         {
             _logger = logger;
             _context = context;
-            _Appcontext = appcontext;
+            _appcontext = appcontext;
             _hostingEnvironment = hostingEnvironment;
+            _emailService = emailService;
+            _userManager = userManager;
+            _nToastNotifyService = nToastNotifyService;
         }
 
 
@@ -29,7 +40,7 @@ namespace Flipard.MVC.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var userDecks = _Appcontext.Decks
+            var userDecks = _appcontext.Decks
                 .Where(d => d.CreatedByUserId == userId)
                 .Select(d => new HomeDeckDetailsViewModel
                 {
@@ -39,7 +50,7 @@ namespace Flipard.MVC.Controllers
                 })
                 .ToList();
 
-            var randomUserDecks = _Appcontext.Decks
+            var randomUserDecks = _appcontext.Decks
                 .Where(d => d.CreatedByUserId != userId)
                 .OrderBy(r => Guid.NewGuid())
                 .Select(d => new HomeDeckDetailsViewModel
@@ -83,6 +94,130 @@ namespace Flipard.MVC.Controllers
 
             return View(userProfile);
         }
+        
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Your password has been changed successfully.";
+                
+                _nToastNotifyService.AddSuccessToastMessage("Your password has been changed successfully.");
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+                
+                _nToastNotifyService.AddErrorToastMessage("Your password hasn't been changed.");
+            }
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                // Don't reveal that the user does not exist or is not confirmed
+                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = Url.Action("ResetPassword", "Home", new { userId = user.Id, token = token }, protocol: HttpContext.Request.Scheme);
+
+            await _emailService.SendEmailAsync(model.Email, "Reset Password",
+                $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+
+            return RedirectToAction(nameof(ForgotPasswordConfirmation));
+        }
+
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View(); //Ive created the view
+        }
+
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var model = new ResetPasswordViewModel { Token = token };
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
 
 
         [HttpGet]
@@ -100,7 +235,7 @@ namespace Flipard.MVC.Controllers
                 return View(homeCreateSetViewModel);
             }
 
-            var deck = _Appcontext.Decks.FirstOrDefault(d => d.Id == homeCreateSetViewModel.Id);
+            var deck = _appcontext.Decks.FirstOrDefault(d => d.Id == homeCreateSetViewModel.Id);
 
             if (deck == null)
             {
@@ -114,7 +249,7 @@ namespace Flipard.MVC.Controllers
                     CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
                 };
 
-                _Appcontext.Decks.Add(deck);
+                _appcontext.Decks.Add(deck);
             }
 
             foreach (var termMeaning in homeCreateSetViewModel.TermMeanings)
@@ -164,11 +299,11 @@ namespace Flipard.MVC.Controllers
 
                 deck.Cards.Add(card);
 
-                _Appcontext.Vocabularies.Add(vocabulary);
-                _Appcontext.Cards.Add(card);
+                _appcontext.Vocabularies.Add(vocabulary);
+                _appcontext.Cards.Add(card);
             }
 
-            _Appcontext.SaveChanges();
+            _appcontext.SaveChanges();
 
             return RedirectToAction("Index", "Home");
         }
@@ -177,7 +312,7 @@ namespace Flipard.MVC.Controllers
         [HttpGet]
         public JsonResult SearchDecks(string query)
         {
-            var decks = _Appcontext.Decks 
+            var decks = _appcontext.Decks 
                 .Where(d => d.Name.Contains(query))
                 .Select(d => new { d.Id, d.Name })
                 .ToList();
