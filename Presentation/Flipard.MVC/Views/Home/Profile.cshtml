@@ -1,140 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Profile";
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/profile.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-    <style>
-        :root {
-            --primary-color: #00BFA5;
-            --secondary-color: #202124;
-            --text-color: #FFFFFF;
-            --card-bg-color: rgba(40, 41, 47, 0.5);
-        }
-
-        body {
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
-        .profile-card {
-            background-color: var(--card-bg-color);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-header {
-            margin-bottom: 30px;
-        }
-
-        .profile-header h2 {
-            font-size: 28px;
-            color: var(--primary-color);
-            margin: 0;
-        }
-
-        .profile-info {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 15px 30px;
-            margin-bottom: 30px;
-            align-items: center;
-        }
-
-        .profile-info-label {
-            font-weight: 500;
-            color: #6c757d;
-        }
-
-        .profile-info-value {
-            text-align: right;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-        }
-
-        .button-group > * {
-            flex: 1;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
-            white-space: nowrap;
-        }
-
-        .btn-edit {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-        }
-
-        .btn-logout {
-            background-color: #dc3545;
-            color: var(--text-color);
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-change-password {
-            color: var(--text-color);
-            background-color: transparent;
-            text-align: right;
-            width: 100px;
-        }
-
-        .btn-change-password:hover {
-            font-weight: 800;
-            color: var(--primary-color);
-        }
-
-        .btn:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        @@media (max-width: 600px) {
-            .profile-info {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-info-value {
-                text-align: left;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-        }
-    </style>
 </head>
 <body>
 <div class="container">
