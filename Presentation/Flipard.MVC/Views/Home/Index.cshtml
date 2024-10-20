@@ -1,34 +1,17 @@
-﻿@using Flipard.MVC.ViewModels
-
-@model Flipard.MVC.ViewModels.HomePageViewModel
+﻿@model Flipard.MVC.ViewModels.HomePageViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
     var antiforgery = Html.AntiForgeryToken();
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="~/css/homeindex.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 </head>
-
-<style>
-    .deck-list-other {
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding: 0;
-        margin: 0;
-    }
-
-    .deck-list-other::-webkit-scrollbar {
-        display: none; 
-    }
-</style>
 <body>
     @antiforgery
     <content>
