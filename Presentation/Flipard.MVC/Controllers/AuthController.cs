@@ -27,7 +27,14 @@ namespace Flipard.MVC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            _nToastNotifyService.AddInfoToastMessage("You got redirected");
+            if (TempData["SuccessMessage"] != null)
+            {
+                _nToastNotifyService.AddSuccessToastMessage(TempData["SuccessMessage"].ToString());
+            }
+            else
+            {
+                _nToastNotifyService.AddInfoToastMessage("You got redirected");
+            }
             return View();
         }
 
@@ -48,6 +55,7 @@ namespace Flipard.MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _nToastNotifyService.AddErrorToastMessage("Please check the input fields.");
                 return View(registerViewModel);
             }
 
@@ -75,7 +83,8 @@ namespace Flipard.MVC.Controllers
                 return View(registerViewModel);
             }
 
-            _nToastNotifyService.AddSuccessToastMessage("You've successfully registered to Flipard!");
+            TempData["SuccessMessage"] = "You've successfully registered to Flipard!";
+            
             return RedirectToAction(nameof(Login));
         }
 
@@ -88,6 +97,14 @@ namespace Flipard.MVC.Controllers
             }
 
             var loginViewModel = new AuthLoginViewModel();
+            
+            if (TempData["SuccessMessage"] != null)
+            {
+                _nToastNotifyService.AddSuccessToastMessage(TempData["SuccessMessage"].ToString());
+            }
+            
+            _nToastNotifyService.AddInfoToastMessage("Test toast message");
+            
             return View(loginViewModel);
         }
 
@@ -96,6 +113,7 @@ namespace Flipard.MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _nToastNotifyService.AddErrorToastMessage("Please check the input fields.");
                 return View(loginViewModel);
             }
 
@@ -109,7 +127,7 @@ namespace Flipard.MVC.Controllers
             {
                 user = await _userManager.FindByNameAsync(loginViewModel.UserIdentifier);
             }
-            if (user == null)
+            if (user is null)
             {
                 _nToastNotifyService.AddErrorToastMessage("Your email/username or password is incorrect.");
                 return View(loginViewModel);
@@ -123,9 +141,11 @@ namespace Flipard.MVC.Controllers
                 return View(loginViewModel);
             }
 
+            TempData["SuccessMessage"] = $"Welcome {user.UserName} to Flipard!";
+            
             _nToastNotifyService.AddSuccessToastMessage($"Welcome {user.UserName} to Flipard!");
-
-            if (user.Email != null) await _emailService.SendEmailAsync(user.Email, "flipard@elifokms.dev", "ornektir");
+            
+            // if (user.Email != null) await _emailService.SendEmailAsync(user.Email, "flipard@elifokms.dev", "ornektir");
 
             return RedirectToAction(nameof(Index), "Home");
         }

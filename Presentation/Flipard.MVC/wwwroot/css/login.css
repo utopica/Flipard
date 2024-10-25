@@ -42,7 +42,6 @@ body {
 
 .image-wrapper img {
     max-width: 100%;
-    max-height: 100%;
     width: auto;
 }
 
@@ -155,6 +154,22 @@ body {
     font-size: 1rem;
 }
 
+.forgot-password-link{
+    margin: 10px;
+}
+.forgot-password{
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.forgot-password:focus,
+.forgot-password:hover {
+    color: #00BFA5;
+    text-decoration: none; 
+    outline: none; 
+}
+
 @media screen and (min-width: 768px) {
     /* .container {
          display: flex;
@@ -166,7 +181,7 @@ body {
     }
 
     .logo h2 {
-        font-size: 2.5rem;
+        font-size: 2.3rem;
     }
 
     .card-header h3 {
@@ -179,7 +194,7 @@ body {
 
     .btn-primary,
     .btn-outline-secondary {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 }
 

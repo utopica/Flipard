@@ -140,6 +140,33 @@ body {
     font-size: 0.875rem;
 }
 
+.forgot-password-static-text{
+    word-wrap: break-word;
+}
+.text{
+    margin:1.5rem auto;
+}
+
+.profile-info-forgot-password {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5rem auto;
+    align-items: center;
+}
+
+.profile-info-label-forgot-password {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.profile-info-value-forgot-password {
+    text-align: right;
+}
+
+.profile-info-value-forgot-password input{
+    width: 100%;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .profile-info {

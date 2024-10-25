@@ -16,6 +16,10 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddMvc().AddNToastNotifyToastr();
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("app.development.json", optional: true, reloadOnChange: true);
+
 var configuration = builder.Configuration;
 
 builder.Services.AddPersistenceServices(configuration);
