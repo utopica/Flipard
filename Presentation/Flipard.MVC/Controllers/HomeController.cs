@@ -59,7 +59,7 @@ namespace Flipard.MVC.Controllers
                     Name = d.Name,
                     CardCount = d.Cards.Count()
                 })
-                .Take(5) //limit the number of random decks
+                .Take(5) 
                 .ToList();
 
             var viewModel = new HomePageViewModel
@@ -152,7 +152,6 @@ namespace Flipard.MVC.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
             {
-                // Don't reveal that the user does not exist or is not confirmed
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
 
@@ -168,7 +167,7 @@ namespace Flipard.MVC.Controllers
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
         {
-            return View(); //Ive created the view
+            return View(); 
         }
 
         [AllowAnonymous]
@@ -192,10 +191,9 @@ namespace Flipard.MVC.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(ResetPasswordConfirmation));
             }
 

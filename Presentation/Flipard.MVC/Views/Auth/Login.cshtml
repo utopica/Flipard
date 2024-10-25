@@ -1,4 +1,6 @@
 ﻿@model Flipard.MVC.ViewModels.AuthLoginViewModel
+@using NToastNotify
+@inject IToastNotification ToastNotification
 
 @{
     ViewData["Title"] = "Sign-In";
@@ -13,9 +15,9 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/login.css">
+    @await Component.InvokeAsync("NToastNotify")
 </head>
 <body>
-@await Component.InvokeAsync("NToastNotify")
 <div class="login-container">
     <div class="login-image-section">
         <div class="image-wrapper">
@@ -37,6 +39,7 @@
         <div class="card">
             <div class="card-header">
                 <h3> Login </h3>
+
             </div>
             <div class="card-body">
                 <form asp-controller="Auth" asp-action="Login" method="post">
@@ -53,20 +56,21 @@
             </div>
         </div>
 
+        <div class="forgot-password-link">
+            <a asp-controller="Home" asp-action="ForgotPassword" class="forgot-password">Did you forget your password?</a>
+        </div>
+
         <div class="card registration-card">
             <a id="registerLink" asp-controller="Auth" asp-action="Register" style="display: none;"></a>
             <button type="button" id="navigateToRegister" class="btn btn-outline-secondary">New Flipard? Create an account</button>
         </div>
     </div>
 </div>
-
 </body>
-<script src="~/js/LoginRegister.js"></script>
 <script>
     document.getElementById("navigateToRegister").addEventListener("click", function () {
         document.getElementById("registerLink").click();
     });
-
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

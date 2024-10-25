@@ -13,36 +13,26 @@ using System.Threading.Tasks;
 using Flipard.Domain.Interfaces;
 using Flipard.Persistence.Concretes;
 
-namespace Flipard.Persistence
+namespace Flipard.Persistence;
+
+public static class ServiceRegistration
 {
-    public static class ServiceRegistration
+    public static void AddPersistenceServices(this
+        IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddPersistenceServices(this
-            IServiceCollection services, IConfiguration configuration)
-        {
+        var connectionString = configuration.GetConnectionString("PostgreSQL");
 
-            var connectionString = configuration.GetConnectionString("PostgreSQL");
+        services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(connectionString); });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
-            });
+        services.AddDbContext<IdentityContext>(options => { options.UseNpgsql(connectionString); });
 
-            services.AddDbContext<IdentityContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
-            });
+        services.AddScoped<ICardReadRepository, CardReadRepository>();
+        services.AddScoped<ICardWriteRepository, CardWriteRepository>();
 
-            services.AddScoped<ICardReadRepository, CardReadRepository>();
-            services.AddScoped<ICardWriteRepository, CardWriteRepository>();
+        services.AddScoped<IDeckReadRepository, DeckReadRepository>();
+        services.AddScoped<IDeckWriteRepository, DeckWriteRepository>();
 
-            services.AddScoped<IDeckReadRepository, DeckReadRepository>();
-            services.AddScoped<IDeckWriteRepository, DeckWriteRepository>();
-
-            services.AddScoped<IVocabularyReadRepository, VocabularyReadRepository>();
-            services.AddScoped<IVocabularyWriteRepository, VocabularyWriteRepository>();
-
-
-        }
+        services.AddScoped<IVocabularyReadRepository, VocabularyReadRepository>();
+        services.AddScoped<IVocabularyWriteRepository, VocabularyWriteRepository>();
     }
 }
