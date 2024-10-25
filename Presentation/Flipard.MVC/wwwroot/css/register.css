@@ -90,7 +90,7 @@ body {
 }
 
 .logo h2 {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
 }
 
 /* Form */
@@ -133,12 +133,16 @@ body {
     font-size: 1rem;
 }
 
+.form-group {
+    margin-bottom: 0.7rem;
+}
+
 /* Button */
 .btn-primary {
     background-color: #6c757d;
     border: 1px solid #6c757d;
     color: #fff;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .btn-primary:hover {
