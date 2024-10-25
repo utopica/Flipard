@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
 
-/* CREATE QUIZ CSS */
 * {
     margin: 0;
     padding: 0;
@@ -32,13 +31,6 @@ content {
     flex-direction: column;
 }
 
-.question-card {
-    display: flex;
-    width: 100%;
-    height: 44%;
-    flex-direction: column;
-}
-
 .card-heading {
     margin: 10px;
     padding: 5px;
@@ -50,6 +42,13 @@ content {
     height: 20px;
 }
 
+.question-card {
+    display: flex;
+    width: 100%;
+    height: 44%;
+    flex-direction: column;
+}
+
 .card-meaning-content {
     width: 100%;
     height: 100%;
@@ -58,6 +57,13 @@ content {
     flex-direction: row;
     justify-content: space-between;
     padding: 10px 20px;
+}
+
+.card-meaning-text {
+    width: 350px;
+    overflow: auto;
+    text-overflow: ellipsis;
+    font-size: 1rem;
 }
 
 .card-meaning-image{
@@ -78,26 +84,25 @@ content {
         border-radius: 50%;
     }
 
-.card-meaning-text {
-   
-    width: 350px;
-    overflow: auto;
-    text-overflow: ellipsis;
-    font-size: 1rem;
-}
 
 .answer-card {
     display: flex;
     width: 100%;
     height: 43%;
     flex-direction: column;
+    gap: 0.5em;
 }
 
 .card-term-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
     width: 100%;
     height: 100%;
     color: white;
     padding: 10px 20px;
+    
 }
     .card-term-content input {
         background: #323338;
@@ -107,6 +112,7 @@ content {
         color: white;
         padding: 10px;
     }
+    
 .card-term-text {
     width: 100%;
     height: 100%;
@@ -115,7 +121,6 @@ content {
     word-wrap: break-word;
     font-size: 1.1rem;
     margin: 0;
-    
 }
 
     .card-term-text input {
@@ -153,9 +158,6 @@ content {
     border: none;
 }
 
-
-
-
 .quiz-prev-button, .quiz-next-button {
     font-size: 50px;
     background: none;
@@ -183,6 +185,29 @@ content {
 .quiz-next-button {
     margin-left: 20px;
 }
+
+.wrong-answer, .correct-answer {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.wrong-answer {
+    color: red;
+}
+
+.correct-answer {
+    color: green;
+}
+
+.answer-feedback {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 0.5em;
+}
+
+/* Responsiveness */
 
 @media (max-width: 768px) {
     .quiz-card {
@@ -237,5 +262,7 @@ content {
         font-size: 0.85rem;
     }
 }
+
+
 
 

@@ -9,54 +9,13 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="">
 <head>
-    <link rel="stylesheet" href="~/css/createQuiz.css">
+    <link rel="stylesheet" href="~/css/create-quiz.css">
+    <link rel="stylesheet" href="~/css/quiz-stats.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 </head>
-
-<style>
-    body {
-        background-color: #202124;
-        margin: 0;
-        padding: 0;
-    }
-
-    .wrong-answer, .correct-answer {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-    }
-
-    .wrong-answer {
-        color: red;
-    }
-
-    .correct-answer {
-        color: green;
-    }
-
-    .answer-feedback {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        gap: 0.5em;
-    }
-
-    .answer-card {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5em;
-    }
-
-    .card-term-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5em;
-    }
-</style>
 <body>
     @antiforgery
     <content>
@@ -102,79 +61,48 @@
                 </button>
             </div>
         </div>
+
+        <div id="quiz-summary">
+            <div class="remaining-time">Harcanan Zaman: <span id="time-taken">3 dk.</span></div>
+
+            <div class="progress-container">
+                <div class="progress-circle">
+                    <svg width="120" height="120" viewBox="0 0 120 120">
+                        <circle class="background" cx="60" cy="60" r="54" />
+                        <circle class="progress" cx="60" cy="60" r="54" />
+                    </svg>
+                    <div class="percentage">%<span id="accuracy-percentage">63</span></div>
+                </div>
+
+                <div class="score-details">
+                    <div class="score-item">
+                        <span class="score-label">Doğru</span>
+                        <span class="score-value correct" id="correct-count">5</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">Yanlış</span>
+                        <span class="score-value incorrect" id="incorrect-count">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-buttons">
+                <button class="summary-button submit-results" onclick="submitQuizResults()">Submit Results</button>
+                <button class="summary-button try-again" onclick="location.reload()">Try Again</button>
+            </div>
+        </div>
     </content>
+    <script src="@Url.Content("~/js/flashcards/quiz.js")"></script>
 
+    <script src="@Url.Content("~/js/flashcards/quiz.js")"></script>
     <script type="text/javascript">
-        var currentIndex = 0;
-        var cards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
-        var showAnswer = false;
+        document.addEventListener("DOMContentLoaded", function() {
+            const quizCards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
+            const deck = '@Model.Id';
+            const resultsUrl = '@Url.Action("QuizResults", "Flashcards")';
 
-        function showCard(index) {
-            if (index >= 0 && index < cards.length) {
-                currentIndex = index;
-                document.getElementById("card-meaning-text").innerText = cards[currentIndex].Meaning;
-                document.getElementById("term-input").value = "";
-                document.querySelector(".card-heading #progress").innerText = (currentIndex + 1) + "/" + cards.length;
-                document.getElementById("answer-feedback").innerHTML = "";
-
-                var imageElement = document.getElementById("meaning-image");
-                if (cards[currentIndex].ImageUrl) {
-                    if (!imageElement) {
-                        var img = document.createElement("img");
-                        img.id = "meaning-image";
-                        img.src = cards[currentIndex].ImageUrl;
-                        img.alt = "Image";
-                        document.getElementById("card-meaning-image").appendChild(img);
-                    } else {
-                        imageElement.src = cards[currentIndex].ImageUrl;
-                        imageElement.style.display = "block";
-                    }
-                } else {
-                    if (imageElement) {
-                        imageElement.style.display = "none";
-                    }
-                }
-                showAnswer = false;
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            showCard(currentIndex);
+            initializeQuiz(quizCards, deck, resultsUrl);
         });
-
-        function showPreviousCard() {
-            if (currentIndex > 0) {
-                showCard(currentIndex - 1);
-            }
-        }
-
-        function submitAnswer() {
-            var userTerm = document.getElementById("term-input").value.trim();
-            var correctTerm = cards[currentIndex].Term;
-            var answerFeedback = document.getElementById("answer-feedback");
-
-            if (userTerm === "") {
-                alert("Please enter a term.");
-                return;
-            }
-
-            if (userTerm.toLowerCase() !== correctTerm.toLowerCase() && !showAnswer) {
-                answerFeedback.innerHTML = `
-                            <div class="wrong-answer">${userTerm} <i class="fi fi-rr-cross-small"></i></div>
-                            <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
-                document.getElementById("term-input").value = correctTerm;
-                showAnswer = true;
-                return;
-            }
-
-            console.log("Submitted term for card " + currentIndex + ": " + userTerm);
-
-            if (currentIndex < cards.length - 1) {
-                showCard(currentIndex + 1);
-            } else {
-                alert("Quiz complete!" );
-            }
-        }
     </script>
 </body>
 </html>
