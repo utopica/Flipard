@@ -16,6 +16,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Card> Cards { get; set; }
     public DbSet<Vocabulary> Vocabularies { get; set; }
     public DbSet<Deck> Decks { get; set; }
+    public DbSet<QuizAttempt> QuizAttempts { get; set; }
+    public DbSet<QuizAnswer> QuizAnswers { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions) : base(dbContextOptions)
     {

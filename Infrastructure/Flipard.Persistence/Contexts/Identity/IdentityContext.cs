@@ -24,7 +24,9 @@ namespace Flipard.Persistence.Contexts.Identity
             modelBuilder.Ignore<Deck>();
             modelBuilder.Ignore<Card>();
             modelBuilder.Ignore<Vocabulary>();
-
+            modelBuilder.Ignore<QuizAttempt>();
+            modelBuilder.Ignore<QuizAnswer>();
+            
             base.OnModelCreating(modelBuilder);
         }
     }
