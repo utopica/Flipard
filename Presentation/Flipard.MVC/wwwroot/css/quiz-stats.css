@@ -1,6 +1,7 @@
 #quiz-summary {
     display: none;
-    background-color: #0F1729;
+    width: 600px;
+    background-color: #323338;
     padding: 2em;
     border-radius: 12px;
     margin-top: 2em;
@@ -20,6 +21,7 @@
     align-items: center;
     gap: 3em;
     margin-bottom: 2em;
+    justify-content: center;
 }
 
 .progress-circle {
@@ -60,6 +62,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    align-items: center;
 }
 
 .score-item {
@@ -98,6 +101,7 @@
     display: flex;
     gap: 1em;
     margin-top: 2em;
+    justify-content: center;
 }
 
 .summary-button {

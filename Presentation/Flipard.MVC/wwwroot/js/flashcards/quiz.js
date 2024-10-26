@@ -62,10 +62,10 @@ function submitAnswer() {
     var correctTerm = cards[currentIndex].Term;
     var answerFeedback = document.getElementById("answer-feedback");
 
-    if (userTerm === "") {
-        alert("Please enter a term.");
-        return;
-    }
+    // if (userTerm === "") {
+    //     alert("Please enter a term.");
+    //     return;
+    // }
 
     if (!originalAnswers[currentIndex]) {
         originalAnswers[currentIndex] = userTerm;
