@@ -92,6 +92,12 @@
     margin-right: auto;
 }
 
+.card-edit-buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .add-card-button-div {
     display: flex;
     width: 100%;
@@ -114,7 +120,7 @@
 .card-delete-button {
     margin-top: 10px;
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 18px;
     background: none;
     color: #fff;
     border: none;

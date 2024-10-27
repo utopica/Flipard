@@ -2,17 +2,16 @@
 
 @{
     ViewData["Title"] = "Create Set";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "_Layout";
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="~/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/home/create-set.css">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
 </head>
-
 <body>
 <main>
     <form asp-controller="Home" asp-action="CreateSet" method="post" enctype="multipart/form-data">
@@ -42,15 +41,15 @@
                 <div class="user-deck-card-info">
                     <!--card number, delete card button, add image button-->
                     <span class="card-number">1</span>
-                    <div>
+                    <div class="card-edit-buttons">
                         <button type="button" class="card-delete-button">
                             <span class="button-card-delete-icon">
-                                <i class="fi fi-sr-trash"></i>
+                                <i class="fa-solid fa-trash"></i>
                             </span>
                         </button>
                         <button type="button" class="card-image-button">
                             <span class="button-card-image-icon">
-                                <i class="fi fi-sr-add-image"></i>
+                                <i class="fa-solid fa-image"></i>
                             </span>
                         </button>
                         <input type="file" class="card-image-input" name="TermMeanings[0].Image" style="display: none;">
@@ -64,9 +63,9 @@
                         <textarea class="user-deck-card-definition-input" name="TermMeanings[0].Meaning" placeholder="Tanım"></textarea>
                     </div>
                     <div class="user-deck-card-image">
-                        <img class="image-preview" style="display:none;" />
+                        <img class="image-preview" style="display:none;"/>
                         <i class="fi fi-tr-graphic-style"></i>
-                        <input type="hidden" name="TermMeanings[0].ImageUrl" class="card-image-url" />
+                        <input type="hidden" name="TermMeanings[0].ImageUrl" class="card-image-url"/>
                     </div>
                 </div>
             </div>
@@ -74,8 +73,8 @@
         <div class="add-card-button-div">
             <button id="add-card-button" type="button">Kart Ekle</button>
         </div>
-       
-        
+
+
     </form>
 
 </main>
@@ -94,12 +93,12 @@
                         <div>
                             <button type="button" class="card-delete-button">
                                 <span class="button-card-delete-icon">
-                                    <i class="fi fi-sr-trash"></i>
+                                    <i class="fa-solid fa-trash"></i>
                                 </span>
                             </button>
                             <button type="button" class="card-image-button">
                                 <span class="button-card-image-icon">
-                                    <i class="fi fi-sr-add-image"></i>
+                                    <i class="fa-solid fa-image"></i>
                                 </span>
                             </button>
                             <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
@@ -185,4 +184,3 @@
 
     updateDeleteButtonListeners();
 </script>
-

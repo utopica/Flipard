@@ -1,19 +1,19 @@
-﻿@using Flipard.MVC.ViewModels
-@using Flipard.MVC.ViewModels.Home
+﻿@using Flipard.MVC.ViewModels.Home
 
 @model Flipard.MVC.ViewModels.Home.HomeCreateSetViewModel
 
 @{
     ViewData["Title"] = "Flashcards";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "_Layout";
     var antiforgery = Html.AntiForgeryToken();
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/flashcards/display-page.css">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 </head>
 <style>
 
@@ -44,7 +44,7 @@
         <div class="display-card">
             <button type="button" class="card-button" id="previous-button" onclick="showPreviousCard()">
                 <span class="button-text">
-                    <i class="fi fi-bs-angle-left"></i>
+                    <i class="fa-solid fa-angle-left"></i>
                 </span>
             </button>
 
@@ -55,7 +55,7 @@
 
             <button type="button" class="card-button" id="next-button" onclick="showNextCard()">
                 <span class="button-text">
-                    <i class="fi fi-bs-angle-right"></i>
+                    <i class="fa-solid fa-angle-right"></i>
                 </span>
             </button>
         </div>
@@ -69,24 +69,24 @@
                 <div class="card-list">
                     <div class="card-edit-bar">
                         <span class="card-number">@(i + 1)</span>
-                        <div>
+                        <div class="card-edit-buttons">
                             @if (!Model.IsReadOnly)
                             {
                                 <button type="button" class="card-delete-button" data-card-id="@card.Id" onclick="deleteCard(this)">
                                     <span class="button-card-delete-icon">
-                                        <i class="fi fi-sr-trash"></i>
+                                        <i class="fa-solid fa-trash"></i>
                                     </span>
                                 </button>
 
                                 <button type="button" class="card-edit-button" onclick="editCard('@card.Id')">
                                     <span class="button-card-edit-icon">
-                                        <i class="fi fi-sr-pencil"></i>
+                                        <i class="fa-solid fa-pen"></i>
                                     </span>
                                 </button>
 
                                 <button type="button" class="card-save-button" onclick="saveCard('@card.Id')" style="display: none;">
                                     <span class="button-card-save-icon">
-                                        <i class="fi fi-sr-disk"></i>
+                                       <i class="fa-solid fa-floppy-disk"></i>
                                     </span>
                                 </button>
                             }
@@ -120,7 +120,7 @@
                             @if (string.IsNullOrEmpty(card.ImageUrl) && !Model.IsReadOnly)
                             {
                                 <span class="button-text">
-                                    <i class="fi fi-sr-add-image"></i>
+                                     <i class="fi fi-tr-graphic-style"></i>
                                 </span>
                             }
                         </div>
