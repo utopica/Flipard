@@ -1,11 +1,51 @@
 :root {
-    --main-backgorund-color: #202124;
-    --primary-color: #00BFA5;
-    --secondary-color: #202124;
+    --main-backgorund-color: rgb(32, 33, 36);
+    
+    --title-text-color: rgb(251, 250, 251);
     --white-text-color: #FFFFFF;
     --black-text-color: #000000;
+    --sub-text-color: #b5b5b5;
+    --sub-text-color-gray: #d2d1d1;
+    --sub-text-color-dark-gray: #6c757d;
+    --sub-text-color-blue: #94A3B8;
+    
     --card-bg-color: #323338;
-    --gray-bg-color : #323338;
-    --gray-bg-border-color : #8d90a0;
-    --btn-red : #dc3545;
+    --card-dark-bg-color: rgb(36, 37, 42);
+    --card-dark-shadow-color: rgba(0, 0, 0, 0.2);
+    --card-mid-bg-color: #4b5563;
+    --card-mid-sub-bg-color: #374151;
+    --black-bg-color-second: #111;
+    --black-bg-color-third: #222;
+    --black-bg-color-third-border: #444;
+    
+    --icon-button-color: #ffffff;
+    --icon-button-color-hover: #b5e0d4;
+    --icon-button-sub-color: #a3a6b5;
+
+    --button-red : #dc3545;
+    --button-red-pale : #b63b44;
+    --button-bright-green: #4ADE80;
+    --button-green: #18c150;
+    --button-green-pale : #45b56a;
+    --button-blue: #62cbe7;
+    --button-bright-blue: #00BFA5;
+    --button-blue-text-color: #1e1e1e;
+    --button-pale-blue-text-color: #334155;
+    --button-pale-blue-text-color-hover: #334155;
+    --button-blue-hover: #b5e0d4;
+    
+    --button-green-bg-color: rgba(74, 222, 128, 0.1);
+    --button-red-bg-color: rgba(249, 115, 22, 0.1);
+    
+    --input-color: #5f616b;
+    
+    --border-color: #8d90a0;
+    --dark-border-color: #5f616b;
+    --border-color-second : #70737F;
+    --scroll-card-color: #555;
+    --scroll-card-color-hover: #888;
+    
+    --flipard-green: #009578;
+    --flipard-green-hover: #008168;
+    
 }

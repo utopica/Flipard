@@ -1,5 +1,5 @@
 ﻿.login-image-section {
-    padding: 0px;
+    padding: 0;
     width: 100%;
 }
 
@@ -35,7 +35,7 @@
     justify-content: center;
     margin: 30px 1px;
     padding: 10px;
-    color: #FBFAFB;
+    color: var(--title-text-color);
     text-align: center;
 }
 
@@ -61,12 +61,12 @@
 }
 
 .circle-1 {
-    background-color: #62CBE7;
+    background-color: var(--button-blue);
     margin-left: 10px;
 }
 
 .circle-2 {
-    background-color: #B5E0D4;
+    background-color: var(--button-blue-hover);
 }
 
 .logo h2 {
@@ -75,17 +75,17 @@
 
 /* Form */
 .card {
-    background-color: #111;
-    border: 1px solid #444;
-    color: #fff;
+    background-color: var(--black-bg-color-second);
+    border: 1px solid var(--black-bg-color-third-border);
+    color: var(--white-text-color);
     width: 60%;
     margin: auto;
 }
 
 .card-header {
     justify-content: center;
-    border-bottom: 1px solid #444;
-    background-color: #222;
+    border-bottom: 1px solid var(--black-bg-color-third-border);
+    background-color: var(--black-bg-color-third);
     padding: 10px;
 }
 
@@ -99,41 +99,41 @@
     display: inline-block;
     margin: 1rem auto;
 }
-
+/* Form */
 .form-control {
-    background-color: #222;
-    border: 1px solid #444;
-    color: #fff;
+    background-color: var(--black-bg-color-third);
+    border: 1px solid var(--black-bg-color-third-border);
+    color: var(--white-text-color);
 }
 
 .form-control:focus {
-    background-color: #111;
-    border: 1px solid #777;
-    color: #fff;
+    background-color: var(--black-bg-color-second);
+    border: 1px solid var(--dark-border-color);
+    color: var(--white-text-color);
 }
 
 .form-control::placeholder {
-    color: #777;
+    color: var(--sub-text-color-blue);
     font-size: 1rem;
 }
-
+/* Button */
 .btn-primary {
-    background-color: #6c757d;
-    border: 1px solid #6c757d;
-    color: #fff;
+    background-color: var(--sub-text-color-dark-gray);
+    border: none;
+    color: var(--white-text-color);
     margin-top: 30px;
 }
 
 .btn-primary:hover {
-    background-color: #5a6268;
-    border: 1px solid #5a6268;
+    background-color: var(--button-pale-blue-text-color);
+    border: none;
 }
 
 .btn-primary,
 .btn-outline-secondary {
     display: block;
     width: 100%;
-    color: white;
+    color: var(--white-text-color);
     font-size: 1rem;
 }
 
@@ -141,24 +141,19 @@
     margin: 10px;
 }
 .forgot-password{
-    color: #FFFFFF;
+    color: var(--white-text-color);
     font-size: 0.875rem;
     text-decoration: none;
 }
 
 .forgot-password:focus,
 .forgot-password:hover {
-    color: #00BFA5;
+    color: var(--button-bright-blue);
     text-decoration: none; 
     outline: none; 
 }
 
 @media screen and (min-width: 768px) {
-    /* .container {
-         display: flex;
-         align-items: center;
-         margin: 0;
-     }*/
     .login-image-section {
         flex: 1;
     }

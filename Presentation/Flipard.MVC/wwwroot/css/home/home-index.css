@@ -1,10 +1,10 @@
 .label-deck h4 {
-    color: rgb(251, 250, 251);
+    color: var(--title-text-color);
     margin: 50px;
 }
 
 .deck-container {
-    background-color: rgb(36, 37, 42);
+    background-color: var(--card-dark-bg-color);
     border-radius: 10px;
     display: flex;
     overflow-x: auto;
@@ -45,7 +45,7 @@
     text-decoration: none;
     background-color: transparent;
     border: none;
-    color: rgb(251, 250, 251);
+    color: var(--title-text-color);
     margin: 10px;
 }
 
@@ -65,13 +65,13 @@
 
 .deck-card-header h5 {
     font-size: 1.2rem;
-    color: #fff;
+    color: var(--title-text-color);
 }
 
 .card-button {
     margin: 10px;
     background: none;
-    color: #fff;
+    color: var(--icon-button-color);
     cursor: pointer;
     width: 50px;
     height: 50px;
@@ -79,7 +79,7 @@
 }
 
 .card-button:hover {
-    color: #b5e0d4
+    color: var(--icon-button-color-hover)
 }
 
 #previous-button {
@@ -99,5 +99,5 @@
 }
 
 .deck-card-body-left span {
-    color: #b5b5b5;
+    color: var(--sub-text-color);
 }

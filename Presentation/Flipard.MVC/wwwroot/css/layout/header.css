@@ -21,7 +21,7 @@ main .container {
     align-items: flex-start;
     justify-content: center;
     padding: 10px;
-    color: #FBFAFB;
+    color: var(--title-text-color);
     text-align: center;
 }
 
@@ -47,12 +47,12 @@ main .container {
 }
 
 .logo-header .logo .logo-circle .circle-1 {
-    background-color: #62CBE7;
+    background-color: var(--button-blue);
     margin-left: 10px;
 }
 
 .logo-header .logo .logo-circle .circle-2 {
-    background-color: #B5E0D4;
+    background-color: var(--button-blue-hover);
 }
 
 .logo-header .logo h2 {
@@ -99,7 +99,7 @@ main .container {
     display: inline-flex;
     height: 40px;
     width: 40px;
-    background: #009578;
+    background: var(--flipard-green);
     border: none;
     outline: none;
     border-radius: 50%;
@@ -119,18 +119,18 @@ main .container {
     }
 
     .TopNavigation-contentRight .RightNavigationItem .create-button:hover {
-        background: #008168;
+        background: var(--flipard-green-hover);
     }
 
     .TopNavigation-contentRight .RightNavigationItem .create-button:active {
-        background: #008168;
+        background: var(--flipard-green-hover);
     }
 
 .TopNavigation-contentRight .RightNavigationItem .profile-button {
     display: inline-flex;
     height: 40px;
     width: 40px;
-    background: #009578;
+    background: var(--flipard-green);
     border: none;
     outline: none;
     border-radius: 50%;
@@ -144,7 +144,7 @@ main .container {
 
 .TopNavigation-contentRight .RightNavigationItem .profile-form .profile-button .profile-button-icon {
     display: inline-flex;
-    color: white;
+    color: var(--white-text-color);
     font-size: 15px;
 }
 
@@ -195,7 +195,6 @@ main .container {
 
 .search-button {
     padding: 8px;
-    background: none;
     background-color: rgba(40, 41, 47, 0.5);
     border: none;
     cursor: pointer;
@@ -204,7 +203,7 @@ main .container {
     .search-button .button-icon {
         width: 20px;
         height: 20px;
-        color: #fff;
+        color: var(--white-text-color);
         margin-right: 5px;
     }
 
@@ -229,17 +228,18 @@ main .container {
 }
 
 .dropdown-item a {
-    color: white;
+    color: var(--white-text-color);
     text-decoration: none;
 }
 
 .dropdown-item:hover {
-    background-color: #B5E0D4;
+    background-color: var(--icon-button-color-hover);
+    color: var(--black-text-color);
 }
 
 .dropdown-item a:hover {
-    color: black;
-    background-color: #B5E0D4;
+    color: var(--black-text-color);
+    background-color: var(--icon-button-color-hover);
 }
 
 .search-form {
@@ -255,16 +255,16 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-    background: #323338;
+    background: var(--card-bg-color);
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #888;
+    background-color: var(--scroll-card-color);
     border-radius: 6px;
-    border: 3px solid #323338;
+    border: 3px solid var(--card-bg-color);
 }
 
 body::-webkit-scrollbar-thumb:hover {
-    background-color: #008168;
+    background-color: var(--scroll-card-color-hover);
 
 }

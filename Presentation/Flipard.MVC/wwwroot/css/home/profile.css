@@ -13,7 +13,7 @@
     background-color: var(--card-bg-color);
     border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--card-dark-shadow-color);
 }
 
 .profile-header {
@@ -36,7 +36,7 @@
 
 .profile-info-label {
     font-weight: 500;
-    color: #6c757d;
+    color: var(--sub-text-color-dark-gray);
 }
 
 .profile-info-value {
@@ -65,12 +65,12 @@
 }
 
 .btn-edit {
-    background-color: var(--primary-color);
+    background-color: var(--button-bright-blue);
     color: var(--white-text-color);
 }
 
 .btn-logout {
-    background-color: var(--btn-red);
+    background-color: var(--button-red);
     color: var(--white-text-color);
 }
 
@@ -92,7 +92,7 @@
 
 .btn-change-password:hover {
     font-weight: 800;
-    color: var(--primary-color);
+    color: var(--button-bright-blue);
 }
 
 .btn:focus {
@@ -102,21 +102,21 @@
 
 /* Change Password */
 .form-control {
-    background-color: var(--gray-bg-color);
+    background-color: var(--card-bg-color);
     color: var(--white-text-color);
-    border: 1px solid var(--gray-bg-border-color);
+    border: 1px solid var(--border-color);
 }
 
 .form-control:focus {
     outline: none;
     box-shadow: none;
+    background-color: var(--card-bg-color);
     color: var(--white-text-color);
-    background-color: var(--gray-bg-color);
-    border: 1px solid var(--gray-bg-border-color);
+    border: 1px solid var(--border-color);
 }
 
 .text-danger {
-    color: var(--btn-red);
+    color: var(--button-red);
     font-size: 0.875rem;
 }
 
@@ -136,7 +136,7 @@
 
 .profile-info-label-forgot-password {
     font-weight: 500;
-    color: #6c757d;
+    color: var(--sub-text-color-dark-gray);
 }
 
 .profile-info-value-forgot-password {
