@@ -19,6 +19,25 @@
 <body>
     @antiforgery
     <content>
+        <div class="questions-menu" id="questionsMenu">
+            <div class="menu-container">
+                <div class="menu-content">
+                    <div class="menu-header">
+                        <h2 class="menu-title">Questions</h2>
+                        
+                    </div>
+                    <div class="questions-grid" id="questionsGrid">
+                        <!-- Questions will be inserted here -->
+                    </div>
+                </div>
+                <div class="menu-toggle">
+                    <button class="toggle-button" onclick="toggleMenu()">
+                        <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
         <div class="quiz-card">
             <div class="card-heading">
                 <p>Tanım</p>
@@ -68,8 +87,8 @@
             <div class="progress-container">
                 <div class="progress-circle">
                     <svg width="120" height="120" viewBox="0 0 120 120">
-                        <circle class="background" cx="60" cy="60" r="54" />
-                        <circle class="progress" cx="60" cy="60" r="54" />
+                        <circle class="background" cx="60" cy="60" r="54"/>
+                        <circle class="progress" cx="60" cy="60" r="54"/>
                     </svg>
                     <div class="percentage">%<span id="accuracy-percentage">63</span></div>
                 </div>
