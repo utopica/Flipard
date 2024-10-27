@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
-
-namespace Flipard.MVC.ViewModels
+﻿namespace Flipard.MVC.ViewModels.Home
 {
     public class HomeCreateSetViewModel
     {

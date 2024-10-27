@@ -5,6 +5,7 @@ using Flipard.Persistence;
 using Flipard.Persistence.Concretes;
 using Flipard.Persistence.Contexts.Identity;
 using Flipard.Persistence.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -47,6 +48,7 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 {
     options.ValidationInterval = TimeSpan.FromMinutes(30);
 });
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

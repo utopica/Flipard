@@ -1,22 +1,6 @@
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.625;
-}
-
-body {
-    background-color: #202124;
-    margin: 0;
-    padding: 0;
-}
-
-
 .create-card {
     display: flex;
-    background: #202124;
+    background: inherit;
     width: 100%;
     height: 100%;
     justify-content: space-between;
@@ -24,9 +8,8 @@ body {
 }
 
 .create-card-text {
-    color: #fff;
+    color: var(--white-text-color);
      margin: 100px 50px 50px 50px; 
-    /*width: 300px;*/
 }
 
 .create-button {
