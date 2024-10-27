@@ -1,25 +1,5 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
-
-:root {
-    --primary-color: #00BFA5;
-    --secondary-color: #202124;
-    --text-color: #FFFFFF;
-    --card-bg-color: rgba(40, 41, 47, 0.5);
-    --gray-bg-color : #323338;
-    --gray-bg-border-color : #8d90a0;
-    --btn-red : #dc3545
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body {
-    background-color: var(--secondary-color);
-    color: var(--text-color);
+﻿body {
+    color: var(--white-text-color);
 }
 
 .container {
@@ -33,7 +13,7 @@ body {
     background-color: var(--card-bg-color);
     border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--card-dark-shadow-color);
 }
 
 .profile-header {
@@ -42,7 +22,7 @@ body {
 
 .profile-header h2 {
     font-size: 1.6rem;
-    color: var(--text-color);
+    color: var(--white-text-color);
     margin: 0;
 }
 
@@ -56,7 +36,7 @@ body {
 
 .profile-info-label {
     font-weight: 500;
-    color: #6c757d;
+    color: var(--sub-text-color-dark-gray);
 }
 
 .profile-info-value {
@@ -85,13 +65,13 @@ body {
 }
 
 .btn-edit {
-    background-color: var(--primary-color);
-    color: var(--text-color);
+    background-color: var(--button-bright-blue);
+    color: var(--white-text-color);
 }
 
 .btn-logout {
-    background-color: var(--btn-red);
-    color: var(--text-color);
+    background-color: var(--button-red);
+    color: var(--white-text-color);
 }
 
 .btn:hover {
@@ -104,7 +84,7 @@ body {
 }
 
 .btn-change-password {
-    color: var(--text-color);
+    color: var(--white-text-color);
     background-color: transparent;
     text-align: right;
     width: 100px;
@@ -112,7 +92,7 @@ body {
 
 .btn-change-password:hover {
     font-weight: 800;
-    color: var(--primary-color);
+    color: var(--button-bright-blue);
 }
 
 .btn:focus {
@@ -122,21 +102,21 @@ body {
 
 /* Change Password */
 .form-control {
-    background-color: var(--gray-bg-color);
-    color: var(--text-color);
-    border: 1px solid var(--gray-bg-border-color);
+    background-color: var(--card-bg-color);
+    color: var(--white-text-color);
+    border: 1px solid var(--border-color);
 }
 
 .form-control:focus {
     outline: none;
     box-shadow: none;
-    color: var(--text-color);
-    background-color: var(--gray-bg-color);
-    border: 1px solid var(--gray-bg-border-color);
+    background-color: var(--card-bg-color);
+    color: var(--white-text-color);
+    border: 1px solid var(--border-color);
 }
 
 .text-danger {
-    color: var(--btn-red);
+    color: var(--button-red);
     font-size: 0.875rem;
 }
 
@@ -156,7 +136,7 @@ body {
 
 .profile-info-label-forgot-password {
     font-weight: 500;
-    color: #6c757d;
+    color: var(--sub-text-color-dark-gray);
 }
 
 .profile-info-value-forgot-password {
@@ -166,6 +146,9 @@ body {
 .profile-info-value-forgot-password input{
     width: 100%;
 }
+
+
+
 
 /* Responsive Design */
 @media (max-width: 600px) {

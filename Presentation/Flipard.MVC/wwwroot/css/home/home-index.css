@@ -1,28 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
-@import url('https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-rounded/css/uicons-bold-rounded.css');
-
-/* General */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.625;
-}
-
-body {
-    background-color: #202124;
-    margin: 0;
-    padding: 0;
-}
-
 .label-deck h4 {
-    color: rgb(251, 250, 251);
+    color: var(--title-text-color);
     margin: 50px;
 }
 
 .deck-container {
-    background-color: rgb(36, 37, 42);
+    background-color: var(--card-dark-bg-color);
     border-radius: 10px;
     display: flex;
     overflow-x: auto;
@@ -42,6 +24,8 @@ body {
     overflow-x: auto;
     padding: 0;
     margin: 0;
+    -ms-overflow-style: none;  
+    scrollbar-width: none;
 }
 
 .deck-list-other {
@@ -61,7 +45,7 @@ body {
     text-decoration: none;
     background-color: transparent;
     border: none;
-    color: rgb(251, 250, 251);
+    color: var(--title-text-color);
     margin: 10px;
 }
 
@@ -81,14 +65,13 @@ body {
 
 .deck-card-header h5 {
     font-size: 1.2rem;
-    color: #fff;
+    color: var(--title-text-color);
 }
 
 .card-button {
     margin: 10px;
-    font-size: 20px;
     background: none;
-    color: #fff;
+    color: var(--icon-button-color);
     cursor: pointer;
     width: 50px;
     height: 50px;
@@ -96,7 +79,7 @@ body {
 }
 
 .card-button:hover {
-    color: #b5e0d4
+    color: var(--icon-button-color-hover)
 }
 
 #previous-button {
@@ -111,14 +94,10 @@ body {
     outline: none;
 }
 
-.deck-list::-webkit-scrollbar {
+.deck-list-other::-webkit-scrollbar {
     display: none;
 }
 
 .deck-card-body-left span {
-    color: #b5b5b5;
+    color: var(--sub-text-color);
 }
-
-.card-button {
-    margin: 10px;
-    font-size

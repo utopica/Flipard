@@ -1,4 +1,4 @@
-﻿namespace Flipard.MVC.ViewModels
+﻿namespace Flipard.MVC.ViewModels.Home
 {
     public class HomeDeckDetailsViewModel
     {

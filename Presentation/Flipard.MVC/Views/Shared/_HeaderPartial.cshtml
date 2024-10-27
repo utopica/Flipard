@@ -1,0 +1,55 @@
+﻿<link rel="stylesheet" href="~/css/layout/header.css">
+
+<header class="TopNavigation" itemscope itemtype="http://schema.org/WPHeader" role="banner">
+    <div class="TopNavigation-content">
+        <div class="TopNavigation-contentLeft">
+            <form asp-controller="Home" asp-action="Index" method="get">
+                <button class="flipard-logo">
+                    <div class="logo-header">
+                        <div class="logo">
+                            <div class="logo-circle">
+                                <span class="circle circle-1"></span>
+                                <span class="circle circle-2"></span>
+                            </div>
+                            <h2>Flipard</h2>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="TopNavigation-contentMiddle">
+            <form class="search-form" method="get" role="search">
+                <input type="text" class="search-input" name="q" placeholder="Search..." id="search-input">
+                <button type="submit" class="search-button">
+                    <span class="button-icon">
+                        <i class="fi fi-br-search"></i>
+                    </span>
+                </button>
+                <ul id="search-results" class="dropdown-menu"></ul>
+            </form>
+        </div>
+        <div class="TopNavigation-contentRight">
+            <div class="TopNavigationItem RightNavigationItem">
+                <form action="@Url.Action("CreateSet", "Home")" method="get">
+                    <button type="submit" class="create-button">
+                        <span class="button-icon">
+                            <i class="fi fi-br-plus"></i>
+                        </span>
+                    </button>
+                </form>
+            </div>
+            <div class="TopNavigationItem RightNavigationItem"></div>
+            <div class="TopNavigationItem RightNavigationItem">
+                <form class="profile-form" action="@Url.Action("Profile", "Home")" method="get">
+                    <button type="submit" class="profile-button">
+                        <span class="profile-button-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script src="~/js/layout/header.js"></script>

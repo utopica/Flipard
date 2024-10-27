@@ -1,4 +1,4 @@
-﻿namespace Flipard.MVC.Models.Flashcards;
+﻿namespace Flipard.MVC.ViewModels.Flashcards;
 
 public class QuizAttemptSummary
 {

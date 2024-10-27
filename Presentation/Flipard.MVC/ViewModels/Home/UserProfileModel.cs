@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Flipard.MVC.Models
+namespace Flipard.MVC.ViewModels.Home
 {
     public class UserProfileModel
     {
-        public string Email { get; set; }
-       
-        public string Username { get; set; }
-        
+        [Required] [EmailAddress] public string Email { get; set; }
+
+        [Required] public string Username { get; set; }
+
         public string Password { get; set; }
         public DateTimeOffset? Birthdate { get; set; }
     }

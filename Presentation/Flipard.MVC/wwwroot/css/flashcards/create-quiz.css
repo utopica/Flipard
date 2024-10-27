@@ -1,19 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.625;
-}
-
-body {
-    background-color: #202124;
-    margin: 0;
-    padding: 0;
-}
-
 content {
     display: flex;
     justify-content: center;
@@ -22,7 +6,7 @@ content {
 }
 
 .quiz-card {
-    background-color: #323338;
+    background-color: var(--card-bg-color);
     display: flex;
     width: 600px;
     height:500px;
@@ -31,12 +15,13 @@ content {
     margin-top: 50px;
     margin-bottom: 10px;
     flex-direction: column;
+    box-shadow: 0 2px 4px var(--card-dark-shadow-color);
 }
 
 .card-heading {
     margin: 10px;
     padding: 5px;
-    color: aliceblue;
+    color: var(--title-text-color);
     font-size: 0.9rem;
     display: flex;
     flex-direction: row;
@@ -54,7 +39,7 @@ content {
 .card-meaning-content {
     width: 100%;
     height: 100%;
-    color: white;
+    color: var(--white-text-color);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -76,7 +61,6 @@ content {
     justify-content: center;
     align-items: center;
     object-fit: scale-down;
-    border-radius: inherit;
 }
 
     .card-meaning-image img {
@@ -107,8 +91,8 @@ content {
     
 }
     .card-term-content input {
-        background: #323338;
-        border: 2px solid #5f616b;
+        background: var(--card-bg-color);
+        border: 2px solid var(--input-color);
         outline: none;
         border-radius: 10px;
         color: white;
@@ -126,7 +110,7 @@ content {
 }
 
     .card-term-text input {
-        background: #5f616b;
+        background: var(--input-color);
     }
 
     .card-term-text::-webkit-scrollbar, .card-meaning-text::-webkit-scrollbar {
@@ -134,17 +118,17 @@ content {
     }
 
     .card-term-text::-webkit-scrollbar-track, .card-meaning-text::-webkit-scrollbar-track {
-        background: #323338;
+        background: var(--card-bg-color);
     }
 
     .card-term-text::-webkit-scrollbar-thumb, .card-meaning-text::-webkit-scrollbar-thumb {
-        background-color: #555;
+        background-color: var(--scroll-card-color);
         border-radius: 6px;
-        border: 3px solid #323338;
+        border: 3px solid var(--card-bg-color);
     }
 
         .card-term-text::-webkit-scrollbar-thumb:hover, .card-meaning-text::-webkit-scrollbar-thumb:hover {
-            background-color: #888;
+            background-color: var(--scroll-card-color-hover);
         }
 
 
@@ -155,7 +139,7 @@ content {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    color: #d2d1d1;
+    color: var(--icon-button-sub-color);
     outline: none;
     border: none;
 }
@@ -163,20 +147,20 @@ content {
 .quiz-prev-button, .quiz-next-button {
     font-size: 50px;
     background: none;
-    color: #fff;
+    color: var(--icon-button-color);
     border: none;
     cursor: pointer;
     outline: none;
     
 }
     .quiz-prev-button:hover, .quiz-next-button:hover {
-        color: #62CBE7;
+        color: var(--button-blue);
         outline: none;
         border: none;
     }
 
 .quiz-prev-button:focus, .quiz-next-button:focus {
-    color: #62CBE7;
+    color: var(--button-blue);
     outline: none;
     border: none;
 }
@@ -195,11 +179,11 @@ content {
 }
 
 .wrong-answer {
-    color: red;
+    color: var(--button-red);
 }
 
 .correct-answer {
-    color: green;
+    color: var(--button-green);
 }
 
 .answer-feedback {
@@ -226,11 +210,11 @@ content {
 }
 
 .menu-container {
-    background: #323338;
+    background: var(--card-bg-color);
     padding: 1.2rem 0.6rem;
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--card-dark-shadow-color);
     display: flex;
     flex-direction: row;
 }
@@ -256,14 +240,14 @@ content {
 .toggle-button {
     background: none;
     border: none;
-    color: #9ca3af;
+    color: var(--icon-button-sub-color);
     cursor: pointer;
     padding: 0.25rem;
     transition: color 0.2s;
 }
 
 .toggle-button:hover {
-    color: white;
+    color: var(--icon-button-color);
 }
 
 .toggle-button i {
@@ -292,8 +276,8 @@ content {
     justify-content: center;
     font-weight: 500;
     transition: all 0.2s;
-    background: #4b5563;
-    color: #d1d5db;
+    background: var(--card-mid-bg-color);
+    color: var(--sub-text-color-gray);
     cursor: pointer;
 }
 
@@ -303,22 +287,22 @@ content {
 }
 
 .question-button.current {
-    background: #374151;
-    color: white;
+    background: var(--card-mid-sub-bg-color);
+    color: var(--white-text-color);
 }
 
 .question-button.correct {
-    background: #10b981;
-    color: white;
+    background: var(--button-green);
+    color: var(--white-text-color);
 }
 
 .question-button.incorrect {
-    background: #ef4444;
-    color: white;
+    background: var(--button-red);
+    color: var(--white-text-color);
 }
 
 .question-button.blank {
-    color: white;
+    color: var(--white-text-color);
 }
 
 button:focus {

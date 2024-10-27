@@ -6,9 +6,12 @@ using System;
 using System.Linq;
 using Flipard.Domain.Entities;
 using Flipard.Domain.Identity;
-using Flipard.MVC.Models.Flashcards;
+using Flipard.MVC.ViewModels.Flashcards;
+using Flipard.MVC.ViewModels.Home;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
+[Authorize]
 public class FlashcardsController : Controller
 {
     private readonly ApplicationDbContext _appContext;

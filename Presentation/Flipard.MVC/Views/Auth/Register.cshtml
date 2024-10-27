@@ -1,4 +1,4 @@
-﻿@model Flipard.MVC.ViewModels.AuthRegisterViewModel
+﻿@model Flipard.MVC.ViewModels.Auth.AuthRegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
@@ -12,11 +12,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/css/register.css">
-
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/colors.css">
+    <link rel="stylesheet" href="~/css/auth/login.css">
+    <link rel="stylesheet" href="~/css/auth/register.css">
 </head>
 <body>
-@await Component.InvokeAsync("NToastNotify")
 <div class="register-container">
     <div class="register-image-section">
         <div class="image-wrapper">

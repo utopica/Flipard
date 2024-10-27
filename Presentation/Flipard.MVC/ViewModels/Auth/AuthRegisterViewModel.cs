@@ -1,7 +1,6 @@
-﻿using Flipard.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Flipard.MVC.ViewModels;
+namespace Flipard.MVC.ViewModels.Auth;
 
 public class AuthRegisterViewModel
 {

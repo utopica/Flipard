@@ -1,22 +1,6 @@
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.625;
-}
-
-body {
-    background-color: #202124;
-    margin: 0;
-    padding: 0;
-}
-
-
 .create-card {
     display: flex;
-    background: #202124;
+    background: inherit;
     width: 100%;
     height: 100%;
     justify-content: space-between;
@@ -24,35 +8,33 @@ body {
 }
 
 .create-card-text {
-    color: #fff;
-     margin: 100px 50px 50px 50px; 
-    /*width: 300px;*/
+    color: var(--white-text-color);
+    margin: 100px 50px 50px 50px;
 }
 
 .create-button {
-    background: #016752;
+    background: var(--flipard-green);
     width: 100px;
     height: 40px;
     font-size: 16px;
     border-radius: 20px;
     padding-top: 5px;
-     margin: 100px 50px 50px 50px; 
+    margin: 100px 50px 50px 50px;
 }
 
-    .create-button:hover, .create-button:active {
-        background: #005645;
-    }
+.create-button:hover, .create-button:active {
+    background: var(--button-blue-hover);
+}
 
-    .create-button .button-text {
-        font-weight: 500;
-        color: #ffffff;
-    }
+.create-button .button-text {
+    font-weight: 500;
+    color: var(--white-text-color);
+}
 
 .create-deck {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #202124;
     width: 100%;
     height: 100%;
 }
@@ -62,14 +44,14 @@ body {
 }
 
 .deck-name-input, .deck-desc-input {
-    background-color: #323338;
-    color: #d2d1d1;
+    background-color: var(--card-bg-color);
+    color: var(--sub-text-color-gray);
     width: 71rem;
     height: 3rem;
     margin-top: 10px;
     margin-bottom: 20px;
     padding: 20px;
-    border: 1px solid #8d90a0;
+    border: 1px solid var(--border-color);
 }
 
 
@@ -82,7 +64,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #202124;
     width: 100%;
     height: 100%;
 }
@@ -96,17 +77,23 @@ body {
     margin-top: 10px;
     margin-bottom: 3px;
     padding: 20px;
-    background-color: #323338;
-    color: #d2d1d1;
+    background-color: var(--card-bg-color);
+    color: var(--sub-text-color-gray);
     font-size: 18px;
-    border-top: 1px solid #8d90a0;
-    border-left: 1px solid #8d90a0;
-    border-right: 1px solid #8d90a0;
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     border-bottom: none;
 }
 
 .card-number {
     margin-right: auto;
+}
+
+.card-edit-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .add-card-button-div {
@@ -117,23 +104,22 @@ body {
 }
 
 #add-card-button {
-    background: #016752;
+    background: var(--flipard-green);
     width: 71rem;
     height: 3rem;
     font-size: 16px;
-    color: #fff;
+    color: var(--white-text-color);
     cursor: pointer;
 }
-
 
 
 .card-image-button,
 .card-delete-button {
     margin-top: 10px;
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 18px;
     background: none;
-    color: #fff;
+    color: var(--white-text-color);
     border: none;
     cursor: pointer;
 }
@@ -154,38 +140,37 @@ body {
     align-items: center;
 }
 
-    .user-deck-card-term textarea,
-    .user-deck-card-definition textarea {
-        width: 100%;
-        height: 100%;
-        padding: 10px;
-        border: none;
-        outline: none;
-        background-color: #323338;
-        color: #d2d1d1;
-        font-size: 15px;
-        resize: none;
-    }
+.user-deck-card-term textarea,
+.user-deck-card-definition textarea {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background-color: var(--card-bg-color);
+    color: var(--sub-text-color-gray);
+    font-size: 15px;
+    resize: none;
+}
 
-        .user-deck-card-term textarea::placeholder,
-        .user-deck-card-definition textarea::placeholder {
-            color: #d2d1d1;
-        }
+.user-deck-card-term textarea::placeholder,
+.user-deck-card-definition textarea::placeholder {
+    color: var(--sub-text-color-gray);
+}
 
-        .user-deck-card-term textarea:focus,
-        .user-deck-card-definition textarea:focus {
-            background-color: #52555C;
-        }
+.user-deck-card-term textarea:focus,
+.user-deck-card-definition textarea:focus {
+    background-color: var(--input-color);
+}
 
 .user-deck-card-image {
     align-content: center;
     width: 10.6rem;
-    color: #a3a6b5;
-    background-color: #323338;
-    border: .125rem dashed #70737F;
+    color: var(--border-color);
+    background-color: var(--card-bg-color);
+    border: .125rem dashed var(--border-color);
     border-radius: .3125rem;
     cursor: pointer;
-    height: 100%;
     padding: .3125rem;
     text-align: center;
     height: 112px;
@@ -194,8 +179,8 @@ body {
 
 
 .image-preview {
-    max-height: 112px; 
-    width: auto; 
+    max-height: 112px;
+    width: auto;
 }
 
 .user-deck-card-image img {
@@ -204,23 +189,25 @@ body {
     object-fit: cover;
     display: block;
 }
+
 .user-deck-card-term-input::-webkit-scrollbar, .user-deck-card-definition-input::-webkit-scrollbar {
     width: 12px;
 }
 
 .user-deck-card-term-input::-webkit-scrollbar-track, .user-deck-card-definition-input::-webkit-scrollbar-track {
-    background: #323338;
+    background: var(--card-bg-color);
 }
 
 .user-deck-card-term-input::-webkit-scrollbar-thumb, .user-deck-card-definition-input::-webkit-scrollbar-thumb {
-    background-color: #555;
+    background-color: var(--scroll-card-color);
     border-radius: 6px;
-    border: 3px solid #323338;
+    border: 3px solid var(--card-bg-color);
 }
 
-    .user-deck-card-term-input::-webkit-scrollbar-thumb:hover, .user-deck-card-definition-input::-webkit-scrollbar-thumb:hover {
-        background-color: #888;
-    }
+.user-deck-card-term-input::-webkit-scrollbar-thumb:hover, .user-deck-card-definition-input::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scroll-card-color-hover);
+}
+
 @media (max-width: 1224px) {
 
     .deck-name-input, .deck-desc-input {
@@ -293,12 +280,11 @@ body {
     }
 
 
-
     #add-card-button {
         width: 45rem;
         height: 3rem;
     }
-    
+
 
     .create-card-text h5 {
         font-size: 18px;
@@ -320,19 +306,20 @@ body {
         width: 42rem;
         height: 2rem;
         margin-top: 20px;
-        
+
     }
-    .user-deck-card-term,.user-deck-card-definition {
+
+    .user-deck-card-term, .user-deck-card-definition {
         width: 21rem;
         height: 7rem;
         margin-bottom: 20px;
         align-items: center;
     }
 
-   
+
     .user-deck-card-term textarea,
     .user-deck-card-definition textarea {
-        
+
         font-size: 14px;
     }
 
@@ -343,21 +330,21 @@ body {
         justify-content: center;
         margin-bottom: 10px;
     }
+
     #add-card-button {
-       
+
         width: 42rem;
         height: 2.5rem;
         font-size: 16px;
-    
-    }
 
+    }
 
 
     .create-card-text h5 {
         font-size: 18px;
     }
 
-  
+
 }
 
 @media (max-width: 700px) {
@@ -432,6 +419,7 @@ body {
         margin-bottom: 20px;
         align-items: center;
     }
+
     .user-deck-card-image {
         width: 9rem;
         font-size: 1.5rem;
