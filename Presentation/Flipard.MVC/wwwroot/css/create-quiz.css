@@ -209,6 +209,121 @@ content {
     gap: 0.5em;
 }
 
+/* Question Menu Toggle */
+.fi-rr-angle-double-small-right{
+    font-size: 25px !important;
+}
+.questions-menu {
+    position: fixed;
+    left: 0;
+    top: 25%;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.questions-menu.collapsed {
+    transform: translateX(calc(-100% + 60px));
+}
+
+.menu-container {
+    background: #323338;
+    padding: 1.2rem 0.6rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+}
+
+.menu-toggle{
+    display: flex;
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.menu-title {
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s;
+}
+
+.toggle-button:hover {
+    color: white;
+}
+
+.toggle-button i {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+.collapsed .toggle-button i {
+    transform: rotate(180deg);
+}
+
+.questions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    width: 12rem;
+}
+
+.question-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    transition: all 0.2s;
+    background: #4b5563;
+    color: #d1d5db;
+    cursor: pointer;
+}
+
+.question-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.question-button.current {
+    background: #374151;
+    color: white;
+}
+
+.question-button.correct {
+    background: #10b981;
+    color: white;
+}
+
+.question-button.incorrect {
+    background: #ef4444;
+    color: white;
+}
+
+.question-button.blank {
+    color: white;
+}
+
+button:focus {
+    outline: none;
+}
 /* Responsiveness */
 
 @media (max-width: 768px) {
