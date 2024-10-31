@@ -8,8 +8,11 @@
     --sub-text-color-gray: #d2d1d1;
     --sub-text-color-dark-gray: #6c757d;
     --sub-text-color-blue: #94A3B8;
+    --sub-text-color-light-gray: #7d878f;
+    
     
     --card-bg-color: #323338;
+    --card-light-bg-color: #44464c;
     --card-dark-bg-color: rgb(36, 37, 42);
     --card-dark-shadow-color: rgba(0, 0, 0, 0.2);
     --card-mid-bg-color: #4b5563;
@@ -17,6 +20,7 @@
     --black-bg-color-second: #111;
     --black-bg-color-third: #222;
     --black-bg-color-third-border: #444;
+    --card-white-bg-color: #f0f0f0;
     
     --icon-button-color: #ffffff;
     --icon-button-color-hover: #b5e0d4;
@@ -29,8 +33,8 @@
     --button-green-pale : #45b56a;
     --button-blue: #62cbe7;
     --button-bright-blue: #00BFA5;
-    --button-blue-text-color: #1e1e1e;
-    --button-pale-blue-text-color: #334155;
+    --button-blue-text-color: #035175;
+    --button-pale-blue-text-color: rgba(51, 65, 85, 0.8);
     --button-pale-blue-text-color-hover: #334155;
     --button-blue-hover: #b5e0d4;
     

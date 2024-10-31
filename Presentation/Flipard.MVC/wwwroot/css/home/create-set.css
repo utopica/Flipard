@@ -23,7 +23,7 @@
 }
 
 .create-button:hover, .create-button:active {
-    background: var(--button-blue-hover);
+    background: var(--flipard-green-hover);
 }
 
 .create-button .button-text {

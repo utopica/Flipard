@@ -5,11 +5,14 @@ const quizState = {
     startTime: Date.now(),
     quizAnswers: [],
     correctAnswersCount: 0,
+    blankAnswersCount: 0,
+    wrongAnswerCount: 0,
     originalAnswers: [],
     deckId: '',
     quizResultsUrl: '',
     answeredQuestions: [],
-    isMenuCollapsed: false
+    isMenuCollapsed: false,
+    isQuizCompleted: false
 };
 
 function initializeQuiz(quizCards, deck, resultsUrl) {
@@ -18,6 +21,7 @@ function initializeQuiz(quizCards, deck, resultsUrl) {
     quizState.quizResultsUrl = resultsUrl;
     quizState.originalAnswers = new Array(quizCards.length).fill('');
     quizState.startTime = Date.now();
+    quizState.isQuizCompleted = false;
     showCard(quizState.currentIndex);
     initializeQuestionsMenu();
 }
@@ -34,7 +38,7 @@ function initializeQuestionsMenu() {
         button.textContent = (i + 1).toString();
 
         const isAnswered = quizState.answeredQuestions.some(q => q.questionIndex === i);
-        button.disabled = !isAnswered && i !== quizState.currentIndex;
+        button.disabled = !isAnswered && i !== quizState.currentIndex; //user cevaplanmamış sorulara gidemez soru menüsünü kullanarak
 
         button.onclick = () => {
             if (!button.disabled) {
@@ -88,7 +92,7 @@ function showCard(index) {
 
         const termInput = document.getElementById("term-input");
         if (termInput) {
-            termInput.value = "";
+            termInput.value = '' //original cevapler gösterilsin geri gidince 
         }
 
         const progress = document.querySelector(".card-heading #progress");
@@ -98,7 +102,7 @@ function showCard(index) {
 
         const answerFeedback = document.getElementById("answer-feedback");
         if (answerFeedback) {
-            answerFeedback.innerHTML = "";
+            answerFeedback.innerHTML = ""; //answer feedback de sıfırlanıyor
         }
 
         const imageElement = document.getElementById("meaning-image");
@@ -139,22 +143,33 @@ function submitAnswer() {
     const userTerm = document.getElementById("term-input").value.trim();
     const correctTerm = quizState.cards[quizState.currentIndex].Term;
     const answerFeedback = document.getElementById("answer-feedback");
+    const isBlank = userTerm === '';
+    const isCorrect = !isBlank && (userTerm.toLowerCase() === correctTerm.toLowerCase());
+    const isWrong = !isBlank && !isCorrect;
 
-    if (!quizState.originalAnswers[quizState.currentIndex]) {
+
+    if (!quizState.originalAnswers[quizState.currentIndex] && !quizState.showAnswer) {
         quizState.originalAnswers[quizState.currentIndex] = userTerm;
 
         quizState.answeredQuestions.push({
             questionIndex: quizState.currentIndex,
             userAnswer: userTerm,
-            isCorrect: userTerm.toLowerCase() === correctTerm.toLowerCase()
+            isCorrect: isCorrect,
+            isBlank: isBlank
         });
-    }
 
-    const isCorrect = userTerm.toLowerCase() === correctTerm.toLowerCase();
+        if (isBlank) {
+            quizState.blankAnswersCount++;
+        } else if (isCorrect) {
+            quizState.correctAnswersCount++;
+        } else {
+            quizState.wrongAnswerCount++;
+        }
+    }
 
     if (!quizState.showAnswer && !isCorrect) {
         answerFeedback.innerHTML = `
-            <div class="wrong-answer">${userTerm} <i class="fi fi-rr-cross-small"></i></div>
+           <div class="wrong-answer">${userTerm || 'Boş bırakıldı'} <i class="fi fi-rr-cross-small"></i></div>
             <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
         document.getElementById("term-input").value = correctTerm;
         quizState.showAnswer = true;
@@ -162,22 +177,22 @@ function submitAnswer() {
         return;
     }
 
-    if (!quizState.quizAnswers.some(answer => answer.vocabularyId === quizState.cards[quizState.currentIndex].Id)) {
-        quizState.quizAnswers.push({
-            vocabularyId: quizState.cards[quizState.currentIndex].Id,
-            userAnswer: quizState.originalAnswers[quizState.currentIndex],
-            isCorrect: quizState.originalAnswers[quizState.currentIndex].toLowerCase() === correctTerm.toLowerCase()
-        });
-
-        if (quizState.originalAnswers[quizState.currentIndex].toLowerCase() === correctTerm.toLowerCase()) {
-            quizState.correctAnswersCount++;
+    if (quizState.showAnswer) {
+        quizState.showAnswer = false;
+        if (quizState.currentIndex < quizState.cards.length - 1) {
+            showCard(quizState.currentIndex + 1);
+        } else {
+            showQuizSummary();
         }
+        return;
     }
 
-    if (quizState.currentIndex < quizState.cards.length - 1) {
-        showCard(quizState.currentIndex + 1);
-    } else {
-        showQuizSummary();
+    if (isCorrect) {
+        if (quizState.currentIndex < quizState.cards.length - 1) {
+            showCard(quizState.currentIndex + 1);
+        } else {
+            showQuizSummary();
+        }
     }
 
     initializeQuestionsMenu();
@@ -185,17 +200,53 @@ function submitAnswer() {
 
 function showQuizSummary() {
     const timeTaken = Date.now() - quizState.startTime;
-    const accuracy = (quizState.correctAnswersCount / quizState.cards.length) * 100;
-    const incorrectCount = quizState.cards.length - quizState.correctAnswersCount;
-
+    const attemptedQuestions = quizState.correctAnswersCount + quizState.wrongAnswerCount;
+    const accuracy = attemptedQuestions > 0
+        ? (quizState.correctAnswersCount / attemptedQuestions) * 100
+        : 0;
+    
     document.getElementById('accuracy-percentage').textContent = Math.round(accuracy);
     document.getElementById('correct-count').textContent = quizState.correctAnswersCount;
-    document.getElementById('incorrect-count').textContent = incorrectCount;
+    document.getElementById('incorrect-count').textContent = quizState.wrongAnswerCount;
+    document.getElementById('blank-count').textContent = quizState.blankAnswersCount;
     document.getElementById('time-taken').textContent = formatTime(timeTaken);
+
+    const detailedList = document.getElementById('detailed-answers-list');
+    detailedList.innerHTML = '';
+
+    quizState.cards.forEach((card, index) => {
+        const userAnswer = quizState.originalAnswers[index];
+        const isCorrect = userAnswer.toLowerCase() === card.Term.toLowerCase();
+        const isBlank = userAnswer === '';
+
+        const listItem = document.createElement('div');
+        listItem.className = 'answer-detail-item';
+
+        let statusClass = isCorrect ? 'correct' : (isBlank ? 'blank' : 'incorrect');
+        let statusIcon = isCorrect ? 'fi-br-check' : (isBlank ? 'fi-rr-minus' : 'fi-rr-cross-small');
+
+        listItem.innerHTML = `
+            <div class="question-number">${index + 1}</div>
+            <div class="answer-content">
+                <div class="question-text">${card.Meaning}</div>
+                <div class="answer-text">
+                    <span class="user-answer ${statusClass}">
+                        ${isBlank ? 'Boş bırakıldı' : userAnswer}
+                        <i class="fi ${statusIcon}"></i>
+                    </span>
+                    ${!isCorrect ? `<span class="correct-answer">Doğru cevap: ${card.Term}</span>` : ''}
+                </div>
+            </div>
+        `;
+
+        detailedList.appendChild(listItem);
+    });
 
     updateProgressCircle(accuracy);
 
     document.getElementById('quiz-summary').style.display = 'block';
+    quizState.isQuizCompleted = true;
+    showCard(quizState.currentIndex);
 }
 
 async function submitQuizResults() {
