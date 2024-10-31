@@ -92,7 +92,15 @@ function showCard(index) {
 
         const termInput = document.getElementById("term-input");
         if (termInput) {
-            termInput.value = '' //original cevapler gösterilsin geri gidince 
+            if (quizState.isQuizCompleted) {
+                termInput.value = quizState.originalAnswers[index] || '';
+                termInput.readOnly = true;
+                termInput.classList.add('completed-quiz');
+            } else {
+                termInput.value = '';
+                termInput.readOnly = false;
+                termInput.classList.remove('completed-quiz');
+            }
         }
 
         const progress = document.querySelector(".card-heading #progress");
@@ -102,7 +110,20 @@ function showCard(index) {
 
         const answerFeedback = document.getElementById("answer-feedback");
         if (answerFeedback) {
-            answerFeedback.innerHTML = ""; //answer feedback de sıfırlanıyor
+            if (quizState.isQuizCompleted) {
+                // Show permanent feedback for completed quiz
+                const userTerm = quizState.originalAnswers[index];
+                const correctTerm = quizState.cards[index].Term;
+                const isBlank = userTerm === '';
+                const isCorrect = !isBlank && (userTerm.toLowerCase() === correctTerm.toLowerCase());
+
+                answerFeedback.innerHTML = isCorrect
+                    ? `<div class="correct-answer">${userTerm} <i class="fi fi-br-check"></i></div>`
+                    : `<div class="wrong-answer">${userTerm || 'Boş bırakıldı'} <i class="fi fi-rr-cross-small"></i></div>
+                       <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
+            } else {
+                answerFeedback.innerHTML = "";
+            }
         }
 
         const imageElement = document.getElementById("meaning-image");
@@ -140,6 +161,15 @@ function showPreviousCard() {
 }
 
 function submitAnswer() {
+
+    if (quizState.isQuizCompleted) {
+        if (quizState.currentIndex < quizState.cards.length - 1) {
+            showCard(quizState.currentIndex + 1);
+        }
+        return;
+    }
+    
+    
     const userTerm = document.getElementById("term-input").value.trim();
     const correctTerm = quizState.cards[quizState.currentIndex].Term;
     const answerFeedback = document.getElementById("answer-feedback");
@@ -310,3 +340,16 @@ window.toggleMenu = toggleMenu;
 window.submitAnswer = submitAnswer;
 window.showPreviousCard = showPreviousCard;
 
+const style = document.createElement('style');
+style.textContent = `
+    .completed-quiz {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+    
+    .completed-quiz:focus {
+        outline: none;
+        border-color: #ccc;
+    }
+`;
+document.head.appendChild(style);
