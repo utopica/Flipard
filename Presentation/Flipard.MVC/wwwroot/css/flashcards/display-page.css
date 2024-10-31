@@ -412,10 +412,8 @@ h3{
 }
 
 .save-button:hover {
-    background-color: var(--blackish-button-color);
+    background-color: #272c30;
 }
-
-
 
 /* Toggle Switch Styles */
 .number-option{
@@ -434,7 +432,7 @@ h3{
 
 .toggle-option label {
     font-size: 14px;
-    
+    color: #333;
 }
 
 .toggle-switch {
@@ -457,7 +455,7 @@ h3{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--toggle-switch-bg-color);
+    background-color: #ccc;
     transition: .4s;
     border-radius: 24px;
 }
@@ -469,13 +467,13 @@ h3{
     width: 16px;
     left: 4px;
     bottom: 4px;
-    background-color: var(--icon-button-color);
+    background-color: white;
     transition: .4s;
     border-radius: 50%;
 }
 
 .toggle-switch input:checked + .slider {
-    background-color: var(--blackish-button-color);
+    background-color: #272c30;
 }
 
 .toggle-switch input:checked + .slider:before {
