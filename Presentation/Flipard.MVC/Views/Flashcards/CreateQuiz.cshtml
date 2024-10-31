@@ -12,10 +12,10 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/flashcards/create-quiz.css">
     <link rel="stylesheet" href="~/css/flashcards/quiz-stats.css">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 </head>
 <body>
     @antiforgery
@@ -43,7 +43,7 @@
             <div class="card-heading">
                 <p>Tanım</p>
                 <p id="progress">
-                    @(Model.TermMeanings != null && Model.TermMeanings.Count > 0 ? "1/" + Model.TermMeanings.Count : "0/0")
+                    @(Model.TermMeanings.Count > 0 ? "1/" + Model.TermMeanings.Count : "0/0")
                 </p>
             </div>
 
@@ -97,12 +97,23 @@
                 <div class="score-details">
                     <div class="score-item">
                         <span class="score-label">Doğru</span>
-                        <span class="score-value correct" id="correct-count">5</span>
+                        <span class="score-value correct" id="correct-count"></span>
                     </div>
                     <div class="score-item">
                         <span class="score-label">Yanlış</span>
-                        <span class="score-value incorrect" id="incorrect-count">3</span>
+                        <span class="score-value incorrect" id="incorrect-count"></span>
                     </div>
+                    <div class="score-item">
+                        <span class="score-label">Boş</span>
+                        <span class="score-value blank" id="blank-count"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detailed-answers">
+                <h3>Detaylı Sonuçlar</h3>
+                <div id="detailed-answers-list" class="answers-list">
+                    <!-- Cevaplar buraya JavaScript ile eklenecek -->
                 </div>
             </div>
 
