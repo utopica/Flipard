@@ -294,14 +294,14 @@
     transform: translate(-50%, -50%);
     background-color: white;
     border-radius: 16px;
-    width: 320px;
+    width: 500px;
     z-index: 1001;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header {
-    padding: 16px;
-    border-bottom: 1px solid #eee;
+    padding: 1rem 1rem 0 1rem;
+    border-bottom: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -331,10 +331,6 @@
     background-color: rgba(15, 20, 25, 0.1);
 }
 
-.modal-body {
-    padding: 16px;
-}
-
 .settings-group {
     margin-bottom: 20px;
 }
@@ -346,8 +342,15 @@
     font-weight: 600;
 }
 
+h3{
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+}
+
 .settings-option {
-    padding: 10px;
+    padding: 0.5rem;
     background-color: #f8f9fa;
     border-radius: 8px;
 }
@@ -409,25 +412,29 @@
 }
 
 .save-button:hover {
-    background-color: #272c30;
+    background-color: var(--blackish-button-color);
 }
 
-input[type="radio"], input[type="checkbox"] {
-    accent-color: #1d9bf0;
-}
+
 
 /* Toggle Switch Styles */
+.number-option{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0;
+}
+
 .toggle-option {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0;
-    padding: 5px 0;
+    padding: 0.3rem 0;
 }
 
 .toggle-option label {
     font-size: 14px;
-    color: #333;
+    
 }
 
 .toggle-switch {
@@ -450,7 +457,7 @@ input[type="radio"], input[type="checkbox"] {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: var(--toggle-switch-bg-color);
     transition: .4s;
     border-radius: 24px;
 }
@@ -462,13 +469,13 @@ input[type="radio"], input[type="checkbox"] {
     width: 16px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: var(--icon-button-color);
     transition: .4s;
     border-radius: 50%;
 }
 
 .toggle-switch input:checked + .slider {
-    background-color: #2196F3;
+    background-color: var(--blackish-button-color);
 }
 
 .toggle-switch input:checked + .slider:before {

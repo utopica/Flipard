@@ -25,6 +25,7 @@
     --icon-button-color: #ffffff;
     --icon-button-color-hover: #b5e0d4;
     --icon-button-sub-color: #a3a6b5;
+    --blackish-button-color: #272c30;
 
     --button-red : #dc3545;
     --button-red-pale : #b63b44;
@@ -48,6 +49,9 @@
     --border-color-second : #70737F;
     --scroll-card-color: #555;
     --scroll-card-color-hover: #888;
+    
+    
+    --toggle-switch-bg-color: #ccc;
     
     --flipard-green: #009578;
     --flipard-green-hover: #008168;
