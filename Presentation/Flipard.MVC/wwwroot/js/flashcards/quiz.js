@@ -12,7 +12,9 @@ const quizState = {
     quizResultsUrl: '',
     answeredQuestions: [],
     isMenuCollapsed: false,
-    isQuizCompleted: false
+    isQuizCompleted: false,
+    feedbackMode: true,
+    currentQuestionSubmitted: false
 };
 
 function initializeQuiz(quizCards, deck, resultsUrl) {
@@ -22,6 +24,7 @@ function initializeQuiz(quizCards, deck, resultsUrl) {
     quizState.originalAnswers = new Array(quizCards.length).fill('');
     quizState.startTime = Date.now();
     quizState.isQuizCompleted = false;
+    quizState.feedbackMode = false;
     showCard(quizState.currentIndex);
     initializeQuestionsMenu();
 }
@@ -79,9 +82,36 @@ function toggleMenu() {
     }
 }
 
+function initializeFeedbackToggle() {
+    const toggleContainer = document.getElementById('feedbackToggle');
+    if (toggleContainer) {
+        toggleContainer.checked = quizState.feedbackMode;
+        updateSubmitButtonText();
+    }
+}
+
+function toggleFeedbackMode() {
+    quizState.feedbackMode = !quizState.feedbackMode;
+    updateSubmitButtonText();
+}
+
+function updateSubmitButtonText() {
+    const nextButton = document.querySelector('.quiz-next-button');
+    if (nextButton) {
+        const isLastQuestion = quizState.currentIndex === quizState.cards.length - 1;
+        const buttonText = !quizState.currentQuestionSubmitted ?
+            (quizState.feedbackMode ? 'Submit' : (isLastQuestion ? 'Finish Quiz' : 'Next Question')) :
+            'Next Question';
+
+        nextButton.innerHTML = `<span class="next-button">${buttonText} <i class="fi fi-rr-arrow-small-right"></i></span>`;
+    }
+}
+
 function showCard(index) {
     if (index >= 0 && index < quizState.cards.length) {
         quizState.currentIndex = index;
+        quizState.currentQuestionSubmitted = false;
+        quizState.showAnswer = false;
 
         initializeQuestionsMenu();
 
@@ -97,7 +127,7 @@ function showCard(index) {
                 termInput.readOnly = true;
                 termInput.classList.add('completed-quiz');
             } else {
-                termInput.value = '';
+                termInput.value = quizState.originalAnswers[index] || '';
                 termInput.readOnly = false;
                 termInput.classList.remove('completed-quiz');
             }
@@ -110,20 +140,7 @@ function showCard(index) {
 
         const answerFeedback = document.getElementById("answer-feedback");
         if (answerFeedback) {
-            if (quizState.isQuizCompleted) {
-                // Show permanent feedback for completed quiz
-                const userTerm = quizState.originalAnswers[index];
-                const correctTerm = quizState.cards[index].Term;
-                const isBlank = userTerm === '';
-                const isCorrect = !isBlank && (userTerm.toLowerCase() === correctTerm.toLowerCase());
-
-                answerFeedback.innerHTML = isCorrect
-                    ? `<div class="correct-answer">${userTerm} <i class="fi fi-br-check"></i></div>`
-                    : `<div class="wrong-answer">${userTerm || 'Boş bırakıldı'} <i class="fi fi-rr-cross-small"></i></div>
-                       <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
-            } else {
-                answerFeedback.innerHTML = "";
-            }
+            answerFeedback.innerHTML = "";
         }
 
         const imageElement = document.getElementById("meaning-image");
@@ -144,7 +161,7 @@ function showCard(index) {
             imageElement.style.display = "none";
         }
 
-        quizState.showAnswer = false;
+        updateSubmitButtonText();
     }
 }
 
@@ -175,57 +192,54 @@ function submitAnswer() {
     const answerFeedback = document.getElementById("answer-feedback");
     const isBlank = userTerm === '';
     const isCorrect = !isBlank && (userTerm.toLowerCase() === correctTerm.toLowerCase());
-    const isWrong = !isBlank && !isCorrect;
+    const isLastQuestion = quizState.currentIndex === quizState.cards.length - 1;
 
-
-    if (!quizState.originalAnswers[quizState.currentIndex] && !quizState.showAnswer) {
+    if (!quizState.currentQuestionSubmitted) {
+        // First submission of this question
         quizState.originalAnswers[quizState.currentIndex] = userTerm;
 
-        quizState.answeredQuestions.push({
-            questionIndex: quizState.currentIndex,
-            userAnswer: userTerm,
-            isCorrect: isCorrect,
-            isBlank: isBlank
-        });
-
-        if (isBlank) {
-            quizState.blankAnswersCount++;
-        } else if (isCorrect) {
-            quizState.correctAnswersCount++;
-        } else {
-            quizState.wrongAnswerCount++;
+        if (quizState.feedbackMode || isLastQuestion) {
+            // Process answer immediately in feedback mode or on last question
+            processAnswer(userTerm, correctTerm, isBlank, isCorrect);
+            if (!isCorrect && quizState.feedbackMode) {
+                showFeedback(userTerm, correctTerm, answerFeedback);
+                quizState.showAnswer = true;
+                return;
+            }
         }
+
+        quizState.currentQuestionSubmitted = true;
     }
 
-    if (!quizState.showAnswer && !isCorrect) {
-        answerFeedback.innerHTML = `
-           <div class="wrong-answer">${userTerm || 'Boş bırakıldı'} <i class="fi fi-rr-cross-small"></i></div>
-            <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
-        document.getElementById("term-input").value = correctTerm;
-        quizState.showAnswer = true;
-        initializeQuestionsMenu();
-        return;
+    if (quizState.currentIndex < quizState.cards.length - 1) {
+        showCard(quizState.currentIndex + 1);
+    } else {
+        showQuizSummary();
     }
+}
 
-    if (quizState.showAnswer) {
-        quizState.showAnswer = false;
-        if (quizState.currentIndex < quizState.cards.length - 1) {
-            showCard(quizState.currentIndex + 1);
-        } else {
-            showQuizSummary();
-        }
-        return;
+function processAnswer(userTerm, correctTerm, isBlank, isCorrect) {
+    quizState.answeredQuestions.push({
+        questionIndex: quizState.currentIndex,
+        userAnswer: userTerm,
+        isCorrect: isCorrect,
+        isBlank: isBlank
+    });
+
+    if (isBlank) {
+        quizState.blankAnswersCount++;
+    } else if (isCorrect) {
+        quizState.correctAnswersCount++;
+    } else {
+        quizState.wrongAnswerCount++;
     }
+}
 
-    if (isCorrect) {
-        if (quizState.currentIndex < quizState.cards.length - 1) {
-            showCard(quizState.currentIndex + 1);
-        } else {
-            showQuizSummary();
-        }
-    }
-
-    initializeQuestionsMenu();
+function showFeedback(userTerm, correctTerm, answerFeedback) {
+    answerFeedback.innerHTML = `
+        <div class="wrong-answer">${userTerm || 'Boş bırakıldı'} <i class="fi fi-rr-cross-small"></i></div>
+        <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
+    document.getElementById("term-input").value = correctTerm;
 }
 
 function showQuizSummary() {

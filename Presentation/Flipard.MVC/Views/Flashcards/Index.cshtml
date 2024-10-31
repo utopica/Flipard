@@ -19,123 +19,209 @@
 
 </style>
 <body>
-    @antiforgery
-    <content>
-        <div class="deck-card">
-            <div class="deck-card-header">
-                <h5>@Model.Name</h5>
-            </div>
-
-            <div class="deck-buttons">
-                
-                <button type="button" class="deck-quiz-button" onclick="redirectToQuiz('@Model.Id')">
-                    Quiz
-                </button>
-
-                @if (!Model.IsReadOnly)
-                {
-                    <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
-                        Delete Set
-                    </button>
-                }
-            </div>
+@antiforgery
+<content>
+    <div class="deck-card">
+        <div class="deck-card-header">
+            <h5>@Model.Name</h5>
         </div>
 
-        <div class="display-card">
-            <button type="button" class="card-button" id="previous-button" onclick="showPreviousCard()">
-                <span class="button-text">
-                    <i class="fa-solid fa-angle-left"></i>
-                </span>
+        <div class="deck-buttons">
+
+            <button type="button" class="deck-quiz-button" onclick="redirectToQuiz('@Model.Id')">
+                Quiz
             </button>
 
-            <div class="current-card" id="current-card" onclick="flipCard()">
-                <div class="term">@Model?.TermMeanings?.FirstOrDefault()?.Term ?? "No term available"</div>
-                <div class="meaning">@Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"</div>
-            </div>
+            @if (!Model.IsReadOnly)
+            {
+                <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
+                    Delete Set
+                </button> //todo: ask "do you want to permanently delete this set"
+            }
 
-            <button type="button" class="card-button" id="next-button" onclick="showNextCard()">
-                <span class="button-text">
-                    <i class="fa-solid fa-angle-right"></i>
-                </span>
+            <button type="button" class="deck-settings-button" onclick="setQuizOptions('@Model.Id')">
+                <i class="fa-solid fa-gear"></i>
             </button>
+
+        </div>
+    </div>
+
+    <div class="display-card">
+        <button type="button" class="card-button" id="previous-button" onclick="showPreviousCard()">
+            <span class="button-text">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
+        </button>
+
+        <div class="current-card" id="current-card" onclick="flipCard()">
+            <div class="term">@Model?.TermMeanings?.FirstOrDefault()?.Term ?? "No term available"</div>
+            <div class="meaning">@Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"</div>
         </div>
 
-        @if (Model?.TermMeanings != null)
+        <button type="button" class="card-button" id="next-button" onclick="showNextCard()">
+            <span class="button-text">
+                <i class="fa-solid fa-angle-right"></i>
+            </span>
+        </button>
+    </div>
+
+    @if (Model?.TermMeanings != null)
+    {
+        @for (var i = 0; i < Model.TermMeanings.Count; i++)
         {
-                @for (var i = 0; i < Model.TermMeanings.Count; i++)
-                {
-                
-                    var card = Model.TermMeanings[i];
-                <div class="card-list">
-                    <div class="card-edit-bar">
-                        <span class="card-number">@(i + 1)</span>
-                        <div class="card-edit-buttons">
+            var card = Model.TermMeanings[i];
+            <div class="card-list">
+                <div class="card-edit-bar">
+                    <span class="card-number">@(i + 1)</span>
+                    <div class="card-edit-buttons">
+                        @if (!Model.IsReadOnly)
+                        {
+                            <button type="button" class="card-delete-button" data-card-id="@card.Id" onclick="deleteCard(this)">
+                                <span class="button-card-delete-icon">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
+                            </button>
+
+                            <button type="button" class="card-edit-button" onclick="editCard('@card.Id')">
+                                <span class="button-card-edit-icon">
+                                    <i class="fa-solid fa-pen"></i>
+                                </span>
+                            </button>
+
+                            <button type="button" class="card-save-button" onclick="saveCard('@card.Id')" style="display: none;">
+                                <span class="button-card-save-icon">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                </span>
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-term-meaning">
+                        <div class="card-term">
+                            <span id="card-term-display-@card.Id">@card.Term</span>
                             @if (!Model.IsReadOnly)
                             {
-                                <button type="button" class="card-delete-button" data-card-id="@card.Id" onclick="deleteCard(this)">
-                                    <span class="button-card-delete-icon">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </span>
-                                </button>
-
-                                <button type="button" class="card-edit-button" onclick="editCard('@card.Id')">
-                                    <span class="button-card-edit-icon">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </span>
-                                </button>
-
-                                <button type="button" class="card-save-button" onclick="saveCard('@card.Id')" style="display: none;">
-                                    <span class="button-card-save-icon">
-                                       <i class="fa-solid fa-floppy-disk"></i>
-                                    </span>
-                                </button>
+                                <input class="card-term" type="text" id="card-term-@card.Id" value="@card.Term" style="display: none;"/>
+                            }
+                        </div>
+                        <div class="card-meaning">
+                            <span class="card-meaning" id="card-meaning-display-@card.Id">@card.Meaning</span>
+                            @if (!Model.IsReadOnly)
+                            {
+                                <input class="card-term" type="text" id="card-meaning-@card.Id" value="@card.Meaning" style="display: none;"/>
                             }
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-term-meaning">
-                            <div class="card-term">
-                                <span id="card-term-display-@card.Id">@card.Term</span>
-                                @if (!Model.IsReadOnly)
-                                {
-                                    <input class="card-term" type="text" id="card-term-@card.Id" value="@card.Term" style="display: none;" />
-                                }
-                            </div>
-                            <div class="card-meaning">
-                                <span class="card-meaning" id="card-meaning-display-@card.Id">@card.Meaning</span>
-                                @if (!Model.IsReadOnly)
-                                {
-                                    <input class="card-term" type="text" id="card-meaning-@card.Id" value="@card.Meaning" style="display: none;" />
-                                }
-                            </div>
-                        </div>
+                    <div class="card-image">
+                        @if (!string.IsNullOrEmpty(card.ImageUrl))
+                        {
+                            <img class="image-preview" src="@card.ImageUrl"/>
+                        }
 
-                        <div class="card-image">
-                            @if (!string.IsNullOrEmpty(card.ImageUrl))
-                            {
-                                <img class="image-preview" src="@card.ImageUrl" />
-                            }
+                        @if (string.IsNullOrEmpty(card.ImageUrl) && !Model.IsReadOnly)
+                        {
+                            <span class="button-text">
+                                <i class="fi fi-tr-graphic-style"></i>
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No cards available</p>
+    }
 
-                            @if (string.IsNullOrEmpty(card.ImageUrl) && !Model.IsReadOnly)
-                            {
-                                <span class="button-text">
-                                     <i class="fi fi-tr-graphic-style"></i>
-                                </span>
-                            }
+    @* Settings Modal *@
+
+    <div id="quizSettingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Quiz Settings</h2>
+                <button class="modal-close" onclick="closeQuizSettings()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="settings-group">
+                    <h3>Quiz Modes</h3>
+                    <div class="settings-option">
+                        <div class="toggle-option">
+                            <label for="feedbackMode">Feedback Mode</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="feedbackMode">
+                                <span class="slider"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
-                }
-            
-        }
-        else
-        {
-            <p>No cards available</p>
-        }
-    </content>
 
-    <script type="text/javascript">
+                <div class="settings-group">
+                    <h3>Questions</h3>
+                    <div class="settings-option">
+                        <label for="questionCount">Number of Questions</label>
+                        <input type="number" id="questionCount" class="number-input" min="1" value="10">
+                    </div>
+
+                    <div class="settings-option">
+                        <label>Answer With</label>
+                        <div class="toggle-option">
+                            <label for="answerWithTerm">Term</label>
+                            <label class="toggle-switch">
+                                <input type="radio" id="answerWithTerm" name="answerWith" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-option">
+                            <label for="answerWithDefinition">Definition</label>
+                            <label class="toggle-switch">
+                                <input type="radio" id="answerWithDefinition" name="answerWith">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Question Types</h3>
+                    <div class="settings-option">
+                        <div class="toggle-option">
+                            <label for="writtenType">Written</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="writtenType" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-option">
+                            <label for="multipleChoiceType">Multiple Choice</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="multipleChoiceType" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-option">
+                            <label for="trueFalseType">True/False</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="trueFalseType">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="save-button" onclick="saveQuizSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+</content>
+
+<script type="text/javascript">
         var currentIndex = 0;
         var cards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
         var showingTerm = true;
@@ -290,6 +376,83 @@
         document.addEventListener("DOMContentLoaded", function () {
             showCard(currentIndex);
         });
+
+        function showQuizSettings() {
+            document.getElementById('quizSettingsModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling of background content
+        }
+
+        function closeQuizSettings() {
+            document.getElementById('quizSettingsModal').style.display = 'none';
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        function saveQuizSettings() {
+            const settings = {
+                modes: {
+                    feedback: document.getElementById('feedbackMode').checked
+                },
+                questionCount: parseInt(document.getElementById('questionCount').value),
+                answerWith: document.getElementById('answerWithTerm').checked ? 'term' : 'definition',
+                questionTypes: {
+                    written: document.getElementById('writtenType').checked,
+                    multipleChoice: document.getElementById('multipleChoiceType').checked,
+                    trueFalse: document.getElementById('trueFalseType').checked,
+                }
+            };
+
+            localStorage.setItem('quizSettings', JSON.stringify(settings));
+            closeQuizSettings();
+        }
+
+
+        // Update the existing setQuizOptions function
+        function setQuizOptions(deckId) {
+            showQuizSettings();
+        }
+
+        // Load saved settings when the modal is opened
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSettings = localStorage.getItem('quizSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+
+                // Load Quiz Modes
+                document.getElementById('feedbackMode').checked = settings.modes.feedback;
+
+                // Load Question Count
+                document.getElementById('questionCount').value = settings.questionCount;
+
+                // Load Answer With
+                document.getElementById('answerWithTerm').checked = settings.answerWith === 'term';
+                document.getElementById('answerWithDefinition').checked = settings.answerWith === 'definition';
+
+                // Load Question Types
+                document.getElementById('writtenType').checked = settings.questionTypes.written;
+                document.getElementById('multipleChoiceType').checked = settings.questionTypes.multipleChoice;
+                document.getElementById('trueFalseType').checked = settings.questionTypes.trueFalse;
+            }
+        });
+
+        document.getElementById('answerWithTerm').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                document.getElementById('answerWithDefinition').checked = false;
+            }
+        });
+
+        document.getElementById('answerWithDefinition').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                document.getElementById('answerWithTerm').checked = false;
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('quizSettingsModal')) {
+                closeQuizSettings();
+            }
+        }
+        
     </script>
 </body>
 </html>
