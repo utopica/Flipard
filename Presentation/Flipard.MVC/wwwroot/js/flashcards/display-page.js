@@ -142,10 +142,6 @@ function saveCard(cardId) {
         });
 }
 
-function redirectToQuiz(deckId) {
-    window.location.href = '/Flashcards/CreateQuiz/' + deckId;
-}
-
 function showQuizSettings() {
     document.getElementById('quizSettingsModal').style.display = 'block';
     document.body.style.overflow = 'hidden';
@@ -224,4 +220,17 @@ function initialize(serverCards) {
 
     initializeEventListeners();
     loadSavedSettings();
+}
+
+function redirectToQuiz(deckId) {
+    const savedSettings = localStorage.getItem('quizSettings');
+    if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        const params = new URLSearchParams({
+            settings: JSON.stringify(settings)
+        });
+        window.location.href = `/Flashcards/CreateQuiz/${deckId}?${params.toString()}`;
+    } else {
+        window.location.href = '/Flashcards/CreateQuiz/' + deckId;
+    }
 }

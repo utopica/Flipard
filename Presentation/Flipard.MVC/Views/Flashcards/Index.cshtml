@@ -221,7 +221,7 @@
     </div>
 </content>
 <script type="text/javascript">
-    var serverCards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
+    const serverCards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
     document.addEventListener("DOMContentLoaded", function() {
         initialize(serverCards);
     });

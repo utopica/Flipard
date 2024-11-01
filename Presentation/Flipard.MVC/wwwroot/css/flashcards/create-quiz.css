@@ -9,9 +9,8 @@ content {
     background-color: var(--card-bg-color);
     display: flex;
     width: 600px;
-    height:500px;
+    height: 500px;
     border-radius: 10px;
-    color: aliceblue;
     margin-top: 50px;
     margin-bottom: 10px;
     flex-direction: column;
@@ -53,7 +52,7 @@ content {
     font-size: 1rem;
 }
 
-.card-meaning-image{
+.card-meaning-image {
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -63,74 +62,94 @@ content {
     object-fit: scale-down;
 }
 
-    .card-meaning-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
+.card-meaning-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
 
 
 .answer-card {
-    display: flex;
-    width: 100%;
     height: 43%;
-    flex-direction: column;
-    gap: 0.5em;
+    margin: 20px;
 }
 
 .card-term-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5em;
-    width: 100%;
-    height: 100%;
-    color: white;
-    padding: 10px 20px;
-    
+    height: 100%; 
 }
-    .card-term-content input {
-        background: var(--card-bg-color);
-        border: 2px solid var(--input-color);
-        outline: none;
-        border-radius: 10px;
-        color: white;
-        padding: 10px;
-    }
-    
+
+.card-term-container, .feedback-container{
+    height: 100%;
+    border: 2px solid var(--input-color);
+    outline: none;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.card-term-container input{
+    height: 100%;
+    background: inherit;
+    color: var(--white-text-color);
+    padding: 1rem;
+    border: none;
+    overflow-y: auto;
+}
+
 .card-term-text {
     width: 100%;
-    height: 100%;
-    color: white;
-    overflow: auto;
-    word-wrap: break-word;
-    font-size: 1.1rem;
-    margin: 0;
 }
 
-    .card-term-text input {
-        background: var(--input-color);
+.user-answer-display{
+    padding: 20px;
+    height: auto;
+}
+
+.answer-feedback{
+    padding: 0 20px 20px;
+}
+.card-term-content::-webkit-scrollbar,
+.term-input-container::-webkit-scrollbar,
+.feedback-container::-webkit-scrollbar,
+.answers-list::-webkit-scrollbar
+{
+    width: 12px;
+}
+
+.card-term-content::-webkit-scrollbar-track,
+.term-input-container::-webkit-scrollbar-track,
+.feedback-container::-webkit-scrollbar-track {
+    background: var(--card-bg-color);
+}
+
+.card-term-content::-webkit-scrollbar-thumb,
+.term-input-container::-webkit-scrollbar-thumb,
+.feedback-container::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-card-color);
+    border-radius: 6px;
+    border: 3px solid var(--card-bg-color);
+}
+
+.card-term-content::-webkit-scrollbar-thumb:hover,
+.term-input-container::-webkit-scrollbar-thumb:hover,
+.feedback-container::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scroll-card-color-hover);
+}
+
+
+.feedback-container {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
     }
-
-    .card-term-text::-webkit-scrollbar, .card-meaning-text::-webkit-scrollbar {
-        width: 12px;
+    to {
+        opacity: 1;
     }
-
-    .card-term-text::-webkit-scrollbar-track, .card-meaning-text::-webkit-scrollbar-track {
-        background: var(--card-bg-color);
-    }
-
-    .card-term-text::-webkit-scrollbar-thumb, .card-meaning-text::-webkit-scrollbar-thumb {
-        background-color: var(--scroll-card-color);
-        border-radius: 6px;
-        border: 3px solid var(--card-bg-color);
-    }
-
-        .card-term-text::-webkit-scrollbar-thumb:hover, .card-meaning-text::-webkit-scrollbar-thumb:hover {
-            background-color: var(--scroll-card-color-hover);
-        }
-
+}
 
 .quiz-buttons {
     width: 100%;
@@ -151,19 +170,21 @@ content {
     border: none;
     cursor: pointer;
     outline: none;
-    
+
 }
-    .quiz-prev-button:hover, .quiz-next-button:hover {
-        color: var(--button-blue);
-        outline: none;
-        border: none;
-    }
+
+.quiz-prev-button:hover, .quiz-next-button:hover {
+    color: var(--button-blue);
+    outline: none;
+    border: none;
+}
 
 .quiz-prev-button:focus, .quiz-next-button:focus {
     color: var(--button-blue);
     outline: none;
     border: none;
 }
+
 .quiz-prev-button {
     margin-right: 20px;
 }
@@ -186,17 +207,11 @@ content {
     color: var(--button-green);
 }
 
-.answer-feedback {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 0.5em;
-}
-
 /* Question Menu Toggle */
-.fi-rr-angle-double-small-right{
+.fi-rr-angle-double-small-right {
     font-size: 25px !important;
 }
+
 .questions-menu {
     position: fixed;
     left: 0;
@@ -219,7 +234,7 @@ content {
     flex-direction: row;
 }
 
-.menu-toggle{
+.menu-toggle {
     display: flex;
 }
 
@@ -373,6 +388,7 @@ input:checked + .slider:before {
     font-size: 14px;
     color: #666;
 }
+
 /* Responsiveness */
 
 @media (max-width: 768px) {
@@ -422,7 +438,7 @@ input:checked + .slider:before {
         height: 110px;
     }
 
-  
+
     .card-meaning-text,
     .card-term-text {
         font-size: 0.85rem;
