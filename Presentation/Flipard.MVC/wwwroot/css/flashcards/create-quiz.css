@@ -3,13 +3,14 @@ content {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    margin: 20px 0;
 }
 
 .quiz-card {
     background-color: var(--card-bg-color);
     display: flex;
-    width: 600px;
-    height: 500px;
+    width: 620px;
+    height: 580px;
     border-radius: 10px;
     margin-top: 50px;
     margin-bottom: 10px;
@@ -71,19 +72,20 @@ content {
 
 
 .answer-card {
-    height: 43%;
+    height: 200px;
     margin: 20px;
+    border: 2px solid var(--input-color);
+    border-radius: 10px
 }
 
 .card-term-content {
     height: 100%; 
+    margin: 5px;
 }
 
 .card-term-container, .feedback-container{
-    height: 100%;
-    border: 2px solid var(--input-color);
+    height: 95.1%;
     outline: none;
-    border-radius: 10px;
     overflow-y: auto;
 }
 
@@ -101,30 +103,36 @@ content {
 }
 
 .user-answer-display{
-    padding: 20px;
+    padding: 10px 20px;
     height: auto;
 }
 
 .answer-feedback{
     padding: 0 20px 20px;
 }
+
 .card-term-content::-webkit-scrollbar,
 .term-input-container::-webkit-scrollbar,
 .feedback-container::-webkit-scrollbar,
-.answers-list::-webkit-scrollbar
+.answers-list::-webkit-scrollbar,
+.card-meaning-text::-webkit-scrollbar
 {
     width: 12px;
 }
 
 .card-term-content::-webkit-scrollbar-track,
 .term-input-container::-webkit-scrollbar-track,
-.feedback-container::-webkit-scrollbar-track {
+.feedback-container::-webkit-scrollbar-track,
+.card-meaning-text::-webkit-scrollbar-track
+{
     background: var(--card-bg-color);
 }
 
 .card-term-content::-webkit-scrollbar-thumb,
 .term-input-container::-webkit-scrollbar-thumb,
-.feedback-container::-webkit-scrollbar-thumb {
+.feedback-container::-webkit-scrollbar-thumb,
+.card-meaning-text::-webkit-scrollbar-thumb
+{
     background-color: var(--scroll-card-color);
     border-radius: 6px;
     border: 3px solid var(--card-bg-color);
@@ -132,7 +140,9 @@ content {
 
 .card-term-content::-webkit-scrollbar-thumb:hover,
 .term-input-container::-webkit-scrollbar-thumb:hover,
-.feedback-container::-webkit-scrollbar-thumb:hover {
+.feedback-container::-webkit-scrollbar-thumb:hover,
+.card-meaning-text::-webkit-scrollbar-thumb:hover
+{
     background-color: var(--scroll-card-color-hover);
 }
 
