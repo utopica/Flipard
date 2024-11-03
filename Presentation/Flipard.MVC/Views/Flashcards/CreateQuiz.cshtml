@@ -49,15 +49,7 @@
 
         <div class="question-card">
             <div class="card-meaning-content">
-                <div class="card-meaning-text" id="card-meaning-text">
-                    @Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"
-                </div>
-                <div class="card-meaning-image" id="card-meaning-image">
-                    @if (!string.IsNullOrEmpty(@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl))
-                    {
-                        <img src="@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl" alt="Image" id="meaning-image">
-                    }
-                </div>
+                <!-- Card meaning content will be inserted here -->
             </div>
         </div>
 

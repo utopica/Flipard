@@ -132,12 +132,40 @@ function showCard(index) {
     if (index >= 0 && index < quizState.cards.length) {
         quizState.currentIndex = index;
         quizState.showAnswer = false;
-        
+
         initializeQuestionsMenu();
 
-        const meaningText = document.getElementById("card-meaning-text");
-        if (meaningText) {
-            meaningText.innerText = quizState.cards[index].Meaning;
+        const meaningContent = document.querySelector(".card-meaning-content");
+        if (!meaningContent) {
+            console.error("Could not find meaning content container");
+            return;
+        }
+
+        meaningContent.innerHTML = '';
+
+        const textDiv = document.createElement("div");
+        textDiv.id = "card-meaning-text";
+        textDiv.className = "card-meaning-text";
+        textDiv.textContent = quizState.cards[index].Meaning; 
+        meaningContent.appendChild(textDiv);
+
+        if (quizState.cards[index].ImageUrl) {
+            const imageDiv = document.createElement("div");
+            imageDiv.id = "card-meaning-image";
+            imageDiv.className = "card-meaning-image";
+
+            const img = document.createElement("img");
+            img.id = "meaning-image";
+            img.src = quizState.cards[index].ImageUrl;
+            img.alt = "Card Image";
+
+            imageDiv.appendChild(img);
+            meaningContent.appendChild(imageDiv);
+
+            textDiv.style.width = window.innerWidth <= 500 ? "220px" :
+                window.innerWidth <= 768 ? "280px" : "350px";
+        } else {
+            textDiv.style.width = "100%";
         }
 
         const termInputContainer = document.getElementById("card-term-container");
@@ -145,10 +173,8 @@ function showCard(index) {
         const userAnswerDisplay = document.querySelector(".user-answer-display");
         const answerFeedback = document.getElementById("answer-feedback");
 
-        // Find if this question was previously answered
         const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === index);
 
-        // Handle input and feedback display
         const termInput = document.getElementById("term-input");
         if (termInput) {
             termInput.value = previousAnswer ? previousAnswer.userAnswer : '';
@@ -156,12 +182,9 @@ function showCard(index) {
         }
 
         if (previousAnswer && !previousAnswer.isCorrect && quizState.feedbackMode) {
-            // If there's a previous wrong answer and we're in feedback mode,
-            // show the feedback display
             termInputContainer.style.display = 'none';
             feedbackContainer.style.display = 'block';
 
-            // Show user's previous answer
             const isBlank = previousAnswer.userAnswer === '';
             userAnswerDisplay.innerHTML = `
                 <div class="wrong-answer">
@@ -169,7 +192,6 @@ function showCard(index) {
                     <i class="fi fi-rr-cross-small"></i>
                 </div>`;
 
-            // Show correct answer
             answerFeedback.innerHTML = `
                 <div class="correct-answer">
                     ${quizState.cards[index].Term}
@@ -178,37 +200,18 @@ function showCard(index) {
 
             quizState.showAnswer = true;
         } else {
-            // Otherwise, show the input container
             termInputContainer.style.display = 'block';
             feedbackContainer.style.display = 'none';
             if (userAnswerDisplay) userAnswerDisplay.innerHTML = '';
             if (answerFeedback) answerFeedback.innerHTML = '';
         }
-        
+
         const progress = document.querySelector(".card-heading #progress");
         if (progress) {
-            progress.innerText = `${index + 1}/${quizState.cards.length}`;
-        }
-        
-        const imageElement = document.getElementById("meaning-image");
-        const imageContainer = document.getElementById("card-meaning-image");
-
-        if (quizState.cards[index].ImageUrl) {
-            if (!imageElement && imageContainer) {
-                const img = document.createElement("img");
-                img.id = "meaning-image";
-                img.src = quizState.cards[index].ImageUrl;
-                img.alt = "Image";
-                imageContainer.appendChild(img);
-            } else if (imageElement) {
-                imageElement.src = quizState.cards[index].ImageUrl;
-                imageElement.style.display = "block";
-            }
-        } else if (imageElement) {
-            imageElement.style.display = "none";
+            progress.textContent = `${index + 1}/${quizState.cards.length}`;
         }
 
-        quizState.showAnswer = false; //
+        quizState.showAnswer = false;
     }
 }
 
