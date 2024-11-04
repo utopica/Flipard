@@ -75,12 +75,13 @@ function renderCards(cards) {
                     </div>
                 </div>
                 <div class="card-image">
-                    ${card.ImageUrl ? `<img class="image-preview" src="${card.ImageUrl}" />` :
-                    <i className="fi fi-tr-graphic-style"></i>}
+                    ${card.ImageUrl
+                        ? `<img class="image-preview" src="${card.ImageUrl}" />`
+                        : `<i class="fi fi-tr-graphic-style"></i>`
+                    }
                 </div>
             </div>
         `;
-
         cardList.appendChild(cardElement);
     });
 }
