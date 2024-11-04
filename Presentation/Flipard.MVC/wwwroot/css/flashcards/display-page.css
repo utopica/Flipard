@@ -216,23 +216,23 @@
 }
 
 
-.card-meaning::-webkit-scrollbar, .card-meaning-text::-webkit-scrollbar {
-        width: 12px;
-        
-    }
-.card-meaning::-webkit-scrollbar-track, .card-meaning-text::-webkit-scrollbar-track {
-        background: var(--card-bg-color);
-    }
-.card-meaning::-webkit-scrollbar-thumb, .card-meaning-text::-webkit-scrollbar-thumb {
-        background-color: var(--scroll-card-color);
-        border-radius: 6px;
-        border: 3px solid var(--card-bg-color);
+/*.card-meaning::-webkit-scrollbar, .card-meaning-text::-webkit-scrollbar {*/
+/*        width: 12px;*/
+/*        */
+/*    }*/
+/*.card-meaning::-webkit-scrollbar-track, .card-meaning-text::-webkit-scrollbar-track {*/
+/*        background: var(--card-bg-color);*/
+/*    }*/
+/*.card-meaning::-webkit-scrollbar-thumb, .card-meaning-text::-webkit-scrollbar-thumb {*/
+/*        background-color: var(--scroll-card-color);*/
+/*        border-radius: 6px;*/
+/*        border: 3px solid var(--card-bg-color);*/
 
-    }
+/*    }*/
 
-.card-meaning::-webkit-scrollbar-thumb:hover, .card-meaning-text::-webkit-scrollbar-thumb:hover {
-        background-color: var(--scroll-card-color-hover);
-    }
+/*.card-meaning::-webkit-scrollbar-thumb:hover, .card-meaning-text::-webkit-scrollbar-thumb:hover {*/
+/*        background-color: var(--scroll-card-color-hover);*/
+/*    }*/
 
 .card-term textarea, .card-meaning textarea {
     background-color: var(--card-bg-color);
@@ -268,7 +268,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: var(--modal-overlay-bg-color);
     z-index: 1000;
     backdrop-filter: brightness(0.6);
 }
@@ -278,11 +278,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: var(--card-white-bg-color);
     border-radius: 16px;
     width: 500px;
     z-index: 1001;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px var(--card-dark-shadow-color);
 }
 
 .modal-header {
@@ -304,7 +304,7 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #536471;
+    color: var(--label-blue-color);
     width: 34px;
     height: 34px;
     border-radius: 50%;
@@ -314,7 +314,7 @@
 }
 
 .modal-close:hover {
-    background-color: rgba(15, 20, 25, 0.1);
+    background-color: var(--modal-bg-color-hover);
 }
 
 .settings-group {
@@ -323,35 +323,35 @@
 
 .settings-group h3 {
     margin-bottom: 10px;
-    color: #333;
+    color: var(--label-gray-color);
     font-size: 16px;
     font-weight: 600;
 }
 
 h3{
     margin-bottom: 10px;
-    color: #333;
+    color: var(--label-gray-color);
     font-size: 16px;
     font-weight: 600;
 }
 
 .settings-option {
     padding: 0.5rem;
-    background-color: #f8f9fa;
+    background-color: var(--modal-bg-color);
     border-radius: 8px;
 }
 
 .settings-option label {
     display: block;
     margin-bottom: 8px;
-    color: #536471;
+    color: var(--label-blue-color);
     font-size: 14px;
 }
 
 .number-input {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #cfd9de;
+    border: 1px solid var(--modal-border-color-third);
     border-radius: 4px;
     font-size: 14px;
 }
@@ -359,7 +359,7 @@ h3{
 .number-input {
     width: 80px;
     padding: 4px 8px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--modal-border-color-second);
     border-radius: 4px;
 }
 
@@ -377,17 +377,42 @@ h3{
 
 .checkbox-option label {
     margin-bottom: 0;
-    color: #0f1419;
+    color: var(--button-dark);
 }
 
 .modal-footer {
     padding: 16px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--modal-border-color);
+}
+
+.delete-deck-modal-footer{
+    margin: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.confirm-button {
+    background-color: var(--button-red);
+    color: var(--white-text-color);
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cancel-button {
+    background-color: var(--sub-text-color-gray);
+    color: var(--black-text-color);
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .save-button {
-    background-color: #0f1419;
-    color: white;
+    background-color: var(--button-dark);
+    color: var(--white-text-color);
     padding: 12px;
     border: none;
     border-radius: 9999px;
@@ -398,7 +423,7 @@ h3{
 }
 
 .save-button:hover {
-    background-color: #272c30;
+    background-color: var(--button-pale-blue-text-color-hover);
 }
 
 /* Toggle Switch Styles */
@@ -418,7 +443,7 @@ h3{
 
 .toggle-option label {
     font-size: 14px;
-    color: #333;
+    color: var(--label-gray-color);
 }
 
 .toggle-switch {
@@ -441,7 +466,7 @@ h3{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: var(--toggle-switch-bg-color);
     transition: .4s;
     border-radius: 24px;
 }
@@ -453,13 +478,13 @@ h3{
     width: 16px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: var(--card-white-bg-color);
     transition: .4s;
     border-radius: 50%;
 }
 
 .toggle-switch input:checked + .slider {
-    background-color: #272c30;
+    background-color: var(--blackish-button-color);
 }
 
 .toggle-switch input:checked + .slider:before {

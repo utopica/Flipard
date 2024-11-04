@@ -11,6 +11,8 @@
     --sub-text-color-blue: #94A3B8;
     --sub-text-color-light-gray: #7d878f;
     
+    --label-gray-color: #333;
+    --label-blue-color: #536471;
     
     --card-bg-color: #323338;
     --card-light-bg-color: #44464c;
@@ -39,6 +41,7 @@
     --button-pale-blue-text-color: rgba(51, 65, 85, 0.8);
     --button-pale-blue-text-color-hover: #334155;
     --button-blue-hover: #b5e0d4;
+    --button-dark: #0f1419;
     
     --button-green-bg-color: rgba(74, 222, 128, 0.1);
     --button-red-bg-color: rgba(249, 115, 22, 0.1);
@@ -48,9 +51,16 @@
     --border-color: #8d90a0;
     --dark-border-color: #5f616b;
     --border-color-second : #70737F;
+    --modal-border-color: #eee;
+    --modal-border-color-second: #ddd;
+    --modal-border-color-third: #cfd9de;
+    
     --scroll-card-color: #555;
     --scroll-card-color-hover: #888;
     
+    --modal-bg-color: #f8f9fa;
+    --modal-bg-color-hover: #0F141919;
+    --modal-overlay-bg-color : #00000066;
     
     --toggle-switch-bg-color: #ccc;
     

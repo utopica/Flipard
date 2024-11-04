@@ -1,6 +1,7 @@
 ﻿let currentIndex = 0;
 let cards = []; // Will be populated from the server
 let showingTerm = true;
+let deckIdToDelete = null;
 
 function initialize(serverCards) {
     cards = serverCards;
@@ -277,4 +278,23 @@ function redirectToQuiz(deckId) {
     } else {
         window.location.href = '/Flashcards/CreateQuiz/' + deckId;
     }
+}
+
+function showDeleteConfirmation(deckId) {
+    deckIdToDelete = deckId;
+    document.getElementById('deleteConfirmationModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteConfirmation() {
+    document.getElementById('deleteConfirmationModal').style.display = 'none';
+    document.body.style.overflow = '';
+    deckIdToDelete = null;
+}
+
+function confirmDeleteDeck() {
+    if (deckIdToDelete) {
+        deleteDeck(deckIdToDelete);
+    }
+    closeDeleteConfirmation();
 }

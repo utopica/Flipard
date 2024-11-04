@@ -34,9 +34,9 @@
 
             @if (!Model.IsReadOnly)
             {
-                <button type="button" class="deck-delete-button" onclick="deleteDeck('@Model.Id')">
+                <button type="button" class="deck-delete-button" onclick="showDeleteConfirmation('@Model.Id')">
                     Delete Set
-                </button> //todo: ask "do you want to permanently delete this set"
+                </button>
             }
 
             <button type="button" class="deck-settings-button" onclick="setQuizOptions('@Model.Id')">
@@ -151,6 +151,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Deletion</h2>
+                <button class="modal-close" onclick="closeDeleteConfirmation()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to permanently delete this set?</p>
+            </div>
+            <div class="delete-deck-modal-footer">
+                <button class="confirm-button" onclick="confirmDeleteDeck()">Yes, Delete</button>
+                <button class="cancel-button" onclick="closeDeleteConfirmation()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
 </content>
 <script type="text/javascript">
     const serverCards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
