@@ -16,14 +16,63 @@ const quizState = {
 };
 
 function initializeQuiz(quizCards, deck, resultsUrl) {
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const settingsParam = urlParams.get('settings');
+
+    let settings = {
+        modes: { feedback: true },
+        questionCount: quizCards.length,
+        answerWith: 'term',
+        questionTypes: {
+            written: true,
+            multipleChoice: true,
+            trueFalse: false
+        }
+    };
+
+    if (settingsParam) {
+        try {
+            const parsedSettings = JSON.parse(settingsParam);
+            settings = { ...settings, ...parsedSettings };
+        } catch (e) {
+            console.error('Failed to parse quiz settings:', e);
+        }
+    }
+
+    quizState.cards = settings.questionCount < quizCards.length ?
+        shuffleArray(quizCards).slice(0, settings.questionCount) :
+        quizCards;
+    
     quizState.cards = quizCards;
     quizState.deckId = deck;
     quizState.quizResultsUrl = resultsUrl;
     quizState.originalAnswers = new Array(quizCards.length).fill('');
     quizState.startTime = Date.now();
     quizState.isQuizCompleted = false;
+    quizState.feedbackMode = settings.modes.feedback;
+    quizState.answerWith = settings.answerWith;
+    quizState.questionTypes = settings.questionTypes;
+
+    if (settings.answerWith === 'definition') {
+        quizState.cards = quizState.cards.map(card => ({
+            ...card,
+            Term: card.Meaning,
+            Meaning: card.Term
+        }));
+    }
+
     showCard(quizState.currentIndex);
     initializeQuestionsMenu();
+}
+
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
 }
 
 function initializeQuestionsMenu() {
@@ -82,45 +131,84 @@ function toggleMenu() {
 function showCard(index) {
     if (index >= 0 && index < quizState.cards.length) {
         quizState.currentIndex = index;
+        quizState.showAnswer = false;
 
         initializeQuestionsMenu();
 
-        const meaningText = document.getElementById("card-meaning-text");
-        if (meaningText) {
-            meaningText.innerText = quizState.cards[index].Meaning;
+        const meaningContent = document.querySelector(".card-meaning-content");
+        if (!meaningContent) {
+            console.error("Could not find meaning content container");
+            return;
         }
+
+        meaningContent.innerHTML = '';
+
+        const textDiv = document.createElement("div");
+        textDiv.id = "card-meaning-text";
+        textDiv.className = "card-meaning-text";
+        textDiv.textContent = quizState.cards[index].Meaning; 
+        meaningContent.appendChild(textDiv);
+
+        if (quizState.cards[index].ImageUrl) {
+            const imageDiv = document.createElement("div");
+            imageDiv.id = "card-meaning-image";
+            imageDiv.className = "card-meaning-image";
+
+            const img = document.createElement("img");
+            img.id = "meaning-image";
+            img.src = quizState.cards[index].ImageUrl;
+            img.alt = "Card Image";
+
+            imageDiv.appendChild(img);
+            meaningContent.appendChild(imageDiv);
+
+            textDiv.style.width = window.innerWidth <= 500 ? "220px" :
+                window.innerWidth <= 768 ? "280px" : "350px";
+        } else {
+            textDiv.style.width = "100%";
+        }
+
+        const termInputContainer = document.getElementById("card-term-container");
+        const feedbackContainer = document.getElementById("feedback-container");
+        const userAnswerDisplay = document.querySelector(".user-answer-display");
+        const answerFeedback = document.getElementById("answer-feedback");
+
+        const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === index);
 
         const termInput = document.getElementById("term-input");
         if (termInput) {
-            termInput.value = '' //original cevapler gösterilsin geri gidince 
+            termInput.value = previousAnswer ? previousAnswer.userAnswer : '';
+            termInput.disabled = quizState.isQuizCompleted;
+        }
+
+        if (previousAnswer && !previousAnswer.isCorrect && quizState.feedbackMode) {
+            termInputContainer.style.display = 'none';
+            feedbackContainer.style.display = 'block';
+
+            const isBlank = previousAnswer.userAnswer === '';
+            userAnswerDisplay.innerHTML = `
+                <div class="wrong-answer">
+                    ${isBlank ? 'Boş bırakıldı' : previousAnswer.userAnswer}
+                    <i class="fi fi-rr-cross-small"></i>
+                </div>`;
+
+            answerFeedback.innerHTML = `
+                <div class="correct-answer">
+                    ${quizState.cards[index].Term}
+                    <i class="fi fi-br-check"></i>
+                </div>`;
+
+            quizState.showAnswer = true;
+        } else {
+            termInputContainer.style.display = 'block';
+            feedbackContainer.style.display = 'none';
+            if (userAnswerDisplay) userAnswerDisplay.innerHTML = '';
+            if (answerFeedback) answerFeedback.innerHTML = '';
         }
 
         const progress = document.querySelector(".card-heading #progress");
         if (progress) {
-            progress.innerText = `${index + 1}/${quizState.cards.length}`;
-        }
-
-        const answerFeedback = document.getElementById("answer-feedback");
-        if (answerFeedback) {
-            answerFeedback.innerHTML = ""; //answer feedback de sıfırlanıyor
-        }
-
-        const imageElement = document.getElementById("meaning-image");
-        const imageContainer = document.getElementById("card-meaning-image");
-
-        if (quizState.cards[index].ImageUrl) {
-            if (!imageElement && imageContainer) {
-                const img = document.createElement("img");
-                img.id = "meaning-image";
-                img.src = quizState.cards[index].ImageUrl;
-                img.alt = "Image";
-                imageContainer.appendChild(img);
-            } else if (imageElement) {
-                imageElement.src = quizState.cards[index].ImageUrl;
-                imageElement.style.display = "block";
-            }
-        } else if (imageElement) {
-            imageElement.style.display = "none";
+            progress.textContent = `${index + 1}/${quizState.cards.length}`;
         }
 
         quizState.showAnswer = false;
@@ -140,44 +228,83 @@ function showPreviousCard() {
 }
 
 function submitAnswer() {
-    const userTerm = document.getElementById("term-input").value.trim();
+    const termInputContainer = document.getElementById("card-term-container");
+    const feedbackContainer = document.getElementById("feedback-container");
+    const userAnswerDisplay = document.querySelector(".user-answer-display");
+    const termInput = document.getElementById("term-input");
+    const userTerm = termInput.value.trim();
     const correctTerm = quizState.cards[quizState.currentIndex].Term;
     const answerFeedback = document.getElementById("answer-feedback");
     const isBlank = userTerm === '';
     const isCorrect = !isBlank && (userTerm.toLowerCase() === correctTerm.toLowerCase());
-    const isWrong = !isBlank && !isCorrect;
+    const existingAnswerIndex = quizState.answeredQuestions.findIndex(
+        q => q.questionIndex === quizState.currentIndex
+    );
 
 
-    if (!quizState.originalAnswers[quizState.currentIndex] && !quizState.showAnswer) {
+    if (existingAnswerIndex !== -1 && !quizState.feedbackMode) {
+        const oldAnswer = quizState.answeredQuestions[existingAnswerIndex];
+
+        // Revert old answer statistics
+        if (oldAnswer.isBlank) quizState.blankAnswersCount--;
+        else if (oldAnswer.isCorrect) quizState.correctAnswersCount--;
+        else quizState.wrongAnswerCount--;
+
+        // Remove old answer
+        quizState.answeredQuestions.splice(existingAnswerIndex, 1);
+        quizState.originalAnswers[quizState.currentIndex] = '';
+    }
+
+    if (!quizState.originalAnswers[quizState.currentIndex] || !quizState.feedbackMode) {
         quizState.originalAnswers[quizState.currentIndex] = userTerm;
 
-        quizState.answeredQuestions.push({
-            questionIndex: quizState.currentIndex,
-            userAnswer: userTerm,
-            isCorrect: isCorrect,
-            isBlank: isBlank
-        });
+        if (!quizState.showAnswer) {
+            quizState.answeredQuestions.push({
+                questionIndex: quizState.currentIndex,
+                userAnswer: userTerm,
+                isCorrect: isCorrect,
+                isBlank: isBlank
+            });
 
-        if (isBlank) {
-            quizState.blankAnswersCount++;
-        } else if (isCorrect) {
-            quizState.correctAnswersCount++;
-        } else {
-            quizState.wrongAnswerCount++;
+            // Update statistics for new answer
+            if (isBlank) quizState.blankAnswersCount++;
+            else if (isCorrect) quizState.correctAnswersCount++;
+            else quizState.wrongAnswerCount++;
         }
     }
 
-    if (!quizState.showAnswer && !isCorrect) {
-        answerFeedback.innerHTML = `
-           <div class="wrong-answer">${userTerm || 'Boş bırakıldı'} <i class="fi fi-rr-cross-small"></i></div>
-            <div class="correct-answer">${correctTerm} <i class="fi fi-br-check"></i></div>`;
-        document.getElementById("term-input").value = correctTerm;
-        quizState.showAnswer = true;
-        initializeQuestionsMenu();
-        return;
+    if (quizState.feedbackMode && !quizState.showAnswer) {
+        if (!isCorrect) {
+            termInputContainer.style.display = 'none';
+            feedbackContainer.style.display = 'block';
+
+            userAnswerDisplay.innerHTML = `
+                <div class="wrong-answer">
+                    ${isBlank ? 'Boş bırakıldı' : userTerm} 
+                    <i class="fi fi-rr-cross-small"></i>
+                </div>`;
+
+            // Show correct answer feedback
+            answerFeedback.innerHTML = `
+                <div class="correct-answer">
+                    ${correctTerm} 
+                    <i class="fi fi-br-check"></i>
+                </div>`;
+
+            quizState.showAnswer = true;
+            initializeQuestionsMenu();
+            return;
+        }
     }
 
     if (quizState.showAnswer) {
+        
+        // Reset display for next question
+        termInputContainer.style.display = 'block';
+        feedbackContainer.style.display = 'none';
+        userAnswerDisplay.innerHTML = '';
+        answerFeedback.innerHTML = '';
+        
         quizState.showAnswer = false;
         if (quizState.currentIndex < quizState.cards.length - 1) {
             showCard(quizState.currentIndex + 1);
@@ -187,7 +314,7 @@ function submitAnswer() {
         return;
     }
 
-    if (isCorrect) {
+    if (!quizState.feedbackMode || isCorrect) {
         if (quizState.currentIndex < quizState.cards.length - 1) {
             showCard(quizState.currentIndex + 1);
         } else {
@@ -204,7 +331,7 @@ function showQuizSummary() {
     const accuracy = attemptedQuestions > 0
         ? (quizState.correctAnswersCount / attemptedQuestions) * 100
         : 0;
-    
+
     document.getElementById('accuracy-percentage').textContent = Math.round(accuracy);
     document.getElementById('correct-count').textContent = quizState.correctAnswersCount;
     document.getElementById('incorrect-count').textContent = quizState.wrongAnswerCount;
@@ -309,4 +436,3 @@ window.initializeQuiz = initializeQuiz;
 window.toggleMenu = toggleMenu;
 window.submitAnswer = submitAnswer;
 window.showPreviousCard = showPreviousCard;
-

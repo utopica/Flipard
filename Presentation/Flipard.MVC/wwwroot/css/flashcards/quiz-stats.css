@@ -1,6 +1,6 @@
 #quiz-summary {
     display: none;
-    width: 600px;
+    width: 620px;
     background-color: var(--card-bg-color);
     padding: 2em;
     border-radius: 12px;
@@ -185,7 +185,6 @@
 
 .question-text {
     margin-bottom: 0.5rem;
-    font-weight: 500;
 }
 
 .answer-text {
@@ -220,4 +219,22 @@
 
 .score-item .blank {
     color: var(--sub-text-color-dark-gray);
+}
+
+/* Responsiveness */
+
+@media (max-width: 768px) {
+    
+    #quiz-summary{
+        width: 500px;
+    }
+    
+}
+
+
+@media (max-width: 500px) {
+    
+    #quiz-summary{
+        width: 450px;
+    }
 }

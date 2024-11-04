@@ -47,12 +47,11 @@ namespace Flipard.Persistence.Configurations
 
             // Term
             builder.Property(x => x.Term).IsRequired();
-            builder.Property(x => x.Term).HasMaxLength(1000);
+            // builder.Property(x => x.Term).HasMaxLength(3000);
 
             // Meaning 
             builder.Property(x=> x.Meaning).IsRequired();
-            builder.Property(x=> x.Meaning).HasMaxLength(2000);
-
+            
             builder.ToTable("Vocabularies");
         }
     }

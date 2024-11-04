@@ -18,122 +18,119 @@
     <link rel="stylesheet" href="~/css/flashcards/quiz-stats.css">
 </head>
 <body>
-    @antiforgery
-    <content>
-        <div class="questions-menu" id="questionsMenu">
-            <div class="menu-container">
-                <div class="menu-content">
-                    <div class="menu-header">
-                        <h2 class="menu-title">Questions</h2>
-                        
-                    </div>
-                    <div class="questions-grid" id="questionsGrid">
-                        <!-- Questions will be inserted here -->
-                    </div>
+@antiforgery
+<content>
+    <div class="questions-menu" id="questionsMenu">
+        <div class="menu-container">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <h2 class="menu-title">Questions</h2>
+
                 </div>
-                <div class="menu-toggle">
-                    <button class="toggle-button" onclick="toggleMenu()">
-                        <i class="fi fi-rr-angle-double-small-right"></i>
-                    </button>
+                <div class="questions-grid" id="questionsGrid">
+                    <!-- Questions will be inserted here -->
                 </div>
+            </div>
+            <div class="menu-toggle">
+                <button class="toggle-button" onclick="toggleMenu()">
+                    <i class="fi fi-rr-angle-double-small-right"></i>
+                </button>
             </div>
         </div>
-        
-        <div class="quiz-card">
-            <div class="card-heading">
-                <p>Tanım</p>
-                <p id="progress">
-                    @(Model.TermMeanings.Count > 0 ? "1/" + Model.TermMeanings.Count : "0/0")
-                </p>
-            </div>
+    </div>
 
-            <div class="question-card">
-                <div class="card-meaning-content">
-                    <div class="card-meaning-text" id="card-meaning-text">
-                        @Model?.TermMeanings?.FirstOrDefault()?.Meaning ?? "No meaning available"
-                    </div>
-                    <div class="card-meaning-image" id="card-meaning-image">
-                        @if (!string.IsNullOrEmpty(@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl))
-                        {
-                            <img src="@Model?.TermMeanings?.FirstOrDefault()?.ImageUrl" alt="Image" id="meaning-image">
-                        }
-                    </div>
-                </div>
-            </div>
+    <div class="quiz-card">
+        <div class="card-heading">
+            <p>Tanım</p>
+            <p id="progress">
+                @(Model.TermMeanings.Count > 0 ? "1/" + Model.TermMeanings.Count : "0/0")
+            </p>
+        </div>
 
-            <div class="answer-card">
-                <div class="card-term-content">
-                    <div id="answer-feedback" class="answer-feedback"></div>
+        <div class="question-card">
+            <div class="card-meaning-content">
+                <!-- Card meaning content will be inserted here -->
+            </div>
+        </div>
+
+        <div class="answer-card">
+            <div class="card-term-content">
+                <div id="card-term-container" class="card-term-container">
                     <input type="text" class="card-term-text" id="term-input" placeholder="Terimi girin">
                 </div>
-            </div>
-
-            <div class="quiz-buttons">
-                <button type="button" class="quiz-prev-button" onclick="showPreviousCard()">
-                    <span class="prev-button">
-                        <i class="fi fi-rr-arrow-small-left"></i>
-                    </span>
-                </button>
-                <button type="button" class="quiz-next-button" onclick="submitAnswer()">
-                    <span class="next-button">
-                        <i class="fi fi-rr-arrow-small-right"></i>
-                    </span>
-                </button>
+                <div id="feedback-container" class="feedback-container" style="display: none;">
+                    <div class="user-answer-display"></div>
+                    <div id="answer-feedback" class="answer-feedback"></div>
+                </div>
             </div>
         </div>
 
-        <div id="quiz-summary">
-            <div class="remaining-time">Harcanan Zaman: <span id="time-taken">3 dk.</span></div>
+        <div class="quiz-buttons">
+            <button type="button" class="quiz-prev-button" onclick="showPreviousCard()">
+                <span class="prev-button">
+                    <i class="fi fi-rr-arrow-small-left"></i>
+                </span>
+            </button>
+            <button type="button" class="quiz-next-button" onclick="submitAnswer()">
+                <span class="next-button">
+                    <i class="fi fi-rr-arrow-small-right"></i>
+                </span>
+            </button>
+        </div>
+    </div>
 
-            <div class="progress-container">
-                <div class="progress-circle">
-                    <svg width="120" height="120" viewBox="0 0 120 120">
-                        <circle class="background" cx="60" cy="60" r="54"/>
-                        <circle class="progress" cx="60" cy="60" r="54"/>
-                    </svg>
-                    <div class="percentage">%<span id="accuracy-percentage">63</span></div>
-                </div>
+    <div id="quiz-summary">
+        <div class="remaining-time">Harcanan Zaman: <span id="time-taken">3 dk.</span></div>
 
-                <div class="score-details">
-                    <div class="score-item">
-                        <span class="score-label">Doğru</span>
-                        <span class="score-value correct" id="correct-count"></span>
-                    </div>
-                    <div class="score-item">
-                        <span class="score-label">Yanlış</span>
-                        <span class="score-value incorrect" id="incorrect-count"></span>
-                    </div>
-                    <div class="score-item">
-                        <span class="score-label">Boş</span>
-                        <span class="score-value blank" id="blank-count"></span>
-                    </div>
-                </div>
+        <div class="progress-container">
+            <div class="progress-circle">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle class="background" cx="60" cy="60" r="54"/>
+                    <circle class="progress" cx="60" cy="60" r="54"/>
+                </svg>
+                <div class="percentage">%<span id="accuracy-percentage">63</span></div>
             </div>
 
-            <div class="detailed-answers">
-                <h3>Detaylı Sonuçlar</h3>
-                <div id="detailed-answers-list" class="answers-list">
-                    <!-- Cevaplar buraya JavaScript ile eklenecek -->
+            <div class="score-details">
+                <div class="score-item">
+                    <span class="score-label">Doğru</span>
+                    <span class="score-value correct" id="correct-count"></span>
                 </div>
-            </div>
-
-            <div class="summary-buttons">
-                <button class="summary-button submit-results" onclick="submitQuizResults()">Submit Results</button>
-                <button class="summary-button try-again" onclick="location.reload()">Try Again</button>
+                <div class="score-item">
+                    <span class="score-label">Yanlış</span>
+                    <span class="score-value incorrect" id="incorrect-count"></span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Boş</span>
+                    <span class="score-value blank" id="blank-count"></span>
+                </div>
             </div>
         </div>
-    </content>
-    <script src="@Url.Content("~/js/flashcards/quiz.js")"></script>
 
-    <script src="@Url.Content("~/js/flashcards/quiz.js")"></script>
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            const quizCards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
-            const deck = '@Model.Id';
-            const resultsUrl = '@Url.Action("QuizResults", "Flashcards")';
+        <div class="detailed-answers">
+            <h3>Detaylı Sonuçlar</h3>
+            <div id="detailed-answers-list" class="answers-list">
+                <!-- Cevaplar buraya JavaScript ile eklenecek -->
+            </div>
+        </div>
 
-            initializeQuiz(quizCards, deck, resultsUrl);
-        });
-    </script>
+        <div class="summary-buttons">
+            <button class="summary-button submit-results" onclick="submitQuizResults()">Submit Results</button>
+            <button class="summary-button try-again" onclick="location.reload()">Try Again</button>
+        </div>
+    </div>
+</content>
+<script src="@Url.Content("~/js/flashcards/quiz.js")"></script>
+
+<script src="@Url.Content("~/js/flashcards/quiz.js")"></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        const quizCards = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model?.TermMeanings ?? new List<TermMeaningViewModel>()));
+        const deck = '@Model.Id';
+        const resultsUrl = '@Url.Action("QuizResults", "Flashcards")';
+
+        initializeQuiz(quizCards, deck, resultsUrl);
+    });
+</script>
 </body>
 </html>

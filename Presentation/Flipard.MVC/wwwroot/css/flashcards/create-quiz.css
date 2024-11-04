@@ -3,15 +3,15 @@ content {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    margin: 20px 0;
 }
 
 .quiz-card {
     background-color: var(--card-bg-color);
     display: flex;
-    width: 600px;
-    height:500px;
+    width: 620px;
+    height: 580px;
     border-radius: 10px;
-    color: aliceblue;
     margin-top: 50px;
     margin-bottom: 10px;
     flex-direction: column;
@@ -43,7 +43,7 @@ content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 20px 30px 10px 30px
 }
 
 .card-meaning-text {
@@ -53,7 +53,7 @@ content {
     font-size: 1rem;
 }
 
-.card-meaning-image{
+.card-meaning-image {
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -63,74 +63,67 @@ content {
     object-fit: scale-down;
 }
 
-    .card-meaning-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
+.card-meaning-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
 
 
 .answer-card {
-    display: flex;
-    width: 100%;
-    height: 43%;
-    flex-direction: column;
-    gap: 0.5em;
+    height: 200px;
+    margin: 20px;
+    border: 2px solid var(--input-color);
+    border-radius: 10px
 }
 
 .card-term-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5em;
-    width: 100%;
-    height: 100%;
-    color: white;
-    padding: 10px 20px;
-    
+    height: 100%; 
+    margin: 5px;
 }
-    .card-term-content input {
-        background: var(--card-bg-color);
-        border: 2px solid var(--input-color);
-        outline: none;
-        border-radius: 10px;
-        color: white;
-        padding: 10px;
-    }
-    
+
+.card-term-container, .feedback-container{
+    height: 95.1%;
+    outline: none;
+    overflow-y: auto;
+}
+
+.card-term-container input{
+    height: 100%;
+    background: inherit;
+    color: var(--white-text-color);
+    padding: 1rem;
+    border: none;
+    overflow-y: auto;
+}
+
 .card-term-text {
     width: 100%;
-    height: 100%;
-    color: white;
-    overflow: auto;
-    word-wrap: break-word;
-    font-size: 1.1rem;
-    margin: 0;
 }
 
-    .card-term-text input {
-        background: var(--input-color);
+.user-answer-display{
+    padding: 10px 20px;
+    height: auto;
+}
+
+.answer-feedback{
+    padding: 0 20px 20px;
+}
+
+.feedback-container {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
     }
-
-    .card-term-text::-webkit-scrollbar, .card-meaning-text::-webkit-scrollbar {
-        width: 12px;
+    to {
+        opacity: 1;
     }
-
-    .card-term-text::-webkit-scrollbar-track, .card-meaning-text::-webkit-scrollbar-track {
-        background: var(--card-bg-color);
-    }
-
-    .card-term-text::-webkit-scrollbar-thumb, .card-meaning-text::-webkit-scrollbar-thumb {
-        background-color: var(--scroll-card-color);
-        border-radius: 6px;
-        border: 3px solid var(--card-bg-color);
-    }
-
-        .card-term-text::-webkit-scrollbar-thumb:hover, .card-meaning-text::-webkit-scrollbar-thumb:hover {
-            background-color: var(--scroll-card-color-hover);
-        }
-
+}
 
 .quiz-buttons {
     width: 100%;
@@ -151,19 +144,21 @@ content {
     border: none;
     cursor: pointer;
     outline: none;
-    
+
 }
-    .quiz-prev-button:hover, .quiz-next-button:hover {
-        color: var(--button-blue);
-        outline: none;
-        border: none;
-    }
+
+.quiz-prev-button:hover, .quiz-next-button:hover {
+    color: var(--button-blue);
+    outline: none;
+    border: none;
+}
 
 .quiz-prev-button:focus, .quiz-next-button:focus {
     color: var(--button-blue);
     outline: none;
     border: none;
 }
+
 .quiz-prev-button {
     margin-right: 20px;
 }
@@ -186,17 +181,11 @@ content {
     color: var(--button-green);
 }
 
-.answer-feedback {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 0.5em;
-}
-
 /* Question Menu Toggle */
-.fi-rr-angle-double-small-right{
+.fi-rr-angle-double-small-right {
     font-size: 25px !important;
 }
+
 .questions-menu {
     position: fixed;
     left: 0;
@@ -219,7 +208,7 @@ content {
     flex-direction: row;
 }
 
-.menu-toggle{
+.menu-toggle {
     display: flex;
 }
 
@@ -308,12 +297,78 @@ content {
 button:focus {
     outline: none;
 }
+
+/* Answer-Feedback Toggle */
+.feedback-mode-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    gap: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-label {
+    font-size: 14px;
+    color: #666;
+}
+
 /* Responsiveness */
 
 @media (max-width: 768px) {
     .quiz-card {
         width: 500px;
-        height: 458px;
+        /*height: 458px;*/
         padding: 10px;
         margin: 20px 0;
     }
@@ -342,11 +397,11 @@ button:focus {
 @media (max-width: 500px) {
     .quiz-card {
         width: 450px;
-        height: 417px;
+        /*height: 417px;*/
         padding: 10px;
         margin: 20px 0;
     }
-
+    
     .card-meaning-text {
         width: 220px;
         height: auto;
@@ -357,7 +412,7 @@ button:focus {
         height: 110px;
     }
 
-  
+
     .card-meaning-text,
     .card-term-text {
         font-size: 0.85rem;

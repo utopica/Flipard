@@ -4,6 +4,7 @@
     --title-text-color: rgb(251, 250, 251);
     --white-text-color: #FFFFFF;
     --black-text-color: #000000;
+    --sub-text-color-white: #F0F8FFFF;
     --sub-text-color: #b5b5b5;
     --sub-text-color-gray: #d2d1d1;
     --sub-text-color-dark-gray: #6c757d;
@@ -25,6 +26,7 @@
     --icon-button-color: #ffffff;
     --icon-button-color-hover: #b5e0d4;
     --icon-button-sub-color: #a3a6b5;
+    --blackish-button-color: #272c30;
 
     --button-red : #dc3545;
     --button-red-pale : #b63b44;
@@ -33,7 +35,7 @@
     --button-green-pale : #45b56a;
     --button-blue: #62cbe7;
     --button-bright-blue: #00BFA5;
-    --button-blue-text-color: #035175;
+    --button-blue-text-color: #003e5a;
     --button-pale-blue-text-color: rgba(51, 65, 85, 0.8);
     --button-pale-blue-text-color-hover: #334155;
     --button-blue-hover: #b5e0d4;
@@ -48,6 +50,9 @@
     --border-color-second : #70737F;
     --scroll-card-color: #555;
     --scroll-card-color-hover: #888;
+    
+    
+    --toggle-switch-bg-color: #ccc;
     
     --flipard-green: #009578;
     --flipard-green-hover: #008168;
