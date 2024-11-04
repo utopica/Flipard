@@ -43,7 +43,7 @@ content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 20px 30px 10px 30px
 }
 
 .card-meaning-text {
@@ -110,42 +110,6 @@ content {
 .answer-feedback{
     padding: 0 20px 20px;
 }
-
-.card-term-content::-webkit-scrollbar,
-.term-input-container::-webkit-scrollbar,
-.feedback-container::-webkit-scrollbar,
-.answers-list::-webkit-scrollbar,
-.card-meaning-text::-webkit-scrollbar
-{
-    width: 12px;
-}
-
-.card-term-content::-webkit-scrollbar-track,
-.term-input-container::-webkit-scrollbar-track,
-.feedback-container::-webkit-scrollbar-track,
-.card-meaning-text::-webkit-scrollbar-track
-{
-    background: var(--card-bg-color);
-}
-
-.card-term-content::-webkit-scrollbar-thumb,
-.term-input-container::-webkit-scrollbar-thumb,
-.feedback-container::-webkit-scrollbar-thumb,
-.card-meaning-text::-webkit-scrollbar-thumb
-{
-    background-color: var(--scroll-card-color);
-    border-radius: 6px;
-    border: 3px solid var(--card-bg-color);
-}
-
-.card-term-content::-webkit-scrollbar-thumb:hover,
-.term-input-container::-webkit-scrollbar-thumb:hover,
-.feedback-container::-webkit-scrollbar-thumb:hover,
-.card-meaning-text::-webkit-scrollbar-thumb:hover
-{
-    background-color: var(--scroll-card-color-hover);
-}
-
 
 .feedback-container {
     animation: fadeIn 0.3s ease-in-out;
@@ -404,7 +368,7 @@ input:checked + .slider:before {
 @media (max-width: 768px) {
     .quiz-card {
         width: 500px;
-        height: 458px;
+        /*height: 458px;*/
         padding: 10px;
         margin: 20px 0;
     }
@@ -433,11 +397,11 @@ input:checked + .slider:before {
 @media (max-width: 500px) {
     .quiz-card {
         width: 450px;
-        height: 417px;
+        /*height: 417px;*/
         padding: 10px;
         margin: 20px 0;
     }
-
+    
     .card-meaning-text {
         width: 220px;
         height: auto;
