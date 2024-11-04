@@ -2,6 +2,14 @@
 let cards = []; // Will be populated from the server
 let showingTerm = true;
 
+function initialize(serverCards) {
+    cards = serverCards;
+    showCard(currentIndex);
+    renderCards(cards);
+    initializeEventListeners();
+    loadSavedSettings();
+}
+
 function showCard(index) {
     if (index >= 0 && index < cards.length) {
         currentIndex = index;
@@ -27,6 +35,54 @@ function flipCard() {
     } else {
         showTerm();
     }
+}
+
+function renderCards(cards) {
+    const cardList = document.getElementById("card-list");
+    cardList.innerHTML = ""; // Clear any existing content
+
+    cards.forEach((card, index) => {
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card");
+
+        cardElement.innerHTML = `
+            <div class="card-edit-bar">
+                <span class="card-number">${index + 1}</span>
+                <div class="card-edit-buttons">
+                    ${!card.isReadOnly ? `
+                        <button type="button" class="card-delete-button" data-card-id="${card.Id}" onclick="deleteCard(this)">
+                            <span class="button-card-delete-icon"><i class="fa-solid fa-trash"></i></span>
+                        </button>
+                        <button type="button" class="card-edit-button" onclick="editCard('${card.Id}')">
+                            <span class="button-card-edit-icon"><i class="fa-solid fa-pen"></i></span>
+                        </button>
+                        <button type="button" class="card-save-button" onclick="saveCard('${card.Id}')" style="display: none;">
+                            <span class="button-card-save-icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        </button>
+                    ` : ""}
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-term-meaning">
+                    <div class="card-term">
+                        <span id="card-term-display-${card.Id}">${card.Term}</span>
+                        ${!card.isReadOnly ? `<textarea class="card-term" id="card-term-${card.Id}" style="display: none;">${card.Term}</textarea>` : ""}
+                    </div>
+                    <div class="card-content-divider"></div>
+                    <div class="card-meaning">
+                        <span class="card-meaning" id="card-meaning-display-${card.Id}">${card.Meaning}</span>
+                        ${!card.isReadOnly ? `<textarea class="card-term" id="card-meaning-${card.Id}" style="display: none;">${card.Meaning}</textarea>` : ""}
+                    </div>
+                </div>
+                <div class="card-image">
+                    ${card.ImageUrl ? `<img class="image-preview" src="${card.ImageUrl}" />` :
+                    <i className="fi fi-tr-graphic-style"></i>}
+                </div>
+            </div>
+        `;
+
+        cardList.appendChild(cardElement);
+    });
 }
 
 function showPreviousCard() {
@@ -175,19 +231,19 @@ function setQuizOptions(deckId) {
 }
 
 function initializeEventListeners() {
-    document.getElementById('answerWithTerm').addEventListener('change', function(e) {
+    document.getElementById('answerWithTerm').addEventListener('change', function (e) {
         if (e.target.checked) {
             document.getElementById('answerWithDefinition').checked = false;
         }
     });
 
-    document.getElementById('answerWithDefinition').addEventListener('change', function(e) {
+    document.getElementById('answerWithDefinition').addEventListener('change', function (e) {
         if (e.target.checked) {
             document.getElementById('answerWithTerm').checked = false;
         }
     });
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target === document.getElementById('quizSettingsModal')) {
             closeQuizSettings();
         }
@@ -207,19 +263,6 @@ function loadSavedSettings() {
         document.getElementById('multipleChoiceType').checked = settings.questionTypes.multipleChoice;
         document.getElementById('trueFalseType').checked = settings.questionTypes.trueFalse;
     }
-}
-
-function initialize(serverCards) {
-    cards = serverCards;
-    showCard(currentIndex);
-
-    const questionCountInput = document.getElementById('questionCount');
-    if (questionCountInput) {
-        questionCountInput.max = cards.length;
-    }
-
-    initializeEventListeners();
-    loadSavedSettings();
 }
 
 function redirectToQuiz(deckId) {
