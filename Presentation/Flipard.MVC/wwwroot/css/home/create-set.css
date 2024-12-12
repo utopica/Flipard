@@ -114,14 +114,15 @@
 
 
 .card-image-button,
-.card-delete-button {
+.card-delete-button,
+.card-scan-button
+{
     margin-top: 10px;
     margin-left: 20px;
     font-size: 18px;
     background: none;
     color: var(--white-text-color);
     border: none;
-    cursor: pointer;
 }
 
 .user-deck-card {
