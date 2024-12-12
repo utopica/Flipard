@@ -1,5 +1,6 @@
 using Flipard.Domain.Identity;
 using Flipard.Domain.Interfaces;
+using Flipard.Infrastructure;
 using Flipard.MVC.Services;
 using Flipard.Persistence;
 using Flipard.Persistence.Concretes;
@@ -23,11 +24,12 @@ builder.Configuration
 
 var configuration = builder.Configuration;
 
+var tessdata = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "tessdata");
 builder.Services.AddPersistenceServices(configuration);
+builder.Services.AddInfrastructureServices(tessdata);
 
 builder.Services.AddScoped<INToastNotifyService, NToastNotifyService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-
 
 builder.Services.AddSession();
 
@@ -42,7 +44,7 @@ builder.Services.AddIdentity<User,Role>(options =>
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvqxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*_-!%^&/=€$@";
     options.User.RequireUniqueEmail = true;
 
-}).AddEntityFrameworkStores<IdentityContext>(); //You need to use my identitycontext
+}).AddEntityFrameworkStores<IdentityContext>(); 
 
 builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 {

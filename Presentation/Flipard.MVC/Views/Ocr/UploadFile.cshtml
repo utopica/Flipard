@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Upload File for OCR";
+}
+
+<h2 style="color: var(--white-text-color)">Upload File for Text Extraction</h2>
+
+<form asp-action="UploadFile" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file" style="color: var(--white-text-color)">Choose a PDF or Image File</label>
+        <input type="file" name="file" class="form-control-file" 
+               accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff" />
+    </div>
+    <button type="submit" class="btn btn-primary" style="color: var(--white-text-color)">Extract Text</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger" style="color: var(--white-text-color)">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+}

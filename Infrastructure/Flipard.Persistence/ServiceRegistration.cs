@@ -34,5 +34,6 @@ public static class ServiceRegistration
 
         services.AddScoped<IVocabularyReadRepository, VocabularyReadRepository>();
         services.AddScoped<IVocabularyWriteRepository, VocabularyWriteRepository>();
+        
     }
 }

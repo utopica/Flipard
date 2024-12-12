@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Flipard.Infrastructure\Flipard.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Flipard.Persistence\Flipard.Persistence.csproj" />
   </ItemGroup>
 

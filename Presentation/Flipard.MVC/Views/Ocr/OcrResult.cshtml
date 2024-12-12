@@ -1,0 +1,16 @@
+﻿@{
+ViewData["Title"] = "OCR Result";
+}
+
+<h2 style="color: var(--white-text-color)">OCR Result</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.ExtractedText))
+{
+<pre style="color: var(--white-text-color)">@ViewBag.ExtractedText</pre>
+}
+else
+{
+<p style="color: var(--white-text-color)">No text was extracted from the image.</p>
+}
+
+<a href="/Ocr/UploadFile" class="btn btn-secondary" style="color: var(--white-text-color)">Try Another Image</a>
