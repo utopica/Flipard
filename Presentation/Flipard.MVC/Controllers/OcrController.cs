@@ -86,5 +86,46 @@ namespace Flipard.MVC.Controllers
                 return View();
             }
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> UploadFileJson(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new { error = "Please upload a valid file." });
+            }
+
+            string[] allowedExtensions = { ".pdf", ".jpg", ".jpeg", ".png", ".bmp", ".tiff" };
+            string fileExtension = Path.GetExtension(file.FileName).ToLower();
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                return BadRequest(new { error = "Unsupported file type." });
+            }
+
+            string uploadFolder = Path.Combine(_environment.WebRootPath, "uploads");
+            Directory.CreateDirectory(uploadFolder);
+
+            string uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+            string filePath = Path.Combine(uploadFolder, uniqueFileName);
+
+            try
+            {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                string extractedText = _ocrService.ExtractTextFromFile(filePath);
+                System.IO.File.Delete(filePath);
+
+                return Ok(new { text = extractedText });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during OCR extraction");
+                return StatusCode(500, new { error = "An error occurred while extracting text." });
+            }
+        }
+
     }
 }

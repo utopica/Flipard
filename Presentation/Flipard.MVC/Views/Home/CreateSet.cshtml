@@ -39,20 +39,29 @@
         <div id="cards-container">
             <div class="user-deck">
                 <div class="user-deck-card-info">
+                    <div class="user-deck-card-term-buttons">
+                        <span class="card-number">1</span>
+                        
+                        <button type="button" class="card-scan-button" data-type="scan" data-target="term" onclick="handleScanButtonClick(this)">
+                            <span class="button-card-scan-icon">
+                                <i class="fi fi-br-qr-scan"></i>
+                            </span>
+                        </button>
+                    </div>
                     <!--card number, delete card button, add image button-->
-                    <span class="card-number">1</span>
+                    
                     <div class="card-edit-buttons">
                         <button type="button" class="card-delete-button">
                             <span class="button-card-delete-icon">
                                 <i class="fa-solid fa-trash"></i>
                             </span>
                         </button>
-                        <button type="button" class="card-image-button">
+                        <button type="button" class="card-image-button" data-type="image">
                             <span class="button-card-image-icon">
                                 <i class="fa-solid fa-image"></i>
                             </span>
                         </button>
-                        <button type="button" class="card-scan-button" onclick="navigateToUploadFile()">
+                        <button type="button" class="card-scan-button" data-type="scan" data-target="meaning" onclick="handleScanButtonClick(this)">
                             <span class="button-card-scan-icon">
                                 <i class="fi fi-br-qr-scan"></i>
                             </span>

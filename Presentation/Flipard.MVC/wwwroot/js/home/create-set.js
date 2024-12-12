@@ -1,40 +1,53 @@
 ﻿var cardNumber = 1;
+let globalScanInput = null;
 
 document.getElementById("add-card-button").addEventListener("click", function () {
     var newCardHtml = `
-                <div class="user-deck">
-                    <div class="user-deck-card-info">
-                        <!--card number, delete card button, add image button-->
-                        <span class="card-number">${cardNumber + 1}</span>
-                        <div>
-                            <button type="button" class="card-delete-button">
-                                <span class="button-card-delete-icon">
-                                    <i class="fa-solid fa-trash"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="card-image-button">
-                                <span class="button-card-image-icon">
-                                    <i class="fa-solid fa-image"></i>
-                                </span>
-                            </button>
-                            <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
-                        </div>
+        <div class="user-deck">
+            <div class="user-deck-card-info">
+               <div class="user-deck-card-term-buttons">
+                        <span class="card-number">1</span>
+                        
+                        <button type="button" class="card-scan-button" data-type="scan" data-target="term" onclick="handleScanButtonClick(this)">
+                            <span class="button-card-scan-icon">
+                                <i class="fi fi-br-qr-scan"></i>
+                            </span>
+                        </button>
                     </div>
-                    <div class="user-deck-card">
-                        <div class="user-deck-card-term">
-                            <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
-                        </div>
-                        <div class="user-deck-card-definition">
-                            <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
-                        </div>
-                        <div class="user-deck-card-image">
-                            <img class="image-preview" style="display:none;" />
-                            <i class="fi fi-tr-graphic-style"></i>
-                            <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url" />
-                        </div>
+                <div class="card-edit-buttons">
+                        <button type="button" class="card-delete-button">
+                            <span class="button-card-delete-icon">
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        </button>
+                        <button type="button" class="card-image-button" data-type="image">
+                            <span class="button-card-image-icon">
+                                <i class="fa-solid fa-image"></i>
+                            </span>
+                        </button>
+                        <button type="button" class="card-scan-button" data-type="scan" data-target="meaning" onclick="handleScanButtonClick(this)">
+                            <span class="button-card-scan-icon">
+                                <i class="fi fi-br-qr-scan"></i>
+                            </span>
+                        </button>
+                        <input type="file" class="card-image-input" name="TermMeanings[0].Image" style="display: none;">
                     </div>
+            </div>
+            <div class="user-deck-card">
+                <div class="user-deck-card-term">
+                    <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
                 </div>
-            `;
+                <div class="user-deck-card-definition">
+                    <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
+                </div>
+                <div class="user-deck-card-image">
+                    <img class="image-preview" style="display:none;" alt="" src=""/>
+                    <i class="fi fi-tr-graphic-style"></i>
+                    <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url"/>
+                </div>
+            </div>
+        </div>
+    `;
 
     var newCardContainer = document.createElement("div");
     newCardContainer.innerHTML = newCardHtml;
@@ -43,36 +56,96 @@ document.getElementById("add-card-button").addEventListener("click", function ()
     updateDeleteButtonListeners();
 });
 
-document.addEventListener("click", function (event) {
-    if (event.target.closest(".card-image-button")) {
-        var imageButton = event.target.closest(".card-image-button");
-        var fileInput = imageButton.nextElementSibling;
-        fileInput.click();
-    }
-});
+document.addEventListener('DOMContentLoaded', function() {
+    // Create a single hidden input for scanning
+    globalScanInput = document.createElement('input');
+    globalScanInput.type = 'file';
+    globalScanInput.id = 'scan-input';
+    globalScanInput.style.display = 'none';
+    globalScanInput.accept = '.pdf,.jpg,.jpeg,.png,.bmp,.tiff';
+    document.body.appendChild(globalScanInput);
 
-document.addEventListener("change", function (event) {
-    if (event.target.classList.contains("card-image-input")) {
-        var fileInput = event.target;
-        var card = fileInput.closest(".user-deck");
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            var imgPreview = card.querySelector(".image-preview");
-            if (!imgPreview) {
-                imgPreview = document.createElement("img");
-                imgPreview.classList.add("image-preview");
-                card.querySelector(".user-deck-card-image").appendChild(imgPreview);
+    document.addEventListener('click', function(event) {
+        const scanButton = event.target.closest('.card-scan-button');
+        if (scanButton) {
+            const targetType = scanButton.getAttribute('data-target');
+            handleScanButtonClick(scanButton, targetType);
+        }
+
+        // Image button handler
+        const imageButton = event.target.closest('.card-image-button');
+        if (imageButton) {
+            const fileInput = imageButton.closest('.card-edit-buttons').querySelector('.card-image-input');
+            fileInput.click();
+        }
+    });
+
+    document.addEventListener('change', function(event) {
+        if (event.target.classList.contains('card-image-input')) {
+            const fileInput = event.target;
+            const card = fileInput.closest('.user-deck');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const imgPreview = card.querySelector(".image-preview");
+                    imgPreview.src = e.target.result;
+                    imgPreview.style.display = 'block';
+
+                    const imageIcon = card.querySelector(".fi-tr-graphic-style");
+                    if (imageIcon) {
+                        imageIcon.style.display = 'none';
+                    }
+
+                    const imageUrlInput = card.querySelector(".card-image-url");
+                    imageUrlInput.value = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
             }
-            imgPreview.src = e.target.result;
-            imgPreview.style.display = 'block';
-            card.querySelector(".fi-tr-graphic-style").style.display = 'none'; // Hide the icon
-
-            var imageUrlInput = card.querySelector(".card-image-url");
-            imageUrlInput.value = e.target.result;
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-    }
+        }
+    });
 });
+
+async function handleScanButtonClick(button, targetType) {
+    globalScanInput.onchange = async () => {
+        const file = globalScanInput.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('/Ocr/UploadFileJson', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            if (result.text) {
+                const extractedText = result.text.trim(); // Trim whitespace
+
+                if (targetType === 'term') {
+                    button.closest('.user-deck').querySelector('.user-deck-card-term-input').value = extractedText;
+                } else if (targetType === 'meaning') {
+                    button.closest('.user-deck').querySelector('.user-deck-card-definition-input').value = extractedText;
+                }
+            } else {
+                alert(result.error || 'An error occurred during text extraction.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to extract text. Please try again.');
+        }
+    };
+
+    globalScanInput.click();
+}
+
+
+
 
 function updateDeleteButtonListeners() {
     document.querySelectorAll('.card-delete-button').forEach(button => {
@@ -99,7 +172,3 @@ function updateCardNumbers() {
 }
 
 updateDeleteButtonListeners();
-
-function navigateToUploadFile() {
-    window.location.href = '/Ocr/UploadFile';
-}
