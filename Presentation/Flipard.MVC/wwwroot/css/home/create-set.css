@@ -86,14 +86,23 @@
     border-bottom: none;
 }
 
+.user-deck-card-term-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Aralarındaki boşluk */
+}
+
 .card-number {
     margin-right: auto;
 }
 
 .card-edit-buttons {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px; /* Butonlar arasındaki boşluk */
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
 }
 
 .add-card-button-div {
