@@ -35,7 +35,11 @@
             @if (!Model.IsReadOnly)
             {
                 <button type="button" class="deck-delete-button" onclick="showDeleteConfirmation('@Model.Id')">
-                    Delete Set
+                    Delete
+                </button>
+                
+                <button type="button" class="deck-edit-button" onclick="redirectToEdit('@Model.Id')">
+                    Edit
                 </button>
             }
 
