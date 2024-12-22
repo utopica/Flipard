@@ -12,7 +12,7 @@ public class Role : IdentityRole<Guid>, IFullAuditedEntity
 {
     public string? Description { get; set; }
     public DateTimeOffset CreatedOn { get; set; }
-    public string CreatedByUserId { get; set; }
+    public string? CreatedByUserId { get; set; }
     public DateTimeOffset? ModifiedOn { get; set; }
     public string? ModifiedByUserId { get; set; }
     public DateTimeOffset? DeletedOn { get; set; }

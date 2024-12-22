@@ -4,6 +4,7 @@ using Flipard.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using Flipard.Domain.Entities;
 using Flipard.Domain.Identity;
 using Flipard.MVC.ViewModels.Flashcards;
@@ -47,7 +48,7 @@ public class FlashcardsController : Controller
                 Meaning = c.Vocabulary.Meaning,
                 ImageUrl = c.ImageUrl,
             }).ToList(),
-            IsReadOnly = isReadOnly 
+            IsReadOnly = isReadOnly
         };
 
         return View(model);
@@ -93,8 +94,7 @@ public class FlashcardsController : Controller
             return BadRequest("Invalid card data.");
         }
 
-        var card = _appContext.Cards.Include(c => c.Vocabulary).
-            FirstOrDefault(c => c.Vocabulary.Id == updatedCard.Id);
+        var card = _appContext.Cards.Include(c => c.Vocabulary).FirstOrDefault(c => c.Vocabulary.Id == updatedCard.Id);
 
         if (card == null)
         {
@@ -138,7 +138,7 @@ public class FlashcardsController : Controller
 
         return View(model);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> QuizResults([FromBody] QuizResultViewModel results)
     {
@@ -156,7 +156,7 @@ public class FlashcardsController : Controller
             TotalQuestions = results.TotalQuestions,
             CorrectAnswers = results.CorrectAnswers,
             Accuracy = (double)results.CorrectAnswers / results.TotalQuestions * 100,
-            TimeTakenSeconds = (int)(results.TimeTaken / 1000), 
+            TimeTakenSeconds = (int)(results.TimeTaken / 1000),
             Answers = results.AnswerDetails.Select(detail => new QuizAnswer
             {
                 Id = Guid.NewGuid(),
@@ -171,7 +171,7 @@ public class FlashcardsController : Controller
 
         return Ok(new { redirectUrl = Url.Action("ShowStatistics", new { deckId = results.DeckId }) });
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> ShowStatistics(Guid deckId)
     {
@@ -182,19 +182,17 @@ public class FlashcardsController : Controller
             .FirstOrDefaultAsync(d => d.Id == deckId);
         if (deck == null) return NotFound();
 
-        // Get all attempts for this deck by this user
         var attempts = await _appContext.QuizAttempts
             .Include(qa => qa.Answers)
             .Where(qa => qa.DeckId == deckId && qa.UserId == user.Id)
             .OrderByDescending(qa => qa.AttemptDate)
             .ToListAsync();
 
-        // Get most mistaken terms
         var mistakesByTerm = await _appContext.QuizAnswers
             .Include(qa => qa.Vocabulary)
-            .Where(qa => qa.QuizAttempt.DeckId == deckId && 
-                        qa.QuizAttempt.UserId == user.Id && 
-                        !qa.IsCorrect)
+            .Where(qa => qa.QuizAttempt.DeckId == deckId &&
+                         qa.QuizAttempt.UserId == user.Id &&
+                         !qa.IsCorrect)
             .GroupBy(qa => qa.Vocabulary.Term)
             .Select(g => new { Term = g.Key, MistakeCount = g.Count() })
             .OrderByDescending(x => x.MistakeCount)
@@ -222,5 +220,102 @@ public class FlashcardsController : Controller
         };
 
         return View(statistics);
+    }
+
+    [HttpGet]
+    public IActionResult EditSet(Guid id)
+    {
+        var deck = _appContext.Decks
+            .Include(d => d.Cards)
+            .ThenInclude(c => c.Vocabulary)
+            .FirstOrDefault(d => d.Id == id);
+
+        if (deck == null)
+        {
+            return NotFound();
+        }
+
+        var model = new HomeCreateSetViewModel
+        {
+            Id = deck.Id,
+            Name = deck.Name,
+            Description = deck.Description,
+            TermMeanings = deck.Cards.Select(c => new TermMeaningViewModel
+            {
+                Id = c.Vocabulary.Id,
+                Term = c.Vocabulary.Term,
+                Meaning = c.Vocabulary.Meaning,
+                ImageUrl = c.ImageUrl,
+            }).ToList(),
+            IsReadOnly = false
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult EditSet(HomeCreateSetViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var deck = _appContext.Decks
+            .Include(d => d.Cards)
+            .ThenInclude(c => c.Vocabulary)
+            .FirstOrDefault(d => d.Id == model.Id);
+
+        if (deck == null)
+        {
+            return NotFound();
+        }
+
+        deck.Name = model.Name;
+        deck.Description = model.Description;
+
+        foreach (var termMeaning in model.TermMeanings)
+        {
+            if (termMeaning.Id != Guid.Empty)
+            {
+                var card = deck.Cards.FirstOrDefault(c => c.Vocabulary.Id == termMeaning.Id);
+                if (card != null)
+                {
+                    card.Vocabulary.Term = termMeaning.Term;
+                    card.Vocabulary.Meaning = termMeaning.Meaning;
+                    card.ImageUrl = termMeaning.ImageUrl;
+                }
+            }
+            else
+            {
+                var card = new Card
+                {
+                    Id = Guid.NewGuid(),
+                    DeckId = deck.Id,
+                    Deck = deck,
+                    ImageUrl = termMeaning.ImageUrl,
+                    CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                };
+
+                var vocabulary = new Vocabulary
+                {
+                    Id = Guid.NewGuid(),
+                    Term = termMeaning.Term,
+                    Meaning = termMeaning.Meaning,
+                    Card = card,
+                    CardId = card.Id,
+                    CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                };
+
+                card.Vocabulary = vocabulary;
+
+                _appContext.Cards.Add(card);
+                _appContext.Vocabularies.Add(vocabulary);
+                deck.Cards.Add(card);
+            }
+        }
+
+        _appContext.SaveChanges();
+        return RedirectToAction("Index", new { id = deck.Id });
     }
 }

@@ -9,5 +9,5 @@ namespace Flipard.Domain.Common;
 public interface ICreatedByEntity
 {
     public DateTimeOffset CreatedOn { get; set; }
-    string CreatedByUserId { get; set; }
+    string? CreatedByUserId { get; set; }
 }

@@ -1,0 +1,134 @@
+﻿@model HomeCreateSetViewModel
+
+@{
+    ViewData["Title"] = "Edit Set";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/home/create-set.css">
+    <link rel="stylesheet" href="~/css/flashcards/edit-set.css">
+</head>
+<body>
+<main>
+    
+    <form asp-controller="Flashcards" asp-action="EditSet" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div class="edit-card">
+            <div class="edit-card-text">
+                <h5>Çalışma setini düzenle</h5>
+            </div>
+            <div class="edit-card-button">
+                <button type="submit" class="save-button">
+                    <span class="button-text">Kaydet</span>
+                </button>
+
+                <button type="button" class="deck-delete-button" onclick="showDeleteConfirmation('@Model.Id')">
+                    Sil
+                </button>
+                
+            </div>
+        </div>
+        
+        <div class="create-deck">
+            <div class="deck-info">
+                <div class="deck-name">
+                    <input type="text" class="deck-name-input" id="Name" asp-for="@Model.Name" placeholder="Çalışma seti adını yazın.">
+                </div>
+                <div class="deck-desc">
+                    <input type="text" class="deck-desc-input" id="Description" asp-for="@Model.Description" placeholder="Açıklama yazın.">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="cards-container">
+            @for (var i = 0; i < Model.TermMeanings.Count; i++)
+            {
+                <div class="user-deck">
+                    <div class="user-deck-card-info">
+                        <div class="user-deck-card-term-buttons">
+                            <span class="card-number">@(i + 1)</span>
+
+                            <button type="button" class="card-scan-button" data-type="scan" data-target="term">
+                                <span class="button-card-scan-icon">
+                                    <i class="fi fi-br-qr-scan"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <!--card number, delete card button, add image button-->
+
+                        <div class="card-edit-buttons">
+                            <button type="button" class="card-delete-button">
+                                <span class="button-card-delete-icon">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
+                            </button>
+                            <button type="button" class="card-image-button" data-type="image">
+                                <span class="button-card-image-icon">
+                                    <i class="fa-solid fa-image"></i>
+                                </span>
+                            </button>
+                            <button type="button" class="card-scan-button" data-type="scan" data-target="meaning">
+                                <span class="button-card-scan-icon">
+                                    <i class="fi fi-br-qr-scan"></i>
+                                </span>
+                            </button>
+                            <input type="file" class="card-image-input" asp-for="@Model.TermMeanings[@i].Image" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="user-deck-card">
+                        <input type="hidden" asp-for="@Model.TermMeanings[@i].Id"/>
+                        <div class="user-deck-card-term">
+                            <textarea class="user-deck-card-term-input" asp-for="@Model.TermMeanings[@i].Term" placeholder="Terim"></textarea>
+                        </div>
+                        <div class="user-deck-card-definition">
+                            <textarea class="user-deck-card-definition-input" asp-for="@Model.TermMeanings[@i].Meaning" placeholder="Tanım"></textarea>
+                        </div>
+                        <div class="user-deck-card-image">
+                            <img class="image-preview" src="@Model.TermMeanings[i].ImageUrl" style="display:@(string.IsNullOrEmpty(Model.TermMeanings[i].ImageUrl) ? "none" : "block");" alt=""/>
+                            <i class="fi fi-tr-graphic-style" style="display:@(!string.IsNullOrEmpty(Model.TermMeanings[i].ImageUrl) ? "none" : "block");"></i>
+                            <input type="hidden" asp-for="@Model.TermMeanings[@i].ImageUrl" class="card-image-url"/>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            <div class="add-card-button-div">
+                <button id="add-card-button" type="button">Kart Ekle</button>
+            </div>
+
+        </div>
+
+        <div class="save-set-button-div">
+            <button id="save-set-button" type="submit">Değişiklikleri Kaydet</button>
+        </div>
+        
+    </form>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Deletion</h2>
+                <button class="modal-close" onclick="closeDeleteConfirmation()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to permanently delete this set?</p>
+            </div>
+            <div class="delete-deck-modal-footer">
+                <button class="confirm-button" onclick="confirmDeleteDeck()">Yes, Delete</button>
+                <button class="cancel-button" onclick="closeDeleteConfirmation()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
+<script src="@Url.Content("~/js/flashcards/edit-page.js")"></script>
+<script src="@Url.Content("~/js/flashcards/display-page.js")"></script>

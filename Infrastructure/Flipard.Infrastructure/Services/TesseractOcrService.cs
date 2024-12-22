@@ -4,6 +4,7 @@ using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using Microsoft.Extensions.Logging;
 using System.Text;
+using Flipard.Application.Services;
 using Tesseract;
 
 namespace Flipard.Infrastructure.Services;
