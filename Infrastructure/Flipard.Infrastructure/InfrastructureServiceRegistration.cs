@@ -1,4 +1,5 @@
-﻿using Flipard.Domain.Interfaces;
+﻿using Flipard.Application.Services;
+using Flipard.Domain.Interfaces;
 using Flipard.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

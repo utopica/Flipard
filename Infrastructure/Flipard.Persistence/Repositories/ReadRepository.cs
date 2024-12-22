@@ -50,6 +50,41 @@ namespace Flipard.Persistence.Repositories
 
         }
 
+        public Task<bool> AddAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AddRangeAsync(List<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteAll(List<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> SaveAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> GetSingleAsync(Expression<Func<T, bool>> method, bool tracking = true)
         {
             var query = Table.AsQueryable();

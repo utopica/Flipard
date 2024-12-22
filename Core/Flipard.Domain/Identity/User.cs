@@ -14,7 +14,7 @@ public class User : IdentityUser<Guid>, IFullAuditedEntity
     public DateTimeOffset? Birthdate { get; set; }
     public UserSetting UserSetting { get; set; }
     public DateTimeOffset CreatedOn { get; set; }
-    public string CreatedByUserId { get; set; }
+    public string? CreatedByUserId { get; set; }
     public DateTimeOffset? ModifiedOn { get; set; }
     public string ModifiedByUserId { get; set; }
     public DateTimeOffset? DeletedOn { get; set; }

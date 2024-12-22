@@ -2,6 +2,7 @@
 let cards = []; // Will be populated from the server
 let showingTerm = true;
 let deckIdToDelete = null;
+let deckIdToEdit = null;
 
 function initialize(serverCards) {
     cards = serverCards;
@@ -77,9 +78,9 @@ function renderCards(cards) {
                 </div>
                 <div class="card-image">
                     ${card.ImageUrl
-                        ? `<img class="image-preview" src="${card.ImageUrl}" />`
-                        : `<i class="fi fi-tr-graphic-style"></i>`
-                    }
+            ? `<img class="image-preview" src="${card.ImageUrl}" />`
+            : `<i class="fi fi-tr-graphic-style"></i>`
+        }
                 </div>
             </div>
         `;
@@ -298,3 +299,13 @@ function confirmDeleteDeck() {
     }
     closeDeleteConfirmation();
 }
+
+function redirectToEdit(deckId) {
+    if (!deckId || deckId.trim() === "") {
+        alert("Deck ID is required.");
+        return;
+    }
+    // Redirect to the EditQuiz page with the deckId as a query parameter
+    window.location.href = `/Flashcards/EditSet/${deckId}`;
+}
+

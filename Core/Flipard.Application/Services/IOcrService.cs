@@ -1,4 +1,4 @@
-﻿namespace Flipard.Domain.Interfaces;
+﻿namespace Flipard.Application.Services;
 
 public interface IOcrService
 {

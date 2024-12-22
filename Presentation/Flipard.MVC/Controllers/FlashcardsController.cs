@@ -182,14 +182,12 @@ public class FlashcardsController : Controller
             .FirstOrDefaultAsync(d => d.Id == deckId);
         if (deck == null) return NotFound();
 
-        // Get all attempts for this deck by this user
         var attempts = await _appContext.QuizAttempts
             .Include(qa => qa.Answers)
             .Where(qa => qa.DeckId == deckId && qa.UserId == user.Id)
             .OrderByDescending(qa => qa.AttemptDate)
             .ToListAsync();
 
-        // Get most mistaken terms
         var mistakesByTerm = await _appContext.QuizAnswers
             .Include(qa => qa.Vocabulary)
             .Where(qa => qa.QuizAttempt.DeckId == deckId && 
@@ -223,4 +221,73 @@ public class FlashcardsController : Controller
 
         return View(statistics);
     }
+
+    [HttpGet]
+    public IActionResult EditSet(Guid id)
+    {
+        var deck = _appContext.Decks
+            .Include(d => d.Cards)
+            .ThenInclude(c => c.Vocabulary)
+            .FirstOrDefault(d => d.Id == id);
+
+        if (deck == null)
+        {
+            return NotFound();
+        }
+
+        var model = new HomeCreateSetViewModel
+        {
+            Id = deck.Id,
+            Name = deck.Name,
+            Description = deck.Description,
+            TermMeanings = deck.Cards.Select(c => new TermMeaningViewModel
+            {
+                Id = c.Vocabulary.Id,
+                Term = c.Vocabulary.Term,
+                Meaning = c.Vocabulary.Meaning,
+                ImageUrl = c.ImageUrl,
+            }).ToList(),
+            IsReadOnly = false 
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult EditSet(HomeCreateSetViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var deck = _appContext.Decks
+            .Include(d => d.Cards)
+            .ThenInclude(c => c.Vocabulary)
+            .FirstOrDefault(d => d.Id == model.Id);
+
+        if (deck == null)
+        {
+            return NotFound();
+        }
+
+        deck.Name = model.Name;
+        deck.Description = model.Description;
+
+        foreach (var termMeaning in model.TermMeanings)
+        {
+            var card = deck.Cards.FirstOrDefault(c => c.Vocabulary.Id == termMeaning.Id);
+            if (card != null)
+            {
+                card.Vocabulary.Term = termMeaning.Term;
+                card.Vocabulary.Meaning = termMeaning.Meaning;
+                card.ImageUrl = termMeaning.ImageUrl;
+            }
+        }
+
+        _appContext.SaveChanges();
+
+        return RedirectToAction("Index", new { id = deck.Id });
+    }
+
 }
