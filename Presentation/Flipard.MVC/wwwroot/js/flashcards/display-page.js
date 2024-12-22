@@ -133,11 +133,19 @@ function updateCardNumbers() {
 }
 
 function deleteDeck(deckId) {
+    const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+    if (!token) {
+        console.error('Anti-forgery token not found');
+        alert('Güvenlik doğrulaması başarısız oldu. Sayfayı yenileyip tekrar deneyin.');
+        return;
+    }
+    
     fetch(`/Flashcards/DeleteDeck/${deckId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            'RequestVerificationToken': token
         }
     })
         .then(response => {
@@ -283,13 +291,24 @@ function redirectToQuiz(deckId) {
 
 function showDeleteConfirmation(deckId) {
     deckIdToDelete = deckId;
-    document.getElementById('deleteConfirmationModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    } else {
+        console.error('Delete confirmation modal not found');
+        if (confirm('Çalışma setini silmek istediğinizden emin misiniz?')) {
+            deleteDeck(deckId);
+        }
+    }
 }
 
 function closeDeleteConfirmation() {
-    document.getElementById('deleteConfirmationModal').style.display = 'none';
-    document.body.style.overflow = '';
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
     deckIdToDelete = null;
 }
 
@@ -309,3 +328,16 @@ function redirectToEdit(deckId) {
     window.location.href = `/Flashcards/EditSet/${deckId}`;
 }
 
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (event.target === modal) {
+        closeDeleteConfirmation();
+    }
+}
+
+// Handle Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeDeleteConfirmation();
+    }
+});

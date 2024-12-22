@@ -123,3 +123,67 @@ function updateCardNumbers() {
 
     cardNumber = document.querySelectorAll('.user-deck').length;
 }
+
+document.getElementById("add-card-button").addEventListener("click", function () {
+    var cardsContainer = document.querySelector('.cards-container'); // Changed to use querySelector
+    if (!cardsContainer) {
+        console.error('Cards container not found');
+        return;
+    }
+
+    var newCardHtml = `
+        <div class="user-deck">
+            <div class="user-deck-card-info">
+               <div class="user-deck-card-term-buttons">
+                        <span class="card-number">${cardNumber + 1}</span>
+                        
+                        <button type="button" class="card-scan-button" data-type="scan" data-target="term">
+                            <span class="button-card-scan-icon">
+                                <i class="fi fi-br-qr-scan"></i>
+                            </span>
+                        </button>
+                    </div>
+                <div class="card-edit-buttons">
+                        <button type="button" class="card-delete-button">
+                            <span class="button-card-delete-icon">
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        </button>
+                        <button type="button" class="card-image-button" data-type="image">
+                            <span class="button-card-image-icon">
+                                <i class="fa-solid fa-image"></i>
+                            </span>
+                        </button>
+                        <button type="button" class="card-scan-button" data-type="scan" data-target="meaning">
+                            <span class="button-card-scan-icon">
+                                <i class="fi fi-br-qr-scan"></i>
+                            </span>
+                        </button>
+                        <input type="file" class="card-image-input" name="TermMeanings[${cardNumber}].Image" style="display: none;">
+                    </div>
+            </div>
+            <div class="user-deck-card">
+                <div class="user-deck-card-term">
+                    <textarea class="user-deck-card-term-input" name="TermMeanings[${cardNumber}].Term" placeholder="Terim"></textarea>
+                </div>
+                <div class="user-deck-card-definition">
+                    <textarea class="user-deck-card-definition-input" name="TermMeanings[${cardNumber}].Meaning" placeholder="Tanım"></textarea>
+                </div>
+                <div class="user-deck-card-image">
+                    <img class="image-preview" style="display:none;" alt="" src=""/>
+                    <i class="fi fi-tr-graphic-style"></i>
+                    <input type="hidden" name="TermMeanings[${cardNumber}].ImageUrl" class="card-image-url"/>
+                </div>
+            </div>
+        </div>
+    `;
+
+    var tempContainer = document.createElement('div');
+    tempContainer.innerHTML = newCardHtml;
+
+    var newCard = tempContainer.firstElementChild;
+    cardsContainer.insertBefore(newCard, cardsContainer.querySelector('.add-card-button-div'));
+
+    cardNumber++;
+    updateDeleteButtonListeners();
+});
