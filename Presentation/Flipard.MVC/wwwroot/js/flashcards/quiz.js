@@ -371,6 +371,9 @@ function showQuizSummary() {
 
     updateProgressCircle(accuracy);
 
+    // Call submitQuizResults here to send the results to the server
+    submitQuizResults();
+
     document.getElementById('quiz-summary').style.display = 'block';
     quizState.isQuizCompleted = true;
     showCard(quizState.currentIndex);

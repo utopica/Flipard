@@ -140,6 +140,7 @@ public class FlashcardsController : Controller
     }
 
     [HttpPost]
+    [Route("Flashcards/QuizResults")]
     public async Task<IActionResult> QuizResults([FromBody] QuizResultViewModel results)
     {
         if (results is null) return BadRequest();
@@ -157,19 +158,21 @@ public class FlashcardsController : Controller
             CorrectAnswers = results.CorrectAnswers,
             Accuracy = (double)results.CorrectAnswers / results.TotalQuestions * 100,
             TimeTakenSeconds = (int)(results.TimeTaken / 1000),
+            CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
             Answers = results.AnswerDetails.Select(detail => new QuizAnswer
             {
                 Id = Guid.NewGuid(),
-                VocabularyId = detail.VocabularyId, //todo: Make sure to include this in your client-side model
+                VocabularyId = detail.VocabularyId, 
                 UserAnswer = detail.UserAnswer,
-                IsCorrect = detail.IsCorrect
+                IsCorrect = detail.IsCorrect,
+                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
             }).ToList()
         };
 
         _appContext.QuizAttempts.Add(quizAttempt);
         await _appContext.SaveChangesAsync();
 
-        return Ok(new { redirectUrl = Url.Action("ShowStatistics", new { deckId = results.DeckId }) });
+        return Json(new { success = true, redirectUrl = Url.Action("ShowStatistics", new { deckId = quizAttempt.DeckId }) });
     }
 
     [HttpGet]
