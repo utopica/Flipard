@@ -161,17 +161,15 @@ public class FlashcardsController : Controller
             TimeTakenSeconds = (int)(results.TimeTaken / 1000)
         };
 
-        // Create answers and associate them with the attempt
         quizAttempt.Answers = results.AnswerDetails.Select(detail => new QuizAnswer
         {
             Id = Guid.NewGuid(),
-            QuizAttemptId = quizAttemptId,  // This should match the QuizAttempt.Id
+            QuizAttemptId = quizAttemptId, 
             VocabularyId = detail.VocabularyId,
             UserAnswer = detail.UserAnswer,
             IsCorrect = detail.IsCorrect,
         }).ToList();
 
-        // Only need to add the QuizAttempt - the answers will be added automatically
         await _appContext.QuizAttempts.AddAsync(quizAttempt);
         await _appContext.SaveChangesAsync();
 
