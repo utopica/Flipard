@@ -12,6 +12,6 @@ public class QuizResultViewModel
 public class QuizAnswerDetail
 {
     public Guid VocabularyId { get; set; }
-    public string UserAnswer { get; set; }
+    public string? UserAnswer { get; set; }
     public bool IsCorrect { get; set; }
 }

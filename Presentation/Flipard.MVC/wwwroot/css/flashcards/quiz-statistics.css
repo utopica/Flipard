@@ -1,4 +1,8 @@
-﻿.statistics-container {
+﻿body{
+    color: var(--white-text-color);
+}
+
+.statistics-container {
     max-width: 800px;
     margin: 2rem auto;
     padding: 1rem;
@@ -41,6 +45,7 @@
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1rem;
+    margin-top: 0.6rem;
 }
 
 .mistakes-list {
@@ -65,7 +70,6 @@
     display: flex;
     justify-content: space-between;
     padding: 0.5rem;
-    background-color: #202124;
     border-radius: 4px;
 }
 
@@ -79,4 +83,13 @@
     justify-content: center;
     gap: 1rem;
     margin-top: 2rem;
+}
+
+.btn-primary{
+    background-color: var(--flipard-green);
+    border:none;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus{
+    background-color: var(--flipard-green-hover);
 }

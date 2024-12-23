@@ -32,6 +32,11 @@
                 Quiz
             </button>
 
+            <button type="button" class="deck-quiz-button" onclick="location.href='/Flashcards/ShowStatistics?deckId=@Model.Id'">
+                Statistics
+            </button>
+
+
             @if (!Model.IsReadOnly)
             {
                 <button type="button" class="deck-delete-button" onclick="showDeleteConfirmation('@Model.Id')">

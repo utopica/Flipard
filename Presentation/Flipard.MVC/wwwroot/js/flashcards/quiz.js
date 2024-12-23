@@ -233,6 +233,7 @@ function submitAnswer() {
     const userAnswerDisplay = document.querySelector(".user-answer-display");
     const termInput = document.getElementById("term-input");
     const userTerm = termInput.value.trim();
+    const currentCard = quizState.cards[quizState.currentIndex];
     const correctTerm = quizState.cards[quizState.currentIndex].Term;
     const answerFeedback = document.getElementById("answer-feedback");
     const isBlank = userTerm === '';
@@ -263,7 +264,8 @@ function submitAnswer() {
                 questionIndex: quizState.currentIndex,
                 userAnswer: userTerm,
                 isCorrect: isCorrect,
-                isBlank: isBlank
+                isBlank: isBlank,
+                vocabulary: currentCard.Id,
             });
 
             // Update statistics for new answer
@@ -308,7 +310,7 @@ function submitAnswer() {
         quizState.showAnswer = false;
         if (quizState.currentIndex < quizState.cards.length - 1) {
             showCard(quizState.currentIndex + 1);
-        } else {
+        } else if(quizState.currentIndex === quizState.cards.length - 1) {
             showQuizSummary();
         }
         return;
@@ -385,7 +387,11 @@ async function submitQuizResults() {
         totalQuestions: quizState.cards.length,
         correctAnswers: quizState.correctAnswersCount,
         timeTaken: Date.now() - quizState.startTime,
-        answerDetails: quizState.quizAnswers
+        answerDetails: quizState.answeredQuestions.map(answer => ({
+            vocabularyId: answer.vocabulary,
+            userAnswer: answer.userAnswer,
+            isCorrect: answer.isCorrect
+        }))
     };
 
     try {
@@ -402,10 +408,6 @@ async function submitQuizResults() {
             new Error('Network response was not ok');
         }
 
-        const result = await response.json();
-        if (result.redirectUrl) {
-            window.location.href = result.redirectUrl;
-        }
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to submit quiz results. Please try again.');
