@@ -1,0 +1,95 @@
+﻿body{
+    color: var(--white-text-color);
+}
+
+.statistics-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #202124;
+    border-radius: 8px;
+}
+
+.statistics-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.statistics-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 1rem;
+    background-color: #2d2d30;
+    border-radius: 8px;
+}
+
+.summary-item .label {
+    display: block;
+    color: var(--white-text-color);
+    margin-bottom: 0.5rem;
+}
+
+.summary-item .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.mistakes-section, .recent-attempts {
+    background-color: #2d2d30;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 0.6rem;
+}
+
+.mistakes-list {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.mistake-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: #202124;
+    border-radius: 4px;
+}
+
+.attempts-list {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.attempt-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.attempt-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.statistics-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-primary{
+    background-color: var(--flipard-green);
+    border:none;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus{
+    background-color: var(--flipard-green-hover);
+}

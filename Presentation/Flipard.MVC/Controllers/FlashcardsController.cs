@@ -147,30 +147,37 @@ public class FlashcardsController : Controller
         var user = await _userManager.GetUserAsync(User);
         if (user is null) return Unauthorized();
 
+        var quizAttemptId = Guid.NewGuid();
+
         var quizAttempt = new QuizAttempt
         {
-            Id = Guid.NewGuid(),
+            Id = quizAttemptId,
             DeckId = results.DeckId,
             UserId = user.Id,
             AttemptDate = DateTime.UtcNow,
             TotalQuestions = results.TotalQuestions,
             CorrectAnswers = results.CorrectAnswers,
             Accuracy = (double)results.CorrectAnswers / results.TotalQuestions * 100,
-            TimeTakenSeconds = (int)(results.TimeTaken / 1000),
-            Answers = results.AnswerDetails.Select(detail => new QuizAnswer
-            {
-                Id = Guid.NewGuid(),
-                VocabularyId = detail.VocabularyId, //todo: Make sure to include this in your client-side model
-                UserAnswer = detail.UserAnswer,
-                IsCorrect = detail.IsCorrect
-            }).ToList()
+            TimeTakenSeconds = (int)(results.TimeTaken / 1000)
         };
 
-        _appContext.QuizAttempts.Add(quizAttempt);
+        // Create answers and associate them with the attempt
+        quizAttempt.Answers = results.AnswerDetails.Select(detail => new QuizAnswer
+        {
+            Id = Guid.NewGuid(),
+            QuizAttemptId = quizAttemptId,  // This should match the QuizAttempt.Id
+            VocabularyId = detail.VocabularyId,
+            UserAnswer = detail.UserAnswer,
+            IsCorrect = detail.IsCorrect,
+        }).ToList();
+
+        // Only need to add the QuizAttempt - the answers will be added automatically
+        await _appContext.QuizAttempts.AddAsync(quizAttempt);
         await _appContext.SaveChangesAsync();
 
-        return Ok(new { redirectUrl = Url.Action("ShowStatistics", new { deckId = results.DeckId }) });
+        return Json(new { success = true, redirectUrl = Url.Action("ShowStatistics", new { deckId = quizAttempt.DeckId }) });
     }
+
 
     [HttpGet]
     public async Task<IActionResult> ShowStatistics(Guid deckId)

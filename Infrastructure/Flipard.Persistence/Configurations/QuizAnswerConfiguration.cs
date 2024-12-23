@@ -15,6 +15,11 @@ public class QuizAnswerConfiguration : IEntityTypeConfiguration<QuizAnswer>
             .HasForeignKey(qa => qa.VocabularyId)
             .OnDelete(DeleteBehavior.Restrict);
         
+        builder.HasOne(qa => qa.QuizAttempt)
+            .WithMany(qa => qa.Answers)
+            .HasForeignKey(qa => qa.QuizAttemptId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
         // COMMON FIELDS
 
         // CreatedByUserId

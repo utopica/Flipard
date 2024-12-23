@@ -3,6 +3,7 @@ using System;
 using Flipard.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Flipard.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241223114825_nullableUserAnswer")]
+    partial class nullableUserAnswer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,6 +152,12 @@ namespace Flipard.Persistence.Migrations
                     b.Property<Guid>("QuizAttemptId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("QuizAttemptId1")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("QuizAttemptId2")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("UserAnswer")
                         .HasColumnType("text");
 
@@ -158,6 +167,8 @@ namespace Flipard.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("QuizAttemptId");
+
+                    b.HasIndex("QuizAttemptId1");
 
                     b.HasIndex("VocabularyId");
 
@@ -286,9 +297,15 @@ namespace Flipard.Persistence.Migrations
 
             modelBuilder.Entity("Flipard.Domain.Entities.QuizAnswer", b =>
                 {
-                    b.HasOne("Flipard.Domain.Entities.QuizAttempt", "QuizAttempt")
+                    b.HasOne("Flipard.Domain.Entities.QuizAttempt", null)
                         .WithMany("Answers")
                         .HasForeignKey("QuizAttemptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Flipard.Domain.Entities.QuizAttempt", "QuizAttempt")
+                        .WithMany()
+                        .HasForeignKey("QuizAttemptId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
