@@ -341,3 +341,23 @@ document.addEventListener('keydown', function(event) {
         closeDeleteConfirmation();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const questionCountInput = document.getElementById("questionCount");
+    if (!questionCountInput.value) {
+        questionCountInput.value = serverCards.length; // Default to serverCards length
+    }
+});
+
+function validateQuestionCount() {
+    const questionCountInput = document.getElementById("questionCount");
+    const maxCount = cards.length;
+    const value = parseInt(questionCountInput.value);
+
+    if (value < 1) {
+        questionCountInput.value = 1;
+    } else if (value > maxCount) {
+        questionCountInput.value = maxCount;
+    }
+}
+

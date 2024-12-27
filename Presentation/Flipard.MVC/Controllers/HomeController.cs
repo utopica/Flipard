@@ -276,7 +276,10 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult CreateSet()
     {
-        var createSetViewModel = new HomeCreateSetViewModel();
+        var createSetViewModel = new HomeCreateSetViewModel
+        {
+            TermMeanings = new List<TermMeaningViewModel>() 
+        };
         return View(createSetViewModel);
     }
 
