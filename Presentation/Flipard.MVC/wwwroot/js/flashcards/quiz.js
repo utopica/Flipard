@@ -277,8 +277,9 @@ function generateMultipleChoiceOptions() {
         .filter(card => card.Term !== correctAnswer)
         .map(card => card.Term);
 
-    const options = shuffleArray([correctAnswer, ...otherOptions]).slice(0, 4);
-    return shuffleArray(options);
+    const wrongOptions = shuffleArray(otherOptions).slice(0, 3);
+
+    return shuffleArray([correctAnswer, ...wrongOptions]);
 }
 
 function getRandomTermExcept(excludeTerm) {
