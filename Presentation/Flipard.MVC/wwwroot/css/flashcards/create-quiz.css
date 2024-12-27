@@ -280,6 +280,11 @@ content {
     color: var(--white-text-color);
 }
 
+.question-button.answered{
+    background: var(--blackish-button-color);
+    color: var(--white-text-color);
+}
+
 .question-button.correct {
     background: var(--button-green);
     color: var(--white-text-color);

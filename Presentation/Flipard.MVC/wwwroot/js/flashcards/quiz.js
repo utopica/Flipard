@@ -101,15 +101,10 @@ function initializeQuestionsMenu() {
         const button = document.createElement('button');
         button.className = getQuestionButtonClass(i);
         button.textContent = (i + 1).toString();
-
-        const isAnswered = quizState.answeredQuestions.some(q => q.questionIndex === i);
-        button.disabled = !isAnswered && i !== quizState.currentIndex;
-
+        
         button.onclick = () => {
-            if (!button.disabled) {
-                showCard(i);
-            }
-        };
+            showCard(i);
+        }
 
         grid.appendChild(button);
     }
@@ -123,13 +118,19 @@ function getQuestionButtonClass(index) {
     }
 
     const answer = quizState.answeredQuestions.find(a => a.questionIndex === index);
+
     if (answer) {
-        if (answer.isCorrect) {
-            baseClasses.push('correct');
-        } else if (answer.isBlank) {
-            baseClasses.push('blank');
+        if (answer.isBlank) {
+            baseClasses.push('blank'); // Add "blank" class if the question was answered blank
         } else {
-            baseClasses.push('incorrect');
+            baseClasses.push('answered'); // Add "answered" class if the question is answered (not blank)
+            if (quizState.feedbackMode) {
+                if (answer.isCorrect) {
+                    baseClasses.push('correct');
+                } else {
+                    baseClasses.push('incorrect');
+                }
+            }
         }
     }
 
@@ -230,6 +231,8 @@ function showMultipleChoiceQuestion(container) {
     const buttonsContainer = document.createElement('div');
     buttonsContainer.className = 'multiple-choice-container';
 
+    const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === quizState.currentIndex);
+    
     options.forEach((option, index) => {
         const button = document.createElement('button');
         button.className = 'multiple-choice-option';
@@ -348,15 +351,7 @@ function processAnswer(userAnswer, isCorrect, isBlank = false) {
     if (quizState.feedbackMode && !isCorrect) {
         showFeedback(userAnswer, currentCard.Term);
     } else {
-        if (quizState.currentQuestionType === 'written') {
-            // For written questions, always advance
-            advanceToNextQuestion();
-        } else {
-            // For multiple choice and true/false, only advance if an answer was given
-            if (!isBlank) {
-                advanceToNextQuestion();
-            }
-        }
+        advanceToNextQuestion()
     }
 
     initializeQuestionsMenu();
