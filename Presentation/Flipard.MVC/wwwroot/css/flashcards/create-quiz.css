@@ -10,9 +10,9 @@ content {
     background-color: var(--card-bg-color);
     display: flex;
     width: 620px;
-    height: 580px;
+    height: auto;
     border-radius: 10px;
-    margin-top: 50px;
+    margin-top: 10px;
     margin-bottom: 10px;
     flex-direction: column;
     box-shadow: 0 2px 4px var(--card-dark-shadow-color);
@@ -32,24 +32,22 @@ content {
 .question-card {
     display: flex;
     width: 100%;
-    height: 44%;
+    /*height: auto;*/
     flex-direction: column;
 }
 
 .card-meaning-content {
     width: 100%;
-    height: 100%;
+    height: 290px;
     color: var(--white-text-color);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 20px 30px 10px 30px
+    padding: 20px 25px 10px 25px
 }
 
 .card-meaning-text {
-    width: 350px;
-    overflow: auto;
-    text-overflow: ellipsis;
+    overflow-y: auto;
     font-size: 1rem;
 }
 
@@ -72,31 +70,33 @@ content {
 
 
 .answer-card {
-    height: 275px;
     margin: 20px;
     border: 2px solid var(--input-color);
     border-radius: 10px
 }
 
+input:-internal-autofill-selected {
+    background-color: inherit;
+}
+
 .card-term-content {
-    height: 100%; 
+    height: 200px;
     margin: 5px;
-    
+    overflow-y: auto;
+
     /*display: flex;*/
     /*flex-direction: column;*/
 }
 
-.card-term-container, .feedback-container{
-    height: 95.1%;
+.card-term-container, .feedback-container {
     outline: none;
-    overflow-y: auto;
-    
+
     /*display: flex;*/
     /*flex-direction: column;*/
     /*justify-content: space-between;*/
 }
 
-.feedback-container{
+.feedback-container {
     height: 95.1%;
     outline: none;
     overflow-y: auto;
@@ -105,7 +105,7 @@ content {
     /*flex-direction: column;*/
 }
 
-.card-term-container input{
+.card-term-container input {
     height: 100%;
     background: inherit;
     color: var(--white-text-color);
@@ -118,12 +118,12 @@ content {
     width: 100%;
 }
 
-.user-answer-display{
+.user-answer-display {
     padding: 10px 20px;
     height: auto;
 }
 
-.answer-feedback{
+.answer-feedback {
     padding: 0 20px 20px;
 }
 
@@ -296,7 +296,7 @@ content {
     color: var(--white-text-color);
 }
 
-.question-button.answered{
+.question-button.answered {
     background: var(--blackish-button-color);
     color: var(--white-text-color);
 }
@@ -395,13 +395,13 @@ input:checked + .slider:before {
     color: white !important;
 }
 
-.multiple-choice-container{
+.multiple-choice-container {
     display: flex;
     flex-direction: column;
     margin: 0.5rem;
 }
 
-.multiple-choice-option{
+.multiple-choice-option {
     margin-bottom: 0.5rem;
     padding: 0.5rem;
     overflow-y: auto;
@@ -411,26 +411,26 @@ input:checked + .slider:before {
     border-radius: 10px
 }
 
-.multiple-choice-option:hover, .true-false-option:hover{
+.multiple-choice-option:hover, .true-false-option:hover {
     background: var(--card-mid-bg-color);
 }
 
 /* True - False Questions */
-.true-false-term{
+.true-false-term {
     color: var(--white-text-color);
     margin: 0.5rem;
 }
 
-.true-false-buttons{
+.true-false-buttons {
     margin: 1rem 0.5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: flex-end;
-    
+
 }
 
-.true-false-option{
+.true-false-option {
     border: 1px solid var(--border-color);
     border-radius: 1rem;
     padding: 0.5rem 1rem;
@@ -477,7 +477,7 @@ input:checked + .slider:before {
         padding: 10px;
         margin: 20px 0;
     }
-    
+
     .card-meaning-text {
         width: 220px;
         height: auto;
