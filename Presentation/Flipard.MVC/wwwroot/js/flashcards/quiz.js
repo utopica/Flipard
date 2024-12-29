@@ -27,8 +27,8 @@ function initializeQuiz(quizCards, deck, resultsUrl) {
         answerWith: 'term',
         questionTypes: {
             written: true,
-            multipleChoice: false,
-            trueFalse: false
+            multipleChoice: true,
+            trueFalse: true,
         }
     };
 
@@ -372,68 +372,6 @@ function showBlankFeedback(container, correctAnswer) {
     `;
     container.appendChild(blankFeedback);
 }
-function getMultipleChoiceOptions(questionIndex) {
-    const seed = questionIndex;
-    return generateMultipleChoiceOptionsWithSeed(seed);
-}
-
-function generateMultipleChoiceOptionsWithSeed(seed) {
-    const currentCard = quizState.cards[quizState.currentIndex];
-    const correctAnswer = currentCard.Term;
-
-    // Use seed to consistently select the same wrong options
-    const otherOptions = quizState.cards
-        .filter(card => card.Term !== correctAnswer)
-        .map(card => card.Term);
-
-    // Deterministic shuffle based on seed
-    const shuffledOptions = deterministicShuffle(otherOptions, seed);
-    const wrongOptions = shuffledOptions.slice(0, 3);
-
-    return deterministicShuffle([correctAnswer, ...wrongOptions], seed);
-}
-
-function generateMultipleChoiceOptions() {
-    const currentCard = quizState.cards[quizState.currentIndex];
-    const correctAnswer = currentCard.Term;
-    const otherOptions = quizState.cards
-        .filter(card => card.Term !== correctAnswer)
-        .map(card => card.Term);
-
-    const wrongOptions = shuffleArray(otherOptions).slice(0, 3);
-
-    return shuffleArray([correctAnswer, ...wrongOptions]);
-}
-function getTrueFalseCorrectness(questionIndex) {
-    // Use a deterministic approach based on question index
-    return (questionIndex % 2) === 0;
-}
-
-function deterministicShuffle(array, seed) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = (seed * (i + 1)) % (i + 1);
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
-function getRandomTermExcept(excludeTerm) {
-    const otherTerms = quizState.cards
-        .filter(card => card.Term !== excludeTerm)
-        .map(card => card.Term);
-    return otherTerms[Math.floor(Math.random() * otherTerms.length)];
-}
-
-function handleMultipleChoiceAnswer(selectedAnswer) {
-    const isCorrect = selectedAnswer === quizState.cards[quizState.currentIndex].Term;
-    processAnswer(selectedAnswer, isCorrect);
-}
-
-function handleTrueFalseAnswer(answer, isCorrectMatch) {
-    const isCorrect = (answer === 'True' && isCorrectMatch) || (answer === 'False' && !isCorrectMatch);
-    processAnswer(answer, isCorrect);
-}
-
 function submitAnswer() {
 
     const existingAnswer = quizState.answeredQuestions.find(
@@ -685,6 +623,55 @@ async function submitQuizResults() {
         alert('Failed to submit quiz results. Please try again.');
     }
 }
+function getMultipleChoiceOptions(questionIndex) {
+    const seed = questionIndex;
+    return generateMultipleChoiceOptionsWithSeed(seed);
+}
+
+function generateMultipleChoiceOptionsWithSeed(seed) {
+    const currentCard = quizState.cards[quizState.currentIndex];
+    const correctAnswer = currentCard.Term;
+
+    // Use seed to consistently select the same wrong options
+    const otherOptions = quizState.cards
+        .filter(card => card.Term !== correctAnswer)
+        .map(card => card.Term);
+
+    // Deterministic shuffle based on seed
+    const shuffledOptions = deterministicShuffle(otherOptions, seed);
+    const wrongOptions = shuffledOptions.slice(0, 3);
+
+    return deterministicShuffle([correctAnswer, ...wrongOptions], seed);
+}
+function getTrueFalseCorrectness(questionIndex) {
+    // Use a deterministic approach based on question index
+    return (questionIndex % 2) === 0;
+}
+
+function deterministicShuffle(array, seed) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = (seed * (i + 1)) % (i + 1);
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+function getRandomTermExcept(excludeTerm) {
+    const otherTerms = quizState.cards
+        .filter(card => card.Term !== excludeTerm)
+        .map(card => card.Term);
+    return otherTerms[Math.floor(Math.random() * otherTerms.length)];
+}
+
+function handleMultipleChoiceAnswer(selectedAnswer) {
+    const isCorrect = selectedAnswer === quizState.cards[quizState.currentIndex].Term;
+    processAnswer(selectedAnswer, isCorrect);
+}
+
+function handleTrueFalseAnswer(answer, isCorrectMatch) {
+    const isCorrect = (answer === 'True' && isCorrectMatch) || (answer === 'False' && !isCorrectMatch);
+    processAnswer(answer, isCorrect);
+}
 
 function updateProgressCircle(percentage) {
     const circle = document.querySelector('.progress-circle .progress');
@@ -711,6 +698,16 @@ function formatTime(milliseconds) {
 
 // Event listener setup
 document.addEventListener("DOMContentLoaded", function () {
+
+    const initialCount = document.getElementById("questionCount")?.getAttribute("value");
+    maxQuestionCount = parseInt(initialCount) || 1;
+
+    const questionCountInput = document.getElementById("questionCount");
+    if (questionCountInput) {
+        questionCountInput.value = maxQuestionCount;
+        questionCountInput.addEventListener("input", validateQuestionCount);
+    }
+    
     const termInput = document.getElementById('term-input');
     if (termInput) {
         termInput.addEventListener('keypress', function (e) {
@@ -720,6 +717,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+let maxQuestionCount = 1; // Global variable to store max questions
+
+function validateQuestionCount() {
+    const questionCountInput = document.getElementById("questionCount");
+    const value = parseInt(questionCountInput.value) || 1; // Use || 1 to handle NaN cases
+
+    // Ensure value is between 1 and maxQuestionCount
+    if (value < 1) {
+        questionCountInput.value = 1;
+    } else if (value > maxQuestionCount) {
+        questionCountInput.value = maxQuestionCount;
+    }
+}
 
 // Export functions for global access
 window.initializeQuiz = initializeQuiz;

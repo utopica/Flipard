@@ -76,7 +76,7 @@ content {
 }
 
 input:-internal-autofill-selected {
-    background-color: inherit;
+    background-color: inherit !important;
 }
 
 .card-term-content {

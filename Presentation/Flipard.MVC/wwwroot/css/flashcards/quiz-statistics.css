@@ -58,6 +58,12 @@
     justify-content: space-between;
     padding: 0.5rem;
     border-radius: 4px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.mistake-item .term {
+    margin-right: 0.5rem;
 }
 
 .attempts-list {
