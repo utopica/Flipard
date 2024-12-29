@@ -121,9 +121,9 @@ function getQuestionButtonClass(index) {
 
     if (answer) {
         if (answer.isBlank) {
-            baseClasses.push('blank'); // Add "blank" class if the question was answered blank
+            baseClasses.push('blank'); 
         } else {
-            baseClasses.push('answered'); // Add "answered" class if the question is answered (not blank)
+            baseClasses.push('answered');
             if (quizState.feedbackMode) {
                 if (answer.isCorrect) {
                     baseClasses.push('correct');
@@ -180,9 +180,10 @@ function showCard(index) {
             textDiv.style.width = "100%";
         }
 
-        // Show appropriate answer interface based on question type
+        // resetting containers
         const termContainer = document.getElementById("card-term-container");
         const feedbackContainer = document.getElementById("feedback-container");
+        termContainer.style.display = 'block';
         feedbackContainer.style.display = 'none';
 
         switch (quizState.currentQuestionType) {
@@ -195,6 +196,44 @@ function showCard(index) {
             case 'trueFalse':
                 showTrueFalseQuestion(termContainer);
                 break;
+        }
+
+        const previousAnswer = quizState.answeredQuestions.find(
+            q => q.questionIndex === quizState.currentIndex
+        );
+
+        if (previousAnswer?.feedbackShown) {
+            if (quizState.currentQuestionType === 'written') {
+                showFeedback(previousAnswer.userAnswer, quizState.cards[index].Term, quizState.currentQuestionType);
+            } else {
+                // For multiple choice and true/false, update the UI to show correct/incorrect states
+                const buttons = termContainer.querySelectorAll('button');
+                buttons.forEach(button => {
+                    if (quizState.currentQuestionType === 'multipleChoice') {
+                        if (button.textContent === quizState.cards[index].Term) {
+                            button.classList.add('correct');
+                        } else if (button.textContent === previousAnswer.userAnswer) {
+                            button.classList.add('incorrect');
+                        }
+                    } else if (quizState.currentQuestionType === 'trueFalse') {
+                        const isShowingCorrect = getTrueFalseCorrectness(index);
+                        const correctAnswer = isShowingCorrect ? 'True' : 'False';
+                        if (button.textContent === correctAnswer) {
+                            button.classList.add('correct');
+                        } else if (button.textContent === previousAnswer.userAnswer) {
+                            button.classList.add('incorrect');
+                        }
+                    }
+                });
+
+                // Show the correct term for true/false questions
+                if (quizState.currentQuestionType === 'trueFalse') {
+                    const termDisplay = termContainer.querySelector('.true-false-term');
+                    if (termDisplay) {
+                        termDisplay.textContent = quizState.cards[index].Term;
+                    }
+                }
+            }
         }
 
         updateProgress(index);
@@ -219,36 +258,62 @@ function showWrittenQuestion(container) {
     const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === quizState.currentIndex);
     if (previousAnswer) {
         input.value = previousAnswer.userAnswer;
+        if (quizState.feedbackMode && previousAnswer.feedbackShown) {
+            input.disabled = true;
+        }
     }
 
     input.disabled = quizState.isQuizCompleted;
     container.appendChild(input);
+
+    if (!input.disabled) {
+        input.focus();
+    }
 }
 
 function showMultipleChoiceQuestion(container) {
     container.innerHTML = '';
-    const options = generateMultipleChoiceOptions();
+    const questionIndex = quizState.currentIndex
+    const options = getMultipleChoiceOptions(questionIndex);
     const buttonsContainer = document.createElement('div');
     buttonsContainer.className = 'multiple-choice-container';
 
-    const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === quizState.currentIndex);
-    
-    options.forEach((option, index) => {
+    const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === questionIndex);
+    const feedbackShown = previousAnswer?.feedbackShown;
+
+    options.forEach((option) => {
         const button = document.createElement('button');
         button.className = 'multiple-choice-option';
         button.textContent = option;
-        button.disabled = quizState.isQuizCompleted;
-        button.onclick = () => handleMultipleChoiceAnswer(option);
+        button.disabled = feedbackShown || quizState.isQuizCompleted;
+
+        if (feedbackShown) {
+            if (option === quizState.cards[questionIndex].Term) {
+                button.classList.add('correct');
+            } else if (option === previousAnswer.userAnswer && !previousAnswer.isBlank) {
+                button.classList.add('incorrect');
+            }
+        }
+
+        button.onclick = () => {
+            handleMultipleChoiceAnswer(option);
+        };
+
         buttonsContainer.appendChild(button);
     });
 
     container.appendChild(buttonsContainer);
+
+    if (previousAnswer?.isBlank && feedbackShown) {
+        showBlankFeedback(container, quizState.cards[questionIndex].Term);
+    }
 }
 
 function showTrueFalseQuestion(container) {
     container.innerHTML = '';
-    const currentCard = quizState.cards[quizState.currentIndex];
-    const isShowingCorrect = Math.random() < 0.5;
+    const questionIndex = quizState.currentIndex;
+    const currentCard = quizState.cards[questionIndex];
+    const isShowingCorrect = getTrueFalseCorrectness(questionIndex);
     const displayedTerm = isShowingCorrect ?
         currentCard.Term :
         getRandomTermExcept(currentCard.Term);
@@ -260,17 +325,72 @@ function showTrueFalseQuestion(container) {
     const buttonsContainer = document.createElement('div');
     buttonsContainer.className = 'true-false-buttons';
 
+    const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === questionIndex);
+    const feedbackShown = previousAnswer?.feedbackShown;
+
+
     ['True', 'False'].forEach(option => {
         const button = document.createElement('button');
         button.className = 'true-false-option';
         button.textContent = option;
-        button.disabled = quizState.isQuizCompleted;
+        button.disabled = feedbackShown || quizState.isQuizCompleted;
+
+        if (feedbackShown) {
+            const isCorrectAnswer = (option === 'True' && isShowingCorrect) ||
+                (option === 'False' && !isShowingCorrect);
+
+            if (isCorrectAnswer) {
+                button.classList.add('correct');
+            } else if (option === previousAnswer.userAnswer && !previousAnswer.isBlank) {
+                button.classList.add('incorrect');
+            }
+        }
+
         button.onclick = () => handleTrueFalseAnswer(option, isShowingCorrect);
         buttonsContainer.appendChild(button);
     });
 
     container.appendChild(termDisplay);
     container.appendChild(buttonsContainer);
+
+    if (previousAnswer?.isBlank && feedbackShown) {
+        showBlankFeedback(container, isShowingCorrect ? 'True' : 'False');
+    }
+}
+function showBlankFeedback(container, correctAnswer) {
+    const blankFeedback = document.createElement('div');
+    blankFeedback.className = 'blank-feedback';
+    blankFeedback.innerHTML = `
+        <div class="wrong-answer">
+            Boş bırakıldı
+            <i class="fi fi-rr-cross-small"></i>
+        </div>
+        <div class="correct-answer">
+            ${correctAnswer}
+            <i class="fi fi-br-check"></i>
+        </div>
+    `;
+    container.appendChild(blankFeedback);
+}
+function getMultipleChoiceOptions(questionIndex) {
+    const seed = questionIndex;
+    return generateMultipleChoiceOptionsWithSeed(seed);
+}
+
+function generateMultipleChoiceOptionsWithSeed(seed) {
+    const currentCard = quizState.cards[quizState.currentIndex];
+    const correctAnswer = currentCard.Term;
+
+    // Use seed to consistently select the same wrong options
+    const otherOptions = quizState.cards
+        .filter(card => card.Term !== correctAnswer)
+        .map(card => card.Term);
+
+    // Deterministic shuffle based on seed
+    const shuffledOptions = deterministicShuffle(otherOptions, seed);
+    const wrongOptions = shuffledOptions.slice(0, 3);
+
+    return deterministicShuffle([correctAnswer, ...wrongOptions], seed);
 }
 
 function generateMultipleChoiceOptions() {
@@ -284,7 +404,19 @@ function generateMultipleChoiceOptions() {
 
     return shuffleArray([correctAnswer, ...wrongOptions]);
 }
+function getTrueFalseCorrectness(questionIndex) {
+    // Use a deterministic approach based on question index
+    return (questionIndex % 2) === 0;
+}
 
+function deterministicShuffle(array, seed) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = (seed * (i + 1)) % (i + 1);
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
 function getRandomTermExcept(excludeTerm) {
     const otherTerms = quizState.cards
         .filter(card => card.Term !== excludeTerm)
@@ -303,12 +435,38 @@ function handleTrueFalseAnswer(answer, isCorrectMatch) {
 }
 
 function submitAnswer() {
+
+    const existingAnswer = quizState.answeredQuestions.find(
+        q => q.questionIndex === quizState.currentIndex
+    );
+
+    // If in feedback mode and feedback was already shown, just advance to next question
+    if (quizState.feedbackMode && existingAnswer?.feedbackShown) {
+        advanceToNextQuestion();
+        return;
+    }
+    
     if (quizState.currentQuestionType === 'written') {
         const termInput = document.getElementById('term-input');
         const userTerm = termInput.value.trim();
         const isBlank = userTerm === '';
         const isCorrect = !isBlank && (userTerm.toLowerCase() === quizState.cards[quizState.currentIndex].Term.toLowerCase());
         processAnswer(userTerm, isCorrect, isBlank);
+    }
+    else if (quizState.currentQuestionType === 'multipleChoice') {
+        const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === quizState.currentIndex);
+        const userAnswer = previousAnswer ? previousAnswer.userAnswer : '';
+        const isBlank = userAnswer === '';
+        const isCorrect = !isBlank && (userAnswer === quizState.cards[quizState.currentIndex].Term);
+        processAnswer(userAnswer, isCorrect, isBlank);
+    }
+    else if (quizState.currentQuestionType === 'trueFalse') {
+        const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === quizState.currentIndex);
+        const userAnswer = previousAnswer ? previousAnswer.userAnswer : '';
+        const isBlank = userAnswer === '';
+        const isShowingCorrect = getTrueFalseCorrectness(quizState.currentIndex);
+        const isCorrect = !isBlank && ((userAnswer === 'True' && isShowingCorrect) || (userAnswer === 'False' && !isShowingCorrect));
+        processAnswer(userAnswer, isCorrect, isBlank);
     }
 }
 
@@ -318,65 +476,99 @@ function processAnswer(userAnswer, isCorrect, isBlank = false) {
         q => q.questionIndex === quizState.currentIndex
     );
 
-    if (existingAnswerIndex !== -1 && !quizState.feedbackMode) {
-        const oldAnswer = quizState.answeredQuestions[existingAnswerIndex];
+    // Create the answer object
+    const answerObject = {
+        questionIndex: quizState.currentIndex,
+        userAnswer: userAnswer,
+        isCorrect: isCorrect,
+        isBlank: isBlank,
+        vocabulary: currentCard.Id,
+        questionType: quizState.currentQuestionType,
+        feedbackShown: false
+    };
 
-        // Revert old answer statistics
-        if (oldAnswer.isBlank) quizState.blankAnswersCount--;
-        else if (oldAnswer.isCorrect) quizState.correctAnswersCount--;
-        else quizState.wrongAnswerCount--;
+    if (quizState.feedbackMode) {
+        if (existingAnswerIndex === -1) {
+            quizState.answeredQuestions.push(answerObject);
+            updateStatistics(isBlank, isCorrect);
+            quizState.originalAnswers[quizState.currentIndex] = userAnswer;
+        }
 
-        quizState.answeredQuestions.splice(existingAnswerIndex, 1);
-        quizState.originalAnswers[quizState.currentIndex] = '';
-    }
+        const currentAnswer = quizState.answeredQuestions.find(
+            q => q.questionIndex === quizState.currentIndex
+        );
 
-    if (!quizState.originalAnswers[quizState.currentIndex] || !quizState.feedbackMode) {
-        quizState.originalAnswers[quizState.currentIndex] = userAnswer;
-
-        quizState.answeredQuestions.push({
-            questionIndex: quizState.currentIndex,
-            userAnswer: userAnswer,
-            isCorrect: isCorrect,
-            isBlank: isBlank,
-            vocabulary: currentCard.Id,
-            questionType: quizState.currentQuestionType
-        });
-
-        // Update statistics
-        if (isBlank) quizState.blankAnswersCount++;
-        else if (isCorrect) quizState.correctAnswersCount++;
-        else quizState.wrongAnswerCount++;
-    }
-
-    if (quizState.feedbackMode && !isCorrect) {
-        showFeedback(userAnswer, currentCard.Term);
+        if (!isCorrect && !currentAnswer.feedbackShown) {
+            currentAnswer.feedbackShown = true;
+            // Show feedback based on question type
+            if (quizState.currentQuestionType === 'written') {
+                showFeedback(userAnswer, currentCard.Term, quizState.currentQuestionType);
+            } else {
+                // For multiple choice and true/false, re-render the current card to show feedback
+                showCard(quizState.currentIndex);
+            }
+        } else {
+            advanceToNextQuestion();
+        }
     } else {
-        advanceToNextQuestion()
+        if (existingAnswerIndex !== -1) {
+            const oldAnswer = quizState.answeredQuestions[existingAnswerIndex];
+            revertStatistics(oldAnswer);
+            quizState.answeredQuestions.splice(existingAnswerIndex, 1);
+        }
+
+        quizState.answeredQuestions.push(answerObject);
+        updateStatistics(isBlank, isCorrect);
+        quizState.originalAnswers[quizState.currentIndex] = userAnswer;
+        advanceToNextQuestion();
     }
 
     initializeQuestionsMenu();
 }
 
-function showFeedback(userAnswer, correctAnswer) {
+function updateStatistics(isBlank, isCorrect) {
+    if (isBlank) quizState.blankAnswersCount++;
+    else if (isCorrect) quizState.correctAnswersCount++;
+    else quizState.wrongAnswerCount++;
+}
+
+function revertStatistics(answer) {
+    if (answer.isBlank) quizState.blankAnswersCount--;
+    else if (answer.isCorrect) quizState.correctAnswersCount--;
+    else quizState.wrongAnswerCount--;
+}
+function showFeedback(userAnswer, correctAnswer, questionType) {
     const termInputContainer = document.getElementById("card-term-container");
     const feedbackContainer = document.getElementById("feedback-container");
-    const userAnswerDisplay = document.querySelector(".user-answer-display");
-    const answerFeedback = document.getElementById("answer-feedback");
 
-    termInputContainer.style.display = 'none';
-    feedbackContainer.style.display = 'block';
+    if (questionType === 'written') {
+        feedbackContainer.style.display = 'block';
 
-    userAnswerDisplay.innerHTML = `
-        <div class="wrong-answer">
-            ${userAnswer === '' ? 'Boş bırakıldı' : userAnswer}
-            <i class="fi fi-rr-cross-small"></i>
-        </div>`;
+        // Keep the input visible but disabled during feedback
+        const termInput = document.getElementById('term-input');
+        if (termInput) {
+            termInput.disabled = true;
+            termInput.value = userAnswer;
+        }
 
-    answerFeedback.innerHTML = `
-        <div class="correct-answer">
-            ${correctAnswer}
-            <i class="fi fi-br-check"></i>
-        </div>`;
+        const userAnswerDisplay = document.querySelector(".user-answer-display");
+        const answerFeedback = document.getElementById("answer-feedback");
+
+        userAnswerDisplay.innerHTML = `
+            <div class="wrong-answer">
+                ${userAnswer === '' ? 'Boş bırakıldı' : userAnswer}
+                <i class="fi fi-rr-cross-small"></i>
+            </div>`;
+
+        answerFeedback.innerHTML = `
+            <div class="correct-answer">
+                ${correctAnswer}
+                <i class="fi fi-br-check"></i>
+            </div>`;
+    } else {
+        // For multiple choice and true/false, feedback is handled through button styling
+        feedbackContainer.style.display = 'none';
+    }
 
     quizState.showAnswer = true;
 }
@@ -437,7 +629,6 @@ function showQuizSummary() {
                 <div class="question-number">${answer.questionIndex + 1}</div>
                 <div class="answer-content">
                     <div class="question-text">
-                        <small class="question-type">${questionTypeText}</small>
                         ${card.Meaning}
                     </div>
                     <div class="answer-text">

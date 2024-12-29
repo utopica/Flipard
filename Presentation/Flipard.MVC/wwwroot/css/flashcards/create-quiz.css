@@ -368,6 +368,17 @@ input:checked + .slider:before {
     color: #666;
 }
 
+/* Multiple Choice Questions Options */
+.correct {
+    background-color: #4CAF50 !important;
+    color: white !important;
+}
+
+.incorrect {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
 /* Responsiveness */
 
 @media (max-width: 768px) {
