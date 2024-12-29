@@ -498,7 +498,7 @@ function processAnswer(userAnswer, isCorrect, isBlank = false) {
             q => q.questionIndex === quizState.currentIndex
         );
 
-        if (!isCorrect && !currentAnswer.feedbackShown) {
+        if (!currentAnswer.feedbackShown) {
             currentAnswer.feedbackShown = true;
             // Show feedback based on question type
             if (quizState.currentQuestionType === 'written') {
@@ -542,6 +542,7 @@ function showFeedback(userAnswer, correctAnswer, questionType) {
     const feedbackContainer = document.getElementById("feedback-container");
 
     if (questionType === 'written') {
+        termInputContainer.style.display = 'none';
         feedbackContainer.style.display = 'block';
 
         // Keep the input visible but disabled during feedback

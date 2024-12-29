@@ -72,7 +72,7 @@ content {
 
 
 .answer-card {
-    height: 200px;
+    height: 275px;
     margin: 20px;
     border: 2px solid var(--input-color);
     border-radius: 10px
@@ -81,12 +81,28 @@ content {
 .card-term-content {
     height: 100%; 
     margin: 5px;
+    
+    /*display: flex;*/
+    /*flex-direction: column;*/
 }
 
 .card-term-container, .feedback-container{
     height: 95.1%;
     outline: none;
     overflow-y: auto;
+    
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-between;*/
+}
+
+.feedback-container{
+    height: 95.1%;
+    outline: none;
+    overflow-y: auto;
+
+    /*display: flex;*/
+    /*flex-direction: column;*/
 }
 
 .card-term-container input{
@@ -199,7 +215,7 @@ content {
 }
 
 .menu-container {
-    background: var(--card-bg-color);
+    background: #404147;
     padding: 1.2rem 0.6rem;
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
@@ -368,16 +384,60 @@ input:checked + .slider:before {
     color: #666;
 }
 
-/* Multiple Choice Questions Options */
-.correct {
+/* Multiple Choice Questions */
+.card-term-container .correct {
     background-color: #4CAF50 !important;
     color: white !important;
 }
 
-.incorrect {
-    background-color: #f44336 !important;
+.card-term-container .incorrect {
+    background-color: var(--scroll-card-color) !important;
     color: white !important;
 }
+
+.multiple-choice-container{
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+}
+
+.multiple-choice-option{
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    overflow-y: auto;
+    color: var(--white-text-color);
+    background-color: var(--card-light-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px
+}
+
+.multiple-choice-option:hover, .true-false-option:hover{
+    background: var(--card-mid-bg-color);
+}
+
+/* True - False Questions */
+.true-false-term{
+    color: var(--white-text-color);
+    margin: 0.5rem;
+}
+
+.true-false-buttons{
+    margin: 1rem 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    
+}
+
+.true-false-option{
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    color: var(--white-text-color);
+    background-color: var(--card-light-bg-color);
+}
+
 
 /* Responsiveness */
 
