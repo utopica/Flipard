@@ -6,12 +6,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Flipard.Domain.Entities;
 
 namespace Flipard.Domain.Identity;
 
 public class User : IdentityUser<Guid>, IFullAuditedEntity
 {
     public DateTimeOffset? Birthdate { get; set; }
+    
+    public UserLevel UserLevel { get; set; }
+    
+    public ICollection<UserBadge> UserBadges { get; set; }
+    
+    public string? ProfilePhotoUrl { get; set; }
     public UserSetting UserSetting { get; set; }
     public DateTimeOffset CreatedOn { get; set; }
     public string? CreatedByUserId { get; set; }
