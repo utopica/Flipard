@@ -83,16 +83,38 @@ public class HomeController : Controller
             ProfilePhotoUrl = user.ProfilePhotoUrl,
             JoinedDate = user.CreatedOn.DateTime,
             BadgeCount = badgeCount,
-            CurrentLevel = userLevel?.Level ?? 1,  // Eğer userLevel null ise, 1 alacak
-            CurrentXP = userLevel?.CurrentExperience ?? 0, // Eğer userLevel null ise, 0 alacak
-            RequiredXP = userLevel?.RequiredExperience ?? 100, // Eğer userLevel null ise, 100 alacak
+            CurrentLevel = userLevel?.Level ?? 1,  
+            CurrentXP = userLevel?.CurrentExperience ?? 50, 
+            RequiredXP = userLevel?.RequiredExperience ?? 100, 
         };
+
+        var randomCard = _appcontext.Decks
+            .Where(d => d.CreatedByUserId == userId)
+            .SelectMany(d => d.Cards)
+            .OrderBy(r => Guid.NewGuid())
+            .Select(v => v.Vocabulary)
+            .Select(c => new CardViewModel
+            {
+                Term = c.Term,
+                Meaning = c.Meaning
+            })
+            .FirstOrDefault();
+        
+        if (randomCard == null)
+        {
+            randomCard = new CardViewModel
+            {
+                Term = "Create your first card!",
+                Meaning = "Start by adding cards to your decks"
+            };
+        }
 
         var viewModel = new HomePageViewModel
         {
             UserDecks = userDecks,
             RandomUserDecks = randomUserDecks,
             UserProfile = userProfile,
+            QuestionOfTheDay = randomCard
         };
 
         return View(viewModel);

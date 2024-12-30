@@ -199,3 +199,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Make calendar instance available globally
     window.quizCalendar = quizCalendar;
 });
+
+
+/* Quiz Of the Day */
+function flipCard() {
+    const card = document.getElementById('quiz-card');
+    card.classList.toggle('flipped');
+}
+
+// Optional: Add keyboard support for flipping
+document.addEventListener('keydown', function(e) {
+    if (e.key === ' ' || e.key === 'Enter') { // Space or Enter key
+        flipCard();
+    }
+});

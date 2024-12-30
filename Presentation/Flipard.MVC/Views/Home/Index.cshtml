@@ -126,7 +126,7 @@
         <div class="profile-container">
             <div class="profile-header">
                 <div class="profile-photo">
-                    <img src="@Model.UserProfile.ProfilePhotoUrl" alt="Profile Photo" />
+                    <img  src="@(string.IsNullOrEmpty(Model.UserProfile.ProfilePhotoUrl) ? "/images/default-avatar.png" : Model.UserProfile.ProfilePhotoUrl)" alt="Profile Photo" />
                 </div>
                 <div class="profile-info">
                     <h2 class="username">@Model.UserProfile.Username</h2>
@@ -137,6 +137,12 @@
             <div class="level-container">
                 <div class="level-header">
                     <span>Level @Model.UserProfile.CurrentLevel</span>
+                    <div class="xp-counter">
+                        <span>@Model.UserProfile.CurrentXP/@Model.UserProfile.RequiredXP XP</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: @(((double)Model.UserProfile.CurrentXP / Model.UserProfile.RequiredXP) * 100)%"></div>
                 </div>
             </div>
 
@@ -144,6 +150,20 @@
                 View Badges
                 <span class="badge-count">@Model.UserProfile.BadgeCount</span>
             </a>
+        </div>
+
+        <div class="question-of-the-day">
+            <h3>Question of the Day</h3>
+            <div class="quiz-card" id="quiz-card" onclick="flipCard()">
+                <div class="quiz-card-inner">
+                    <div class="quiz-card-front">
+                        <div class="term">@Model.QuestionOfTheDay.Term</div>
+                    </div>
+                    <div class="quiz-card-back">
+                        <div class="meaning">@Model.QuestionOfTheDay.Meaning</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </content>
