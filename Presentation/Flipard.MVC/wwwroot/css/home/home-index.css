@@ -26,17 +26,6 @@ content{
     overflow-y: auto;
 }
 
-.left-content{
-    background-color: pink
-}.middle-content{
-    flex:2;
-    background-color: hotpink;
-    justify-items: center;
- }.right-content{
-    background-color: lightpink;
-   }
-  
-
 .label-deck h4 {
     color: var(--title-text-color);
     margin: 1.5rem 1rem;
@@ -242,4 +231,95 @@ month-year {
 .goal-img{
    width: 25px;
     height: 25px;
+}
+
+/* Right Menu */
+
+/* Profile Container */
+.profile-container {
+    background: var(--card-dark-bg-color);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 400px;
+    margin: 20px auto;
+    color: white;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.profile-photo img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info .username {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.profile-info .joined-date {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+    margin: 4px 0;
+}
+
+.level-container {
+    margin: 20px 0;
+}
+
+
+.level-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.xp-counter {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+}
+
+.progress-bar {
+    background: #3a3a3a;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar .progress {
+    background: #8B5CF6;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.view-badges-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg-color);
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    margin-top: 16px;
+    transition: background 0.2s ease;
+}
+
+.view-badges-btn:hover {
+    background: #4a4a4a;
+}
+
+.badge-count {
+    background: #8B5CF6;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.9rem;
 }

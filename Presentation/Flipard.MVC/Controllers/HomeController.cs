@@ -44,6 +44,12 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
+
+        if (user is null)
+        {
+            return Unauthorized();
+        }
 
         var userDecks = _appcontext.Decks
             .Where(d => d.CreatedByUserId == userId)
@@ -67,10 +73,26 @@ public class HomeController : Controller
             .Take(5)
             .ToList();
 
+        var userLevel = _appcontext.UserLevels.FirstOrDefault(x => x.UserId == user.Id);
+
+        var badgeCount = _appcontext.UserBadges.Count(b => b.UserId == user.Id);
+
+        var userProfile = new ProfileViewModel()
+        {
+            Username = user.UserName,
+            ProfilePhotoUrl = user.ProfilePhotoUrl,
+            JoinedDate = user.CreatedOn.DateTime,
+            BadgeCount = badgeCount,
+            CurrentLevel = userLevel?.Level ?? 1,  // Eğer userLevel null ise, 1 alacak
+            CurrentXP = userLevel?.CurrentExperience ?? 0, // Eğer userLevel null ise, 0 alacak
+            RequiredXP = userLevel?.RequiredExperience ?? 100, // Eğer userLevel null ise, 100 alacak
+        };
+
         var viewModel = new HomePageViewModel
         {
             UserDecks = userDecks,
-            RandomUserDecks = randomUserDecks
+            RandomUserDecks = randomUserDecks,
+            UserProfile = userProfile,
         };
 
         return View(viewModel);
@@ -401,7 +423,7 @@ public class HomeController : Controller
 
         return Json(decks);
     }
-
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

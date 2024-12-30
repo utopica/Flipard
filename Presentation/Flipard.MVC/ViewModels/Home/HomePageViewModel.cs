@@ -4,6 +4,8 @@
     {
         public IEnumerable<HomeDeckDetailsViewModel> UserDecks { get; set; }
         public IEnumerable<HomeDeckDetailsViewModel> RandomUserDecks { get; set; }
+        
+        public ProfileViewModel UserProfile{ get; set; }
     }
 
 }

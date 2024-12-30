@@ -122,7 +122,30 @@
         </div>
 
     </div>
-    <div class="right-content"></div>
+    <div class="right-content">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-photo">
+                    <img src="@Model.UserProfile.ProfilePhotoUrl" alt="Profile Photo" />
+                </div>
+                <div class="profile-info">
+                    <h2 class="username">@Model.UserProfile.Username</h2>
+                    <p class="joined-date">Joined @Model.UserProfile.JoinedDate.ToString("MM/dd/yy")</p>
+                </div>
+            </div>
+
+            <div class="level-container">
+                <div class="level-header">
+                    <span>Level @Model.UserProfile.CurrentLevel</span>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Badges", "Profile")" class="view-badges-btn">
+                View Badges
+                <span class="badge-count">@Model.UserProfile.BadgeCount</span>
+            </a>
+        </div>
+    </div>
 </content>
 <script src="@Url.Content("~/js/home/home-index.js")"></script>
 </body>
