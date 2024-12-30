@@ -97,7 +97,8 @@ public class HomeController : Controller
             Birthdate = user.Birthdate,
             Email = user.Email,
             Password = "******",
-            Username = user.UserName
+            Username = user.UserName,
+            ProfilePhotoUrl = user.ProfilePhotoUrl
         };
 
         return View(userProfile);
