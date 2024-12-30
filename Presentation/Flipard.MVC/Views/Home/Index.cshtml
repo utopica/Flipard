@@ -11,100 +11,119 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 </head>
 <body>
-    @antiforgery
-    <content>
-        <div class="label-deck">
-            <h4>Çalışma setleriniz</h4>
-        </div>
-
-        <div class="deck-container">
-            <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('.deck-list', 'previous')">
-                <span class="button-text">
-                    <i class="fi fi-bs-angle-left"></i>
-                </span>
-            </button>
-
-            <div class="deck-list">
-                @foreach (var deck in Model.UserDecks)
-                {
-                    <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id')">
-                        <div class="deck-card">
-                            <div class="deck-card-header">
-                                <h5>@deck.Name</h5>
-                            </div>
-                            <div class="deck-card-body">
-                                <div class="deck-card-body-left">
-                                    <span>@deck.CardCount Kart</span>
-                                </div>
-                                <div class="deck-card-body-right"></div>
-                            </div>
-                        </div>
-                    </button>
-                }
+@antiforgery
+<content>
+    <div class="left-content">
+        <div class="my-decks">
+            <div class="label-deck">
+                <h4>Çalışma setleriniz</h4>
             </div>
 
-            <button type="button" class="card-button" id="next-button" onclick="scrollDecks('.deck-list', 'next')">
-                <span class="button-text">
-                    <i class="fi fi-bs-angle-right"></i>
-                </span>
-            </button>
-        </div>
+            <div class="deck-container">
+                <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('.deck-list', 'previous')">
+                    <span class="button-text">
+                        <i class="fi fi-bs-angle-up"></i>
+                    </span>
+                </button>
 
-
-        <div class="label-deck">
-            <h4>Diğer kullanıcıların setleri</h4>
-        </div>
-
-        <div class="deck-container">
-            <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('.deck-list-other', 'previous')">
-                <span class="button-text">
-                    <i class="fi fi-bs-angle-left"></i>
-                </span>
-            </button>
-
-            <div class="deck-list-other">
-                @foreach (var deck in Model.RandomUserDecks)
-                {
-                    <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id', true)">
-                        <div class="deck-card">
-                            <div class="deck-card-header">
-                                <h5>@deck.Name</h5>
-                            </div>
-                            <div class="deck-card-body">
-                                <div class="deck-card-body-left">
-                                    <span>@deck.CardCount Kart</span>
+                <div class="deck-list">
+                    @foreach (var deck in Model.UserDecks)
+                    {
+                        <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id')">
+                            <div class="deck-card">
+                                <div class="deck-card-header">
+                                    <p>@deck.Name</p>
                                 </div>
-                                <div class="deck-card-body-right"></div>
+                                <div class="deck-card-body">
+                                    <div class="deck-card-body-left">
+                                        <span>@deck.CardCount Kart</span>
+                                    </div>
+                                    <div class="deck-card-body-right"></div>
+                                </div>
                             </div>
-                        </div>
-                    </button>
-                }
+                        </button>
+                    }
+                </div>
+
+                <button type="button" class="card-button" id="next-button" onclick="scrollDecks('.deck-list', 'next')">
+                    <span class="button-text">
+                        <i class="fi fi-bs-angle-down"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div class="others-deck">
+
+            <div class="label-deck">
+                <h4>Diğer kullanıcıların setleri</h4>
             </div>
 
-            <button type="button" class="card-button" id="next-button" onclick="scrollDecks('.deck-list-other', 'next')">
-                <span class="button-text">
-                    <i class="fi fi-bs-angle-right"></i>
-                </span>
-            </button>
+            <div class="deck-container">
+                <button type="button" class="card-button" id="previous-button" onclick="scrollDecks('.deck-list-other', 'previous')">
+                    <span class="button-text">
+                        <i class="fi fi-bs-angle-up"></i>
+                    </span>
+                </button>
+
+                <div class="deck-list-other">
+                    @foreach (var deck in Model.RandomUserDecks)
+                    {
+                        <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id', true)">
+                            <div class="deck-card">
+                                <div class="deck-card-header">
+                                    @deck.Name
+                                    <p>
+                                </div>
+                                <div class="deck-card-body">
+                                    <div class="deck-card-body-left">
+                                        <span>@deck.CardCount Kart</span>
+                                    </div>
+                                    <div class="deck-card-body-right"></div>
+                                </div>
+                            </div>
+                        </button>
+                    }
+                </div>
+
+                <button type="button" class="card-button" id="next-button" onclick="scrollDecks('.deck-list-other', 'next')">
+                    <span class="button-text">
+                        <i class="fi fi-bs-angle-down"></i>
+                    </span>
+                </button>
+            </div>
+
         </div>
-    </content>
+    </div>
+    <div class="middle-content">
+        <div class="calendar">
+            <div class="calendar-header">
+                <button id="prevMonthBtn" class="nav-btn">←</button>
+                <span class="month-year" id="monthYear"></span>
+                <span class="streak">
+                    <img class="goal-img" src="~/images/goal2.png" alt="goal_image"/>
+                    <span id="streakCount">0</span>
+                </span>
+                <button id="nextMonthBtn" class="nav-btn">→</button>
+            </div>
 
-    <script type="text/javascript">
-        function navigateToDeck(deckId, isReadOnly) {
-            window.location.href = '/Flashcards/Index/' + deckId + (isReadOnly ? '?isReadonly=true' : '');
-        }
+            <div class="calendar-body">
+                <div class="weekdays">
+                    <div>S</div>
+                    <div>M</div>
+                    <div>T</div>
+                    <div>W</div>
+                    <div>T</div>
+                    <div>F</div>
+                    <div>S</div>
+                </div>
+                <div class="days" id="calendarDays"></div>
+            </div>
+        </div>
 
-        function scrollDecks(deckListClass, direction) {
-            const deckList = document.querySelector(deckListClass);
-            const scrollAmount = 300;
-
-            if (direction === 'next') {
-                deckList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            } else if (direction === 'previous') {
-                deckList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            }
-        }
-
-    </script>
+    </div>
+    <div class="right-content"></div>
+</content>
+<script src="@Url.Content("~/js/home/home-index.js")"></script>
 </body>
 </html>

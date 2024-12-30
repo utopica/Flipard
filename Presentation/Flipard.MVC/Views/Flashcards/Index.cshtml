@@ -106,7 +106,8 @@
                     <div class="settings-option">
                         <div class="number-option">
                             <label for="questionCount">Number of Questions</label>
-                            <input type="number" id="questionCount" class="number-input" min="1" value="@Model?.TermMeanings?.Count ?? 1">
+                            <input type="number" id="questionCount" class="number-input" min="1" value="@Model?.TermMeanings?.Count ?? 1"
+                                   oninput="validateQuestionCount()">
                         </div>
                     </div>
 
@@ -184,6 +185,15 @@
     document.addEventListener("DOMContentLoaded", function() {
         initialize(serverCards);
     });
+
+    function handleCardAction(action, cardId) {
+        if (@Json.Serialize(Model.IsReadOnly)) {
+            alert('You do not have permission to modify this deck.');
+            return false;
+        }
+        // Continue with the original action
+        return true;
+    }
 </script>
 <script src="@Url.Content("~/js/flashcards/display-page.js")"></script>
 </body>

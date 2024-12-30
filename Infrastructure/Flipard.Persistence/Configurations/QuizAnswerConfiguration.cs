@@ -13,7 +13,7 @@ public class QuizAnswerConfiguration : IEntityTypeConfiguration<QuizAnswer>
         builder.HasOne(qa => qa.Vocabulary)
             .WithMany()
             .HasForeignKey(qa => qa.VocabularyId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(qa => qa.QuizAttempt)
             .WithMany(qa => qa.Answers)

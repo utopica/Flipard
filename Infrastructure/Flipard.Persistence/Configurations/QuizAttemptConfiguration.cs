@@ -13,7 +13,7 @@ public class QuizAttemptConfiguration : IEntityTypeConfiguration<QuizAttempt>
         builder.HasOne(x => x.Deck)
             .WithMany()
             .HasForeignKey(x => x.DeckId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.User)
             .WithMany()

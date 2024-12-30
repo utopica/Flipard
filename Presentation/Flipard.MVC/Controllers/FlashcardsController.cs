@@ -24,8 +24,10 @@ public class FlashcardsController : Controller
         _userManager = userManager;
     }
 
-    public IActionResult Index(Guid id, bool isReadOnly = false)
+    public IActionResult Index(Guid id)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         var deck = _appContext.Decks
             .Include(d => d.Cards)
             .ThenInclude(c => c.Vocabulary)
@@ -35,6 +37,8 @@ public class FlashcardsController : Controller
         {
             return NotFound();
         }
+
+        bool isReadOnly = deck.CreatedByUserId != userId;
 
         var model = new HomeCreateSetViewModel
         {
@@ -47,6 +51,7 @@ public class FlashcardsController : Controller
                 Term = c.Vocabulary.Term,
                 Meaning = c.Vocabulary.Meaning,
                 ImageUrl = c.ImageUrl,
+                IsReadOnly = isReadOnly ,
             }).ToList(),
             IsReadOnly = isReadOnly
         };
@@ -73,7 +78,14 @@ public class FlashcardsController : Controller
     [HttpDelete]
     public IActionResult DeleteDeck(Guid id)
     {
-        var deck = _appContext.Decks.FirstOrDefault(d => d.Id == id);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        var deck = _appContext.Decks.FirstOrDefault(d => d.Id == id && d.CreatedByUserId == userId);
 
         if (deck == null)
         {
@@ -89,6 +101,8 @@ public class FlashcardsController : Controller
     [HttpPut]
     public IActionResult UpdateCard([FromBody] TermMeaningViewModel updatedCard)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (updatedCard == null || updatedCard.Id == Guid.Empty)
         {
             return BadRequest("Invalid card data.");
@@ -100,6 +114,12 @@ public class FlashcardsController : Controller
         {
             return NotFound();
         }
+        
+        if (!string.Equals(card.CreatedByUserId.Trim(), userId.Trim(), StringComparison.OrdinalIgnoreCase))
+        {
+            return Unauthorized();
+        }
+
 
         card.Vocabulary.Term = updatedCard.Term;
         card.Vocabulary.Meaning = updatedCard.Meaning;
@@ -161,21 +181,20 @@ public class FlashcardsController : Controller
             TimeTakenSeconds = (int)(results.TimeTaken / 1000)
         };
 
-        // Create answers and associate them with the attempt
         quizAttempt.Answers = results.AnswerDetails.Select(detail => new QuizAnswer
         {
             Id = Guid.NewGuid(),
-            QuizAttemptId = quizAttemptId,  // This should match the QuizAttempt.Id
+            QuizAttemptId = quizAttemptId,
             VocabularyId = detail.VocabularyId,
             UserAnswer = detail.UserAnswer,
             IsCorrect = detail.IsCorrect,
         }).ToList();
 
-        // Only need to add the QuizAttempt - the answers will be added automatically
         await _appContext.QuizAttempts.AddAsync(quizAttempt);
         await _appContext.SaveChangesAsync();
 
-        return Json(new { success = true, redirectUrl = Url.Action("ShowStatistics", new { deckId = quizAttempt.DeckId }) });
+        return Json(new
+            { success = true, redirectUrl = Url.Action("ShowStatistics", new { deckId = quizAttempt.DeckId }) });
     }
 
 

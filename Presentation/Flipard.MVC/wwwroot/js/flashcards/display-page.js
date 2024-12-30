@@ -5,7 +5,10 @@ let deckIdToDelete = null;
 let deckIdToEdit = null;
 
 function initialize(serverCards) {
-    cards = serverCards;
+    cards = serverCards.map(card => ({
+        ...card,
+        isReadOnly: card.IsReadOnly
+    }));
     showCard(currentIndex);
     renderCards(cards);
     initializeEventListeners();
@@ -47,33 +50,35 @@ function renderCards(cards) {
         const cardElement = document.createElement("div");
         cardElement.classList.add("card");
 
+        const editButtons = !card.isReadOnly ? `
+            <div class="card-edit-buttons">
+                <button type="button" class="card-delete-button" data-card-id="${card.Id}" onclick="deleteCard(this)">
+                    <span class="button-card-delete-icon"><i class="fa-solid fa-trash"></i></span>
+                </button>
+                <button type="button" class="card-edit-button" onclick="editCard('${card.Id}')">
+                    <span class="button-card-edit-icon"><i class="fa-solid fa-pen"></i></span>
+                </button>
+                <button type="button" class="card-save-button" onclick="saveCard('${card.Id}')" style="display: none;">
+                    <span class="button-card-save-icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                </button>
+            </div>
+        ` : '';
+
         cardElement.innerHTML = `
             <div class="card-edit-bar">
                 <span class="card-number">${index + 1}</span>
-                <div class="card-edit-buttons">
-                    ${!card.isReadOnly ? `
-                        <button type="button" class="card-delete-button" data-card-id="${card.Id}" onclick="deleteCard(this)">
-                            <span class="button-card-delete-icon"><i class="fa-solid fa-trash"></i></span>
-                        </button>
-                        <button type="button" class="card-edit-button" onclick="editCard('${card.Id}')">
-                            <span class="button-card-edit-icon"><i class="fa-solid fa-pen"></i></span>
-                        </button>
-                        <button type="button" class="card-save-button" onclick="saveCard('${card.Id}')" style="display: none;">
-                            <span class="button-card-save-icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                        </button>
-                    ` : ""}
-                </div>
+                ${editButtons}
             </div>
             <div class="card-content">
                 <div class="card-term-meaning">
                     <div class="card-term">
                         <span id="card-term-display-${card.Id}">${card.Term}</span>
-                        ${!card.isReadOnly ? `<textarea class="card-term" id="card-term-${card.Id}" style="display: none;">${card.Term}</textarea>` : ""}
+                        ${!card.isReadOnly ? `<textarea class="card-term" id="card-term-${card.Id}" style="display: none;">${card.Term}</textarea>` : ''}
                     </div>
                     <div class="card-content-divider"></div>
                     <div class="card-meaning">
                         <span class="card-meaning" id="card-meaning-display-${card.Id}">${card.Meaning}</span>
-                        ${!card.isReadOnly ? `<textarea class="card-term" id="card-meaning-${card.Id}" style="display: none;">${card.Meaning}</textarea>` : ""}
+                        ${!card.isReadOnly ? `<textarea class="card-term" id="card-meaning-${card.Id}" style="display: none;">${card.Meaning}</textarea>` : ''}
                     </div>
                 </div>
                 <div class="card-image">
@@ -87,7 +92,6 @@ function renderCards(cards) {
         cardList.appendChild(cardElement);
     });
 }
-
 function showPreviousCard() {
     if (currentIndex > 0) {
         showCard(currentIndex - 1);
@@ -102,7 +106,12 @@ function showNextCard() {
 
 function deleteCard(button) {
     const cardId = button.getAttribute("data-card-id");
+    const card = cards.find(c => c.Id === cardId);
 
+    if (card.isReadOnly) {
+        alert('You do not have permission to delete this card.');
+        return;
+    }
     fetch(`/Flashcards/DeleteCard/${cardId}`, {
         method: 'DELETE',
         headers: {
@@ -112,8 +121,8 @@ function deleteCard(button) {
     })
         .then(response => {
             if (response.ok) {
-                button.closest('.card-edit-bar').nextElementSibling.remove();
-                button.closest('.card-edit-bar').remove();
+                cards = cards.filter(c => c.Id !== cardId);
+                renderCards(cards);
                 updateCardNumbers();
             } else {
                 alert('Failed to delete card.');
@@ -162,6 +171,13 @@ function deleteDeck(deckId) {
 }
 
 function editCard(cardId) {
+    const card = cards.find(c => c.Id === cardId);
+
+    if (card.isReadOnly) {
+        alert('You do not have permission to edit this card.');
+        return;
+    }
+
     document.querySelector(`#card-term-display-${cardId}`).style.display = 'none';
     document.querySelector(`#card-meaning-display-${cardId}`).style.display = 'none';
     document.querySelector(`#card-term-${cardId}`).style.display = 'block';
@@ -341,3 +357,23 @@ document.addEventListener('keydown', function(event) {
         closeDeleteConfirmation();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const questionCountInput = document.getElementById("questionCount");
+    if (!questionCountInput.value) {
+        questionCountInput.value = serverCards.length; // Default to serverCards length
+    }
+});
+
+function validateQuestionCount() {
+    const questionCountInput = document.getElementById("questionCount");
+    const maxCount = cards.length;
+    const value = parseInt(questionCountInput.value);
+
+    if (value < 1) {
+        questionCountInput.value = 1;
+    } else if (value > maxCount) {
+        questionCountInput.value = maxCount;
+    }
+}
+
