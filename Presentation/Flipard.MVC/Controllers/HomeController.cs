@@ -113,11 +113,13 @@ public class HomeController : Controller
             Username = user!.UserName!,
             Email = user.Email!,
             Birthdate = user.Birthdate?.ToUniversalTime(),
+            ProfilePhotoUrl = user.ProfilePhotoUrl,
         };
 
         return View(editProfileViewModel);
     }
 
+    [HttpPost]
     [HttpPost]
     public async Task<IActionResult> EditProfileAsync(AuthEditProfileViewModel editProfileViewModel)
     {
@@ -127,11 +129,31 @@ public class HomeController : Controller
         }
 
         var user = await _userManager.GetUserAsync(User);
-        
+    
         user!.UserName = editProfileViewModel.Username;
         user.Email = editProfileViewModel.Email;
         if (editProfileViewModel.Birthdate != null)
             user.Birthdate = editProfileViewModel.Birthdate.Value.ToUniversalTime();
+    
+        if (editProfileViewModel.ProfilePhoto != null)
+        {
+            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+
+            if (!Directory.Exists(uploads))
+            {
+                Directory.CreateDirectory(uploads);
+            }
+
+            var fileName = $"{Path.GetFileNameWithoutExtension(editProfileViewModel.ProfilePhoto.FileName)}_{DateTime.Now.Ticks}{Path.GetExtension(editProfileViewModel.ProfilePhoto.FileName)}";
+            var filePath = Path.Combine(uploads, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await editProfileViewModel.ProfilePhoto.CopyToAsync(fileStream);
+            }
+
+            user.ProfilePhotoUrl = "/uploads/" + fileName;
+        }
 
         var updateResult = await _userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
@@ -145,7 +167,10 @@ public class HomeController : Controller
         }
 
         _nToastNotifyService.AddSuccessToastMessage("Your profile has been updated successfully.");
-        return View(editProfileViewModel);
+    
+        editProfileViewModel.ProfilePhotoUrl = user.ProfilePhotoUrl;
+    
+        return RedirectToAction("EditProfile");
     }
 
 
