@@ -109,12 +109,24 @@ public class HomeController : Controller
             };
         }
 
+        var quizAttempt = _appcontext.QuizAttempts
+            .Where(x => x.CreatedByUserId == userId)
+            .GroupBy(x => new { x.DeckId, x.Deck.Name, CardCount = x.Deck.Cards.Count() })
+            .Select(g => new RecentlyStudiedDeck
+            {
+                Id = g.Key.DeckId,
+                Name = g.Key.Name,
+                CardCount = g.Key.CardCount
+            })
+            .ToList();
+        
         var viewModel = new HomePageViewModel
         {
             UserDecks = userDecks,
             RandomUserDecks = randomUserDecks,
             UserProfile = userProfile,
-            QuestionOfTheDay = randomCard
+            QuestionOfTheDay = randomCard,
+            RecentlyStudiedDeck = quizAttempt,
         };
 
         return View(viewModel);
@@ -433,8 +445,7 @@ public class HomeController : Controller
 
         return RedirectToAction("Index", "Home");
     }
-
-
+    
     [HttpGet]
     public JsonResult SearchDecks(string query)
     {

@@ -16,7 +16,7 @@
     <div class="left-content">
         <div class="my-decks">
             <div class="label-deck">
-                <h4>Çalışma setleriniz</h4>
+                <h5>Son çalışılanlar</h5>
             </div>
 
             <div class="deck-container">
@@ -27,7 +27,7 @@
                 </button>
 
                 <div class="deck-list">
-                    @foreach (var deck in Model.UserDecks)
+                    @foreach (var deck in Model.RecentlyStudiedDeck)
                     {
                         <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id')">
                             <div class="deck-card">
@@ -56,7 +56,7 @@
         <div class="others-deck">
 
             <div class="label-deck">
-                <h4>Diğer kullanıcıların setleri</h4>
+                <h5>Diğer kullanıcıların setleri</h5>
             </div>
 
             <div class="deck-container">
@@ -95,74 +95,108 @@
 
         </div>
     </div>
-    <div class="middle-content">
-        <div class="calendar">
-            <div class="calendar-header">
-                <button id="prevMonthBtn" class="nav-btn">←</button>
-                <span class="month-year" id="monthYear"></span>
-                <span class="streak">
-                    <img class="goal-img" src="~/images/goal2.png" alt="goal_image"/>
-                    <span id="streakCount">0</span>
-                </span>
-                <button id="nextMonthBtn" class="nav-btn">→</button>
-            </div>
 
-            <div class="calendar-body">
-                <div class="weekdays">
-                    <div>S</div>
-                    <div>M</div>
-                    <div>T</div>
-                    <div>W</div>
-                    <div>T</div>
-                    <div>F</div>
-                    <div>S</div>
-                </div>
-                <div class="days" id="calendarDays"></div>
-            </div>
-        </div>
-
-    </div>
     <div class="right-content">
-        <div class="profile-container">
-            <div class="profile-header">
-                <div class="profile-photo">
-                    <img  src="@(string.IsNullOrEmpty(Model.UserProfile.ProfilePhotoUrl) ? "/images/default-avatar.png" : Model.UserProfile.ProfilePhotoUrl)" alt="Profile Photo" />
-                </div>
-                <div class="profile-info">
-                    <h2 class="username">@Model.UserProfile.Username</h2>
-                    <p class="joined-date">Joined @Model.UserProfile.JoinedDate.ToString("MM/dd/yy")</p>
-                </div>
-            </div>
 
-            <div class="level-container">
-                <div class="level-header">
-                    <span>Level @Model.UserProfile.CurrentLevel</span>
-                    <div class="xp-counter">
-                        <span>@Model.UserProfile.CurrentXP/@Model.UserProfile.RequiredXP XP</span>
+        <div class="grid-content">
+
+            <div class="question-of-the-day">
+                <h3>Question of the Day</h3>
+                <div class="quiz-card" id="quiz-card" onclick="flipCard()">
+                    <div class="quiz-card-inner">
+                        <div class="quiz-card-front">
+                            <div class="term">@Model.QuestionOfTheDay.Term</div>
+                        </div>
+                        <div class="quiz-card-back">
+                            <div class="meaning">@Model.QuestionOfTheDay.Meaning</div>
+                        </div>
                     </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: @(((double)Model.UserProfile.CurrentXP / Model.UserProfile.RequiredXP) * 100)%"></div>
-                </div>
             </div>
 
-            <a href="@Url.Action("Badges", "Profile")" class="view-badges-btn">
-                View Badges
-                <span class="badge-count">@Model.UserProfile.BadgeCount</span>
-            </a>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button id="prevMonthBtn" class="nav-btn">←</button>
+                    <span class="month-year" id="monthYear"></span>
+                    <span class="streak">
+                        <img class="goal-img" src="~/images/goal2.png" alt="goal_image"/>
+                        <span id="streakCount">0</span>
+                    </span>
+                    <button id="nextMonthBtn" class="nav-btn">→</button>
+                </div>
+
+                <div class="calendar-body">
+                    <div class="weekdays">
+                        <div>S</div>
+                        <div>M</div>
+                        <div>T</div>
+                        <div>W</div>
+                        <div>T</div>
+                        <div>F</div>
+                        <div>S</div>
+                    </div>
+                    <div class="days" id="calendarDays"></div>
+                </div>
+            </div>
+            
+            <div class="empty "></div>
+            
+
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-photo">
+                        <img src="@(string.IsNullOrEmpty(Model.UserProfile.ProfilePhotoUrl) ? "/images/default-avatar.png" : Model.UserProfile.ProfilePhotoUrl)" alt="Profile Photo"/>
+                    </div>
+                    <div class="profile-info">
+                        <h2 class="username">@Model.UserProfile.Username</h2>
+                        <p class="joined-date">Joined @Model.UserProfile.JoinedDate.ToString("MM/dd/yy")</p>
+                    </div>
+                </div>
+
+                <div class="level-container">
+                    <div class="level-header">
+                        <span>Level @Model.UserProfile.CurrentLevel</span>
+                        <div class="xp-counter">
+                            <span>@Model.UserProfile.CurrentXP/@Model.UserProfile.RequiredXP XP</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: @(((double)Model.UserProfile.CurrentXP / Model.UserProfile.RequiredXP) * 100)%"></div>
+                    </div>
+                </div>
+
+                <a href="@Url.Action("Badges", "Profile")" class="view-badges-btn">
+                    View Badges
+                    <span class="badge-count">@Model.UserProfile.BadgeCount</span>
+                </a>
+            </div>
+
+
+            
+
+
         </div>
 
-        <div class="question-of-the-day">
-            <h3>Question of the Day</h3>
-            <div class="quiz-card" id="quiz-card" onclick="flipCard()">
-                <div class="quiz-card-inner">
-                    <div class="quiz-card-front">
-                        <div class="term">@Model.QuestionOfTheDay.Term</div>
+        <div class="grid-deck">
+            <h3>Tüm çalışma setleriniz</h3>
+            <div class="grid-deck-content">
+                @foreach (var deck in Model.UserDecks)
+                {
+                <button type="button" class="deck-card-button" onclick="navigateToDeck('@deck.Id')">
+                    <div class="deck-card">
+                        <div class="deck-card-header">
+                            <p>@deck.Name</p>
+                        </div>
+                        <div class="deck-card-body">
+                            <div class="deck-card-body-left">
+                                <span>@deck.CardCount Kart</span>
+                            </div>
+                            <div class="deck-card-body-right"></div>
+                        </div>
                     </div>
-                    <div class="quiz-card-back">
-                        <div class="meaning">@Model.QuestionOfTheDay.Meaning</div>
-                    </div>
-                </div>
+                </button>
+                }
             </div>
         </div>
     </div>
