@@ -13,6 +13,7 @@ using Flipard.MVC.ViewModels.Auth;
 using Flipard.MVC.ViewModels.Home;
 using Flipard.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flipard.MVC.Controllers;
 
@@ -110,16 +111,20 @@ public class HomeController : Controller
         }
 
         var quizAttempt = _appcontext.QuizAttempts
-            .Where(x => x.CreatedByUserId == userId)
-            .GroupBy(x => new { x.DeckId, x.Deck.Name, CardCount = x.Deck.Cards.Count() })
+            .Include(x => x.Deck) 
+            .ThenInclude(deck => deck.Cards) 
+            .Where(x => true) 
+            .GroupBy(x => new { x.DeckId, x.Deck.Name }) 
             .Select(g => new RecentlyStudiedDeck
             {
                 Id = g.Key.DeckId,
                 Name = g.Key.Name,
-                CardCount = g.Key.CardCount
+                CardCount = g.First().Deck.Cards.Count, 
+                LastAttemptDate = g.Max(attempt => attempt.AttemptDate) 
             })
-            .ToList();
-        
+            .OrderByDescending(deck => deck.LastAttemptDate) 
+            .ToList(); 
+
         var viewModel = new HomePageViewModel
         {
             UserDecks = userDecks,
