@@ -19,6 +19,16 @@
         <div class="profile-header">
             <h2>Profile</h2>
         </div>
+        <div class="profile-photo-container">
+            <div class="profile-photo-border">
+                <div class="profile-photo-wrapper">
+                    <img
+                        class="profile-photo"
+                        alt="Profile Photo"
+                        src="@(string.IsNullOrEmpty(Model.ProfilePhotoUrl) ? "/images/default-avatar.png" : Model.ProfilePhotoUrl)"/>
+                </div>
+            </div>
+        </div>
         <div class="profile-info">
             <span class="profile-info-label">Username:</span>
             <span class="profile-info-value">@Model.Username</span>

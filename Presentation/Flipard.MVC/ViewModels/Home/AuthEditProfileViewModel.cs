@@ -12,5 +12,9 @@ namespace Flipard.MVC.ViewModels.Home
         public string Email { get; set; }
 
         public DateTimeOffset? Birthdate { get; set; }
+        
+        public string? ProfilePhotoUrl { get; set; }
+        
+        public IFormFile? ProfilePhoto { get; set; }
     }
 }

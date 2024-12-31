@@ -20,6 +20,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<Deck> Decks { get; set; }
     public DbSet<QuizAttempt> QuizAttempts { get; set; }
     public DbSet<QuizAnswer> QuizAnswers { get; set; }
+    public DbSet<Badge> Badges { get; set; }
+    public DbSet<UserLevel> UserLevels { get; set; }
+    public DbSet<UserBadge> UserBadges { get; set; }
     
     private readonly IHttpContextAccessor _httpContextAccessor;
 

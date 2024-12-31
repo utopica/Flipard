@@ -13,6 +13,7 @@ using Flipard.MVC.ViewModels.Auth;
 using Flipard.MVC.ViewModels.Home;
 using Flipard.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flipard.MVC.Controllers;
 
@@ -44,6 +45,12 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
+
+        if (user is null)
+        {
+            return Unauthorized();
+        }
 
         var userDecks = _appcontext.Decks
             .Where(d => d.CreatedByUserId == userId)
@@ -67,10 +74,64 @@ public class HomeController : Controller
             .Take(5)
             .ToList();
 
+        var userLevel = _appcontext.UserLevels.FirstOrDefault(x => x.UserId == user.Id);
+
+        var badgeCount = _appcontext.UserBadges.Count(b => b.UserId == user.Id);
+
+        var userProfile = new ProfileViewModel()
+        {
+            Username = user.UserName,
+            ProfilePhotoUrl = user.ProfilePhotoUrl,
+            JoinedDate = user.CreatedOn.DateTime,
+            BadgeCount = badgeCount,
+            CurrentLevel = userLevel?.Level ?? 1,  
+            CurrentXP = userLevel?.CurrentExperience ?? 50, 
+            RequiredXP = userLevel?.RequiredExperience ?? 100, 
+        };
+
+        var randomCard = _appcontext.Decks
+            .Where(d => d.CreatedByUserId == userId)
+            .SelectMany(d => d.Cards)
+            .OrderBy(r => Guid.NewGuid())
+            .Select(v => v.Vocabulary)
+            .Select(c => new CardViewModel
+            {
+                Term = c.Term,
+                Meaning = c.Meaning
+            })
+            .FirstOrDefault();
+        
+        if (randomCard == null)
+        {
+            randomCard = new CardViewModel
+            {
+                Term = "Create your first card!",
+                Meaning = "Start by adding cards to your decks"
+            };
+        }
+
+        var quizAttempt = _appcontext.QuizAttempts
+            .Include(x => x.Deck) 
+            .ThenInclude(deck => deck.Cards) 
+            .Where(x => true) 
+            .GroupBy(x => new { x.DeckId, x.Deck.Name }) 
+            .Select(g => new RecentlyStudiedDeck
+            {
+                Id = g.Key.DeckId,
+                Name = g.Key.Name,
+                CardCount = g.First().Deck.Cards.Count, 
+                LastAttemptDate = g.Max(attempt => attempt.AttemptDate) 
+            })
+            .OrderByDescending(deck => deck.LastAttemptDate) 
+            .ToList(); 
+
         var viewModel = new HomePageViewModel
         {
             UserDecks = userDecks,
-            RandomUserDecks = randomUserDecks
+            RandomUserDecks = randomUserDecks,
+            UserProfile = userProfile,
+            QuestionOfTheDay = randomCard,
+            RecentlyStudiedDeck = quizAttempt,
         };
 
         return View(viewModel);
@@ -97,7 +158,8 @@ public class HomeController : Controller
             Birthdate = user.Birthdate,
             Email = user.Email,
             Password = "******",
-            Username = user.UserName
+            Username = user.UserName,
+            ProfilePhotoUrl = user.ProfilePhotoUrl
         };
 
         return View(userProfile);
@@ -113,11 +175,13 @@ public class HomeController : Controller
             Username = user!.UserName!,
             Email = user.Email!,
             Birthdate = user.Birthdate?.ToUniversalTime(),
+            ProfilePhotoUrl = user.ProfilePhotoUrl,
         };
 
         return View(editProfileViewModel);
     }
 
+    [HttpPost]
     [HttpPost]
     public async Task<IActionResult> EditProfileAsync(AuthEditProfileViewModel editProfileViewModel)
     {
@@ -127,11 +191,31 @@ public class HomeController : Controller
         }
 
         var user = await _userManager.GetUserAsync(User);
-        
+    
         user!.UserName = editProfileViewModel.Username;
         user.Email = editProfileViewModel.Email;
         if (editProfileViewModel.Birthdate != null)
             user.Birthdate = editProfileViewModel.Birthdate.Value.ToUniversalTime();
+    
+        if (editProfileViewModel.ProfilePhoto != null)
+        {
+            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+
+            if (!Directory.Exists(uploads))
+            {
+                Directory.CreateDirectory(uploads);
+            }
+
+            var fileName = $"{Path.GetFileNameWithoutExtension(editProfileViewModel.ProfilePhoto.FileName)}_{DateTime.Now.Ticks}{Path.GetExtension(editProfileViewModel.ProfilePhoto.FileName)}";
+            var filePath = Path.Combine(uploads, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await editProfileViewModel.ProfilePhoto.CopyToAsync(fileStream);
+            }
+
+            user.ProfilePhotoUrl = "/uploads/" + fileName;
+        }
 
         var updateResult = await _userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
@@ -145,7 +229,10 @@ public class HomeController : Controller
         }
 
         _nToastNotifyService.AddSuccessToastMessage("Your profile has been updated successfully.");
-        return View(editProfileViewModel);
+    
+        editProfileViewModel.ProfilePhotoUrl = user.ProfilePhotoUrl;
+    
+        return RedirectToAction("EditProfile");
     }
 
 
@@ -363,8 +450,7 @@ public class HomeController : Controller
 
         return RedirectToAction("Index", "Home");
     }
-
-
+    
     [HttpGet]
     public JsonResult SearchDecks(string query)
     {
@@ -375,7 +461,7 @@ public class HomeController : Controller
 
         return Json(decks);
     }
-
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

@@ -101,7 +101,7 @@ function initializeQuestionsMenu() {
         const button = document.createElement('button');
         button.className = getQuestionButtonClass(i);
         button.textContent = (i + 1).toString();
-        
+
         button.onclick = () => {
             showCard(i);
         }
@@ -121,7 +121,7 @@ function getQuestionButtonClass(index) {
 
     if (answer) {
         if (answer.isBlank) {
-            baseClasses.push('blank'); 
+            baseClasses.push('blank');
         } else {
             baseClasses.push('answered');
             if (quizState.feedbackMode) {
@@ -204,7 +204,7 @@ function showCard(index) {
 
         if (previousAnswer?.feedbackShown) {
             if (quizState.currentQuestionType === 'written') {
-                showFeedback(previousAnswer.userAnswer, quizState.cards[index].Term, quizState.currentQuestionType);
+                    showFeedback(previousAnswer.userAnswer, quizState.cards[index].Term, quizState.currentQuestionType);
             } else {
                 // For multiple choice and true/false, update the UI to show correct/incorrect states
                 const buttons = termContainer.querySelectorAll('button');
@@ -357,6 +357,7 @@ function showTrueFalseQuestion(container) {
         showBlankFeedback(container, isShowingCorrect ? 'True' : 'False');
     }
 }
+
 function showBlankFeedback(container, correctAnswer) {
     const blankFeedback = document.createElement('div');
     blankFeedback.className = 'blank-feedback';
@@ -372,6 +373,7 @@ function showBlankFeedback(container, correctAnswer) {
     `;
     container.appendChild(blankFeedback);
 }
+
 function submitAnswer() {
 
     const existingAnswer = quizState.answeredQuestions.find(
@@ -383,22 +385,20 @@ function submitAnswer() {
         advanceToNextQuestion();
         return;
     }
-    
+
     if (quizState.currentQuestionType === 'written') {
         const termInput = document.getElementById('term-input');
         const userTerm = termInput.value.trim();
         const isBlank = userTerm === '';
-        const isCorrect = !isBlank && (userTerm.toLowerCase() === quizState.cards[quizState.currentIndex].Term.toLowerCase());
+        const isCorrect = !isBlank && (normalizeString(userTerm) === normalizeString(quizState.cards[quizState.currentIndex].Term));
         processAnswer(userTerm, isCorrect, isBlank);
-    }
-    else if (quizState.currentQuestionType === 'multipleChoice') {
+    } else if (quizState.currentQuestionType === 'multipleChoice') {
         const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === quizState.currentIndex);
         const userAnswer = previousAnswer ? previousAnswer.userAnswer : '';
         const isBlank = userAnswer === '';
         const isCorrect = !isBlank && (userAnswer === quizState.cards[quizState.currentIndex].Term);
         processAnswer(userAnswer, isCorrect, isBlank);
-    }
-    else if (quizState.currentQuestionType === 'trueFalse') {
+    } else if (quizState.currentQuestionType === 'trueFalse') {
         const previousAnswer = quizState.answeredQuestions.find(q => q.questionIndex === quizState.currentIndex);
         const userAnswer = previousAnswer ? previousAnswer.userAnswer : '';
         const isBlank = userAnswer === '';
@@ -438,15 +438,18 @@ function processAnswer(userAnswer, isCorrect, isBlank = false) {
 
         if (!currentAnswer.feedbackShown) {
             currentAnswer.feedbackShown = true;
-            // Show feedback based on question type
             if (quizState.currentQuestionType === 'written') {
+                // if (!currentAnswer.isCorrect) {
+                //     showFeedback(userAnswer, currentCard.Term, quizState.currentQuestionType);
+                // } else {
+                //     advanceToNextQuestion(); // Immediately advance if written answer is correct
+                // }
+
                 showFeedback(userAnswer, currentCard.Term, quizState.currentQuestionType);
             } else {
                 // For multiple choice and true/false, re-render the current card to show feedback
                 showCard(quizState.currentIndex);
             }
-        } else {
-            advanceToNextQuestion();
         }
     } else {
         if (existingAnswerIndex !== -1) {
@@ -475,6 +478,7 @@ function revertStatistics(answer) {
     else if (answer.isCorrect) quizState.correctAnswersCount--;
     else quizState.wrongAnswerCount--;
 }
+
 function showFeedback(userAnswer, correctAnswer, questionType) {
     const termInputContainer = document.getElementById("card-term-container");
     const feedbackContainer = document.getElementById("feedback-container");
@@ -493,17 +497,25 @@ function showFeedback(userAnswer, correctAnswer, questionType) {
         const userAnswerDisplay = document.querySelector(".user-answer-display");
         const answerFeedback = document.getElementById("answer-feedback");
 
+        const isCorrect = normalizeString(userAnswer) === normalizeString(correctAnswer);
+
         userAnswerDisplay.innerHTML = `
-            <div class="wrong-answer">
+            <div class="${isCorrect ? 'correct-answer' : 'wrong-answer'}">
                 ${userAnswer === '' ? 'Boş bırakıldı' : userAnswer}
-                <i class="fi fi-rr-cross-small"></i>
+                <i class="fi ${isCorrect ? 'fi-br-check' : 'fi-rr-cross-small'}"></i>
             </div>`;
 
-        answerFeedback.innerHTML = `
-            <div class="correct-answer">
-                ${correctAnswer}
-                <i class="fi fi-br-check"></i>
-            </div>`;
+        // Only show the correct answer feedback if the user's answer was wrong
+        if (!isCorrect) {
+            answerFeedback.innerHTML = `
+                <div class="correct-answer">
+                    ${correctAnswer}
+                    <i class="fi fi-br-check"></i>
+                </div>`;
+        }
+        else {
+            answerFeedback.innerHTML = ''; // Clear the feedback container if answer was correct
+        }
     } else {
         // For multiple choice and true/false, feedback is handled through button styling
         feedbackContainer.style.display = 'none';
@@ -623,6 +635,7 @@ async function submitQuizResults() {
         alert('Failed to submit quiz results. Please try again.');
     }
 }
+
 function getMultipleChoiceOptions(questionIndex) {
     const seed = questionIndex;
     return generateMultipleChoiceOptionsWithSeed(seed);
@@ -643,6 +656,7 @@ function generateMultipleChoiceOptionsWithSeed(seed) {
 
     return deterministicShuffle([correctAnswer, ...wrongOptions], seed);
 }
+
 function getTrueFalseCorrectness(questionIndex) {
     // Use a deterministic approach based on question index
     return (questionIndex % 2) === 0;
@@ -656,6 +670,7 @@ function deterministicShuffle(array, seed) {
     }
     return shuffled;
 }
+
 function getRandomTermExcept(excludeTerm) {
     const otherTerms = quizState.cards
         .filter(card => card.Term !== excludeTerm)
@@ -707,7 +722,7 @@ document.addEventListener("DOMContentLoaded", function () {
         questionCountInput.value = maxQuestionCount;
         questionCountInput.addEventListener("input", validateQuestionCount);
     }
-    
+
     const termInput = document.getElementById('term-input');
     if (termInput) {
         termInput.addEventListener('keypress', function (e) {
@@ -732,6 +747,18 @@ function validateQuestionCount() {
     }
 }
 
+function normalizeString(str) {
+    return str
+        .toLowerCase()
+        // .replace(/i̇/g, 'i') // Handle Turkish dotted i
+        // .replace(/ı/g, 'i') // Handle Turkish dotless i
+        // .replace(/İ/g, 'i') // Handle Turkish capital dotted I
+        // .replace(/I/g, 'i') // Handle Turkish capital dotless I
+        .normalize('NFKD') // Decompose combined characters
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/\s+/g, ' ') // Normalize spaces
+        .trim();
+}
 // Export functions for global access
 window.initializeQuiz = initializeQuiz;
 window.toggleMenu = toggleMenu;

@@ -20,24 +20,43 @@ content{
     }
 }
 
-.left-content, .middle-content, .right-content{
-    flex:1;
+.left-content, .right-content{
     min-height: 100vh;
     overflow-y: auto;
 }
 
 .left-content{
-    background-color: pink
-}.middle-content{
-    flex:2;
-    background-color: hotpink;
-    justify-items: center;
- }.right-content{
-    background-color: lightpink;
-   }
-  
+    flex:1;
+}
 
-.label-deck h4 {
+.right-content{
+    flex:2;
+}
+
+.grid-content{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto; 
+    gap: 2rem 7rem;
+    padding: 10px;
+    height: min-content;
+    margin-bottom: 3rem;
+    align-items: center;
+}
+
+.grid-deck-content{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.deck1{
+    background-color: lightgray;
+    height: 100px;
+}
+
+
+.label-deck h5 {
     color: var(--title-text-color);
     margin: 1.5rem 1rem;
 }
@@ -131,23 +150,21 @@ content{
 
 /* Calendar */
 .calendar {
-    width: 300px;
+    width: 350px;
+    height: 350px;
     background-color: var(--card-bg-color);
-    color: white;
+    color: var(--white-text-color);
     border-radius: 10px;
-    padding: 1rem;
+    padding: 1rem 1.5rem 0 1.5rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     text-align: center;
     font-family: Arial, sans-serif;
-    margin-top: 1.5rem;
 }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /*padding: 10px 0;*/
-    margin-bottom: 20px;
 }
 
 .nav-btn {
@@ -183,13 +200,7 @@ month-year {
     padding: 20px;
 }
 .calendar-body {
-    margin-top: 10px;
-}
-
-.weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 .weekdays {
@@ -203,7 +214,7 @@ month-year {
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap:5px;
 }
 
 .day {
@@ -212,7 +223,7 @@ month-year {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    font-size: 14px;
+    font-size: 13px;
     cursor: default;
 }
 
@@ -242,4 +253,161 @@ month-year {
 .goal-img{
    width: 25px;
     height: 25px;
+}
+
+/* Right Menu */
+
+/* Profile Container */
+.profile-container {
+    background: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    max-width: 350px;
+    color: white;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.profile-photo img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info .username {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.profile-info .joined-date {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+    margin: 4px 0;
+}
+
+.level-container {
+    margin: 20px 0;
+}
+
+
+.level-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.xp-counter {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+}
+
+.progress-bar {
+    background: #3a3a3a;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar .progress {
+    background: #8B5CF6;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.view-badges-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg-color);
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    margin-top: 16px;
+    transition: background 0.2s ease;
+}
+
+.view-badges-btn:hover {
+    background: #4a4a4a;
+    color: var(--white-text-color);
+    text-decoration: none;
+}
+
+.badge-count {
+    background: #8B5CF6;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+/* Question Of the Day */
+.question-of-the-day {
+    height: min-content;
+}
+
+.question-of-the-day h3, .grid-deck-content h3 {
+    margin-bottom: 1rem;
+    color: var(--white-text-color);
+    font-size: 1.2rem;
+}
+
+.quiz-card {
+    perspective: 1000px;
+    width: 100%;
+    height: 300px;
+    cursor: pointer;
+}
+
+.quiz-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.quiz-card.flipped .quiz-card-inner {
+    transform: rotateY(180deg);
+}
+
+.quiz-card-front, .quiz-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    padding: 1.1rem;
+    border-radius: 10px;
+    background: var(--card-bg-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.quiz-card-back {
+    transform: rotateY(180deg);
+}
+
+.term, .meaning {
+    font-size: 1rem;
+    color: var(--white-text-color);
+    overflow-y: auto;
+    scrollbar-width: none;
+    align-content: center;
+}
+
+/* Grid Deck Content */
+.grid-deck h3 {
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    color: var(--white-text-color);
+    font-size: 1.2rem;
+    display: block;
 }

@@ -26,6 +26,9 @@ namespace Flipard.Persistence.Contexts.Identity
             modelBuilder.Ignore<Vocabulary>();
             modelBuilder.Ignore<QuizAttempt>();
             modelBuilder.Ignore<QuizAnswer>();
+            modelBuilder.Ignore<UserLevel>();
+            modelBuilder.Ignore<Badge>();
+            modelBuilder.Ignore<UserBadge>();
             
             base.OnModelCreating(modelBuilder);
         }

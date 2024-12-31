@@ -13,37 +13,64 @@
     <link rel="stylesheet" href="~/css/home/profile.css">
 </head>
 <body>
-    <div class="container">
-        <div class="profile-card">
-            <div class="profile-header">
-                <h2>Edit Profile</h2>
-            </div>
-            <form asp-action="EditProfile" asp-controller="Home" method="post">
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2>Edit Profile</h2>
+        </div>
+        <form asp-action="EditProfile" asp-controller="Home" method="post" enctype="multipart/form-data">
+
+            <div class="profile-form">
+
+                <div class="profile-photo-container">
+                    <div class="profile-photo-border">
+                        <div class="profile-photo-wrapper">
+                            <img
+                                class="profile-photo"
+                                alt="Profile Photo"
+                                src="@(string.IsNullOrEmpty(Model.ProfilePhotoUrl) ? "/images/default-avatar.png" : Model.ProfilePhotoUrl)"/>
+                            <div class="photo-overlay">
+                                <i class="fi fi-tr-camera"></i>
+                                <span>Change Photo</span>
+                            </div>
+                            <input type="file"
+                                   asp-for="ProfilePhoto"
+                                   class="photo-input"
+                                   accept="image/*"
+                                   style="display: none;"/>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
+                </div>
+
+
                 <div class="profile-info">
                     <span class="profile-info-label">Email:</span>
                     <span class="profile-info-value">
-                    <input asp-for="Email" class="form-control"/>
-                    <span asp-validation-for="Email" class="text-danger"></span> <!-- Moved above -->
-                </span>
+                        <input asp-for="Email" class="form-control"/>
+                        <span asp-validation-for="Email" class="text-danger"></span> <!-- Moved above -->
+                    </span>
 
                     <span class="profile-info-label">Username:</span>
                     <span class="profile-info-value">
-                    <input asp-for="Username" class="form-control"/>
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </span>
+                        <input asp-for="Username" class="form-control"/>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </span>
 
                     <span class="profile-info-label">Birthdate:</span>
                     <span class="profile-info-value">
-                    <input asp-for="Birthdate"  type="date" class="form-control"/>
-                    <span asp-validation-for="Birthdate" class="text-danger"></span>
-                </span>
+                        <input asp-for="Birthdate" type="date" class="form-control"/>
+                        <span asp-validation-for="Birthdate" class="text-danger"></span>
+                    </span>
                 </div>
-                <div class="button-group">
-                    <button type="submit" class="btn btn-edit">Update</button>
-                    <a asp-action="Profile" asp-controller="Home" class="btn btn-logout">Cancel</a>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-edit">Update</button>
+                <a asp-action="Profile" asp-controller="Home" class="btn btn-logout">Cancel</a>
+            </div>
+        </form>
     </div>
+</div>
 </body>
 </html>
+<script src="@Url.Content("~/js/home/edit-profile.js")"></script>

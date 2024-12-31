@@ -222,7 +222,7 @@ public class FlashcardsController : Controller
             .GroupBy(qa => qa.Vocabulary.Term)
             .Select(g => new { Term = g.Key, MistakeCount = g.Count() })
             .OrderByDescending(x => x.MistakeCount)
-            .Take(5)
+            .Where(x => x.MistakeCount > 2) 
             .ToDictionaryAsync(x => x.Term, x => x.MistakeCount);
 
         var statistics = new QuizStatisticsViewModel
