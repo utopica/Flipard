@@ -1,8 +1,8 @@
 ﻿@model Flipard.MVC.ViewModels.Flashcards.QuizStatisticsViewModel
 
 @{
-ViewData["Title"] = "Quiz Statistics";
-Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Quiz Statistics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -20,63 +20,65 @@ Layout = "~/Views/Shared/_Layout.cshtml";
 
     <div class="statistics-summary">
         <div class="summary-item">
-            <span class="label">Total Attempts</span>
+            <span class="label">Quiz Sayısı</span>
             <span class="value">@Model.TotalAttempts</span>
         </div>
         <div class="summary-item">
-            <span class="label">Average Accuracy</span>
+            <span class="label">Ortalama Doğruluk</span>
             <span class="value">@Model.AverageAccuracy.ToString("F1")%</span>
         </div>
         <div class="summary-item">
-            <span class="label">Best Accuracy</span>
+            <span class="label">Ulaşılan En Yüksek Doğruluk</span>
             <span class="value">@Model.BestAccuracy.ToString("F1")%</span>
         </div>
         <div class="summary-item">
-            <span class="label">Total Cards Studied</span>
+            <span class="label">Çalışılan Toplam Kart</span>
             <span class="value">@Model.TotalQuestions</span>
         </div>
     </div>
 
-    @if (Model.MostMistakenTerms.Any())
-    {
-    <div class="mistakes-section">
-        <h5>Most Challenging Terms</h5>
-        <div class="mistakes-list">
-            @foreach (var term in Model.MostMistakenTerms)
-            {
-            <div class="mistake-item">
-                <span class="term">@term.Key</span>
-                <span class="count">@term.Value mistakes</span>
+    <div class="scroll-margin">
+        @if (Model.MostMistakenTerms.Any())
+        {
+            <div class="mistakes-section">
+                <h5>Hata Yapılan Terimler</h5>
+                <div class="mistakes-list">
+                    @foreach (var term in Model.MostMistakenTerms)
+                    {
+                        <div class="mistake-item">
+                            <span class="term">@term.Key</span>
+                            <span class="count">@term.Value</span>
+                        </div>
+                    }
+                </div>
             </div>
-            }
-        </div>
+        }
     </div>
-    }
 
     @if (Model.RecentAttempts.Any())
     {
-    <div class="recent-attempts">
-        <div class="attempts-list">
-            @foreach (var attempt in Model.RecentAttempts)
-            {
-            <div class="attempt-item">
-                <div class="attempt-date">
-                    @attempt.AttemptDate.ToString("MMM dd, HH:mm")
-                </div>
-                <div class="attempt-stats">
-                    <span class="score">@attempt.CorrectAnswers/@attempt.TotalQuestions</span>
-                    <span class="accuracy">@attempt.Accuracy.ToString("F1")%</span>
-                    <span class="time">@TimeSpan.FromSeconds(attempt.TimeTakenSeconds).ToString(@"mm\:ss")</span>
-                </div>
+        <div class="recent-attempts">
+            <div class="attempts-list">
+                @foreach (var attempt in Model.RecentAttempts)
+                {
+                    <div class="attempt-item">
+                        <div class="attempt-date">
+                            @attempt.AttemptDate.ToString("MMM dd, HH:mm")
+                        </div>
+                        <div class="attempt-stats">
+                            <span class="score">@attempt.CorrectAnswers/@attempt.TotalQuestions</span>
+                            <span class="accuracy">@attempt.Accuracy.ToString("F1")%</span>
+                            <span class="time">@TimeSpan.FromSeconds(attempt.TimeTakenSeconds).ToString(@"mm\:ss")</span>
+                        </div>
+                    </div>
+                }
             </div>
-            }
         </div>
-    </div>
     }
 
     <div class="statistics-actions">
-        <a href="@Url.Action("CreateQuiz", new { id = ViewContext.RouteData.Values["deckId"] })" class="btn btn-primary">Try Again</a>
-        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back to Decks</a>
+        <a href="@Url.Action("CreateQuiz", new { id = ViewContext.RouteData.Values["deckId"] })" class="btn btn-primary">Tekrar dene</a>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Çalışma setlerine dön</a>
     </div>
 </div>
 </body>

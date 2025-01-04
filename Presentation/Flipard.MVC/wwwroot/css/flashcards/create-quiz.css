@@ -269,6 +269,9 @@ input:-internal-autofill-selected {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
     width: 12rem;
+    overflow-y: auto;
+    height: 200px;
+    scrollbar-width: none;
 }
 
 .question-button {

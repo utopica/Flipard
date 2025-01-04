@@ -218,11 +218,11 @@ public class FlashcardsController : Controller
             .Include(qa => qa.Vocabulary)
             .Where(qa => qa.QuizAttempt.DeckId == deckId &&
                          qa.QuizAttempt.UserId == user.Id &&
-                         !qa.IsCorrect)
+                         qa.IsCorrect == false)
             .GroupBy(qa => qa.Vocabulary.Term)
             .Select(g => new { Term = g.Key, MistakeCount = g.Count() })
             .OrderByDescending(x => x.MistakeCount)
-            .Where(x => x.MistakeCount > 2) 
+            .Where(x => x.MistakeCount > 0) 
             .ToDictionaryAsync(x => x.Term, x => x.MistakeCount);
 
         var statistics = new QuizStatisticsViewModel

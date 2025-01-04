@@ -17,7 +17,7 @@
 <div class="container">
     <div class="profile-card">
         <div class="profile-header">
-            <h2>Profile</h2>
+            <h2>Profil</h2>
         </div>
         <div class="profile-photo-container">
             <div class="profile-photo-border">
@@ -30,21 +30,21 @@
             </div>
         </div>
         <div class="profile-info">
-            <span class="profile-info-label">Username:</span>
+            <span class="profile-info-label">Kullanıcı Adı:</span>
             <span class="profile-info-value">@Model.Username</span>
             <span class="profile-info-label">Email:</span>
             <span class="profile-info-value">@Model.Email</span>
-            <span class="profile-info-label">Password:</span>
+            <span class="profile-info-label">Şifre:</span>
             <span class="profile-info-value">
-                <button type="button" class="btn btn-change-password" onclick="changePassword()">Change</button>
+                <button type="button" class="btn btn-change-password" onclick="changePassword()">Değiştir</button>
             </span>
-            <span class="profile-info-label">Birthdate:</span>
+            <span class="profile-info-label">Doğum Tarihi:</span>
             <span class="profile-info-value">@Model.Birthdate</span>
         </div>
         <div class="button-group">
-            <button type="button" class="btn btn-edit" onclick="editProfile()">Edit Profile</button>
+            <button type="button" class="btn btn-edit" onclick="editProfile()">Profili Düzenle</button>
             <form method="post" action="/Auth/Logout">
-                <button type="submit" class="btn btn-logout">Log out</button>
+                <button type="submit" class="btn btn-logout">Çıkış Yap</button>
                 <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Mus72bITedKo-_IiK2aIQzBt4pivmu2pvBdIUF5VwCxRgUC09TZNd6J_lLPE0a6hw6XKvRIokrbQbPbc2CSrKdQ9KAshlZzZfLkDBaYOyQk4TddsgxDygf7ixYshPMxTTX6UqPyv9DmKJd1gNSmiYl0CJXOp9pgKRNaj_EzfBPxTV8AS2-P101QrqFFUb_lgA">
             </form>
         </div>

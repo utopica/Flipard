@@ -51,6 +51,10 @@
 .mistakes-list {
     display: grid;
     gap: 0.5rem;
+    max-height: 400px;
+    margin: 1.2rem;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 .mistake-item {
@@ -58,12 +62,10 @@
     justify-content: space-between;
     padding: 0.5rem;
     border-radius: 4px;
-    max-height: 220px;
-    overflow-y: auto;
 }
 
 .mistake-item .term {
-    margin-right: 0.5rem;
+    margin-right: 1rem;
 }
 
 .attempts-list {

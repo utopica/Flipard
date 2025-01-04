@@ -43,25 +43,25 @@
             <div class="card-body">
                 <form asp-controller="Auth" asp-action="Login" method="post">
                     <div class="form-group">
-                        <label for="UserIdentifier">Email or Username</label>
+                        <label for="UserIdentifier">Email ya da Kullanıcı Adı</label>
                         <input type="text" class="form-control" id="UserIdentifier" name="UserIdentifier" placeholder="Enter email or username" required>
                     </div>
                     <div class="form-group">
-                        <label for="Password">Password</label>
+                        <label for="Password">Şifre</label>
                         <input type="password" class="form-control" id="Password" name="Password" placeholder="Type your password" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Sign-In</button>
+                    <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
                 </form>
             </div>
         </div>
 
         <div class="forgot-password-link">
-            <a asp-controller="Home" asp-action="ForgotPassword" class="forgot-password">Did you forget your password?</a>
+            <a asp-controller="Home" asp-action="ForgotPassword" class="forgot-password">Şifreni mi unuttun?</a>
         </div>
 
         <div class="card registration-card">
             <a id="registerLink" asp-controller="Auth" asp-action="Register" style="display: none;"></a>
-            <button type="button" id="navigateToRegister" class="btn btn-outline-secondary">New Flipard? Create an account</button>
+            <button type="button" id="navigateToRegister" class="btn btn-outline-secondary">Yeni misin, hesap oluştur</button>
         </div>
     </div>
 </div>
