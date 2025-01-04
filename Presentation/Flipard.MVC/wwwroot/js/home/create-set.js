@@ -6,7 +6,7 @@ document.getElementById("add-card-button").addEventListener("click", function ()
         <div class="user-deck">
             <div class="user-deck-card-info">
                <div class="user-deck-card-term-buttons">
-                        <span class="card-number">1</span>
+                        <span class="card-number">${cardNumber + 1}</span>
                         
                         <button type="button" class="card-scan-button" data-type="scan" data-target="term" onclick="handleScanButtonClick(this)">
                             <span class="button-card-scan-icon">

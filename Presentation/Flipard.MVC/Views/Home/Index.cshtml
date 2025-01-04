@@ -101,7 +101,7 @@
         <div class="grid-content">
 
             <div class="question-of-the-day">
-                <h3>Question of the Day</h3>
+                <h3>Günün Sorusu</h3>
                 <div class="quiz-card" id="quiz-card" onclick="flipCard()">
                     <div class="quiz-card-inner">
                         <div class="quiz-card-front">
@@ -150,13 +150,13 @@
                     </div>
                     <div class="profile-info">
                         <h2 class="username">@Model.UserProfile.Username</h2>
-                        <p class="joined-date">Joined @Model.UserProfile.JoinedDate.ToString("MM/dd/yy")</p>
+                        <p class="joined-date">@Model.UserProfile.JoinedDate.ToString("MM/dd/yy") tarihinde katıldın</p>
                     </div>
                 </div>
 
                 <div class="level-container">
                     <div class="level-header">
-                        <span>Level @Model.UserProfile.CurrentLevel</span>
+                        <span>Seviyen @Model.UserProfile.CurrentLevel</span>
                         <div class="xp-counter">
                             <span>@Model.UserProfile.CurrentXP/@Model.UserProfile.RequiredXP XP</span>
                         </div>
@@ -166,10 +166,10 @@
                     </div>
                 </div>
 
-                <a href="@Url.Action("Badges", "Profile")" class="view-badges-btn">
-                    View Badges
-                    <span class="badge-count">@Model.UserProfile.BadgeCount</span>
-                </a>
+                @* <a href="@Url.Action("Badges", "Profile")" class="view-badges-btn"> *@
+                @*     View Badges *@
+                @*     <span class="badge-count">@Model.UserProfile.BadgeCount</span> *@
+                @* </a> *@
             </div>
 
 

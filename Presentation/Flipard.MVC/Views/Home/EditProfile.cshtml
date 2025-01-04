@@ -16,7 +16,7 @@
 <div class="container">
     <div class="profile-card">
         <div class="profile-header">
-            <h2>Edit Profile</h2>
+            <h2>Profilini Güncelleştir</h2>
         </div>
         <form asp-action="EditProfile" asp-controller="Home" method="post" enctype="multipart/form-data">
 
@@ -31,7 +31,7 @@
                                 src="@(string.IsNullOrEmpty(Model.ProfilePhotoUrl) ? "/images/default-avatar.png" : Model.ProfilePhotoUrl)"/>
                             <div class="photo-overlay">
                                 <i class="fi fi-tr-camera"></i>
-                                <span>Change Photo</span>
+                                <span>Değiştir</span>
                             </div>
                             <input type="file"
                                    asp-for="ProfilePhoto"
@@ -51,13 +51,13 @@
                         <span asp-validation-for="Email" class="text-danger"></span> <!-- Moved above -->
                     </span>
 
-                    <span class="profile-info-label">Username:</span>
+                    <span class="profile-info-label">Kullanıcı Adı:</span>
                     <span class="profile-info-value">
                         <input asp-for="Username" class="form-control"/>
                         <span asp-validation-for="Username" class="text-danger"></span>
                     </span>
 
-                    <span class="profile-info-label">Birthdate:</span>
+                    <span class="profile-info-label">Doğum Tarihi:</span>
                     <span class="profile-info-value">
                         <input asp-for="Birthdate" type="date" class="form-control"/>
                         <span asp-validation-for="Birthdate" class="text-danger"></span>
@@ -65,8 +65,8 @@
                 </div>
             </div>
             <div class="button-group">
-                <button type="submit" class="btn btn-edit">Update</button>
-                <a asp-action="Profile" asp-controller="Home" class="btn btn-logout">Cancel</a>
+                <button type="submit" class="btn btn-edit">Güncelle</button>
+                <a asp-action="Profile" asp-controller="Home" class="btn btn-logout">İptal</a>
             </div>
         </form>
     </div>
