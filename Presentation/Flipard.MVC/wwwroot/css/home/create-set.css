@@ -32,7 +32,6 @@
 }
 
 .create-button .button-text, .save-button .button-text {
-    font-weight: 500;
     color: var(--white-text-color);
 }
 
