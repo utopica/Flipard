@@ -6,6 +6,7 @@
     width: 100%;
     height: 100%;
 }
+
 .deck-card-header h5 {
     color: var(--title-text-color);
     margin: 50px;
@@ -15,7 +16,8 @@
     margin-right: 45px;
     display: flex;
 }
-.deck-delete-button, .deck-quiz-button, .deck-edit-button{
+
+.deck-delete-button, .deck-quiz-button, .deck-edit-button {
     margin: 10px;
     font-size: 1rem;
     font-weight: 500;
@@ -30,11 +32,11 @@
     text-decoration: none;
 }
 
-    .deck-delete-button:hover, .deck-quiz-button:hover, .deck-edit-button:hover{
-        background-color: var(--icon-button-color-hover);
-    }
+.deck-delete-button:hover, .deck-quiz-button:hover, .deck-edit-button:hover {
+    background-color: var(--icon-button-color-hover);
+}
 
-.deck-settings-button{
+.deck-settings-button {
     color: var(--icon-button-color);
     margin: 10px;
     background: none;
@@ -42,10 +44,12 @@
     cursor: pointer;
     font-size: 1.6rem;
 }
-.deck-settings-button:hover{
+
+.deck-settings-button:hover {
     color: var(--button-blue)
 }
-.deck-settings-button:focus{
+
+.deck-settings-button:focus {
     color: var(--icon-button-color-hover)
 }
 
@@ -68,9 +72,9 @@
     font-size: 30px;
 }
 
-    .card-button:hover {
-        color: var(--button-blue);
-    }
+.card-button:hover {
+    color: var(--button-blue);
+}
 
 .current-card {
     background-color: var(--card-bg-color);
@@ -86,14 +90,14 @@
     color: var(--white-text-color);
 }
 
-    .current-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px var(--card-dark-shadow-color);
-    }
+.current-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px var(--card-dark-shadow-color);
+}
 
 .current-card .term, .current-card .meaning {
     width: 360px;
-     height: 100%; 
+    height: 100%;
     backface-visibility: hidden;
     overflow-y: auto;
     margin: 1rem;
@@ -124,11 +128,11 @@
     outline: none;
 }
 
-.card-list{
+.card-list {
     width: 100%;
 }
 
-.card{
+.card {
     display: flex;
     flex-direction: column;
     background-color: inherit;
@@ -148,10 +152,10 @@
 }
 
 .card-content-divider {
-    border: none;              
-    border-top: 1px solid var(--border-color); 
-    width: 100%;                
-    margin: 20px auto;         
+    border: none;
+    border-top: 1px solid var(--border-color);
+    width: 100%;
+    margin: 20px auto;
 }
 
 .card-edit-bar {
@@ -205,7 +209,7 @@
     max-height: 450px
 }
 
-.card-term  {
+.card-term {
     overflow: auto;
     /*min-height: 100px;*/
     align-content: center;
@@ -213,7 +217,7 @@
 
 .card-meaning {
     width: 100%;
-    overflow : auto;
+    overflow: auto;
     /*min-height: 100px;*/
     align-content: center;
 }
@@ -270,6 +274,7 @@
     background-color: var(--card-white-bg-color);
     border-radius: 16px;
     width: 500px;
+    height: 700px;
     z-index: 1001;
     box-shadow: 0 0 10px var(--card-dark-shadow-color);
 }
@@ -286,6 +291,12 @@
     font-size: 20px;
     font-weight: bold;
     margin: 0;
+}
+
+.modal-body {
+    padding: 1rem 1rem 0 1rem;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 .modal-close {
@@ -307,7 +318,7 @@
 }
 
 .settings-group {
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 .settings-group h3 {
@@ -317,7 +328,7 @@
     font-weight: 600;
 }
 
-h3{
+h3 {
     margin-bottom: 10px;
     color: var(--label-gray-color);
     font-size: 16px;
@@ -370,11 +381,11 @@ h3{
 }
 
 .modal-footer {
-    padding: 16px;
+    padding: 0.5rem;
     border-top: 1px solid var(--modal-border-color);
 }
 
-.delete-deck-modal-footer{
+.delete-deck-modal-footer {
     margin: 10px;
     display: flex;
     justify-content: flex-end;
@@ -412,11 +423,11 @@ h3{
 }
 
 .save-button:hover {
-    background-color: var(--button-pale-blue-text-color-hover);
+    background-color: var(--black-bg-color-third);
 }
 
 /* Toggle Switch Styles */
-.number-option{
+.number-option {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -478,6 +489,13 @@ h3{
 
 .toggle-switch input:checked + .slider:before {
     transform: translateX(26px);
+}
+
+.time-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0;
 }
 
 
