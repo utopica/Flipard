@@ -17,7 +17,7 @@
 }
 
 html body {
-    background-color: var(--main-backgorund-color);
+    background-color: rgb(32, 33, 36);
     margin: 0;
     padding: 0;
 }

@@ -6,6 +6,7 @@ using Flipard.Persistence.Contexts.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net;
 using System.Security.Claims;
 using Flipard.Domain.Identity;
 using Flipard.Domain.Interfaces;
@@ -204,7 +205,7 @@ public class HomeController : Controller
         {
             Username = user!.UserName!,
             Email = user.Email!,
-            Birthdate = user.Birthdate?.ToUniversalTime(),
+            Birthdate = user.Birthdate?.ToLocalTime(),
             ProfilePhotoUrl = user.ProfilePhotoUrl,
         };
 
@@ -225,7 +226,8 @@ public class HomeController : Controller
         user!.UserName = editProfileViewModel.Username;
         user.Email = editProfileViewModel.Email;
         if (editProfileViewModel.Birthdate != null)
-            user.Birthdate = editProfileViewModel.Birthdate.Value.ToUniversalTime();
+            user.Birthdate = editProfileViewModel.Birthdate.Value.UtcDateTime;
+                
     
         if (editProfileViewModel.ProfilePhoto != null)
         {
@@ -321,36 +323,49 @@ public class HomeController : Controller
         }
 
         var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-        {
-            return RedirectToAction(nameof(ForgotPasswordConfirmation));
+        if (user != null){
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        
+            var encodedToken = WebUtility.UrlEncode(token);
+        
+            var callbackUrl = Url.Action(
+                "ResetPassword", 
+                "Home", 
+                new { email = model.Email, token = encodedToken },
+                protocol: HttpContext.Request.Scheme
+            );
+
+            await _emailService.SendEmailAsync(
+                model.Email, 
+                "flipardapp@gmail.com",
+                $"Please reset your password by clicking here: <a href='{callbackUrl}'>Reset Password</a>"
+            );
         }
-
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var callbackUrl = Url.Action("ResetPassword", "Home", new { userId = user.Id, token = token },
-            protocol: HttpContext.Request.Scheme);
-
-        await _emailService.SendEmailAsync(model.Email, "Reset Password",
-            $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
 
         return RedirectToAction(nameof(ForgotPasswordConfirmation));
     }
 
     [AllowAnonymous]
+    [HttpGet]
     public IActionResult ForgotPasswordConfirmation()
     {
         return View();
     }
 
     [AllowAnonymous]
-    public IActionResult ResetPassword(string userId, string token)
+    [HttpGet]
+    public IActionResult ResetPassword(string email, string token)
     {
-        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
         {
             return RedirectToAction("Index", "Home");
         }
 
-        var model = new ResetPasswordViewModel { Token = token };
+        var model = new ResetPasswordViewModel 
+        { 
+            Email = email,
+            Token = token 
+        };
         return View(model);
     }
 
@@ -363,16 +378,18 @@ public class HomeController : Controller
             return View(model);
         }
 
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
         {
-            return RedirectToAction(nameof(ResetPasswordConfirmation));
+            return RedirectToAction("Login", "Auth");
         }
 
-        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+        var decodedToken = WebUtility.UrlDecode(model.Token);
+    
+        var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.Password);
         if (result.Succeeded)
         {
-            return RedirectToAction(nameof(ResetPasswordConfirmation));
+            return RedirectToAction("Login", "Auth");
         }
 
         foreach (var error in result.Errors)
@@ -380,7 +397,7 @@ public class HomeController : Controller
             ModelState.AddModelError(string.Empty, error.Description);
         }
 
-        return View();
+        return View(model);
     }
 
     [AllowAnonymous]

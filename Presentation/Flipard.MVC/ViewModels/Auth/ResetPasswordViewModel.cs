@@ -9,7 +9,7 @@ public class ResetPasswordViewModel
     public string Email { get; set; }
 
     [Required]
-    [StringLength(100, ErrorMessage = "The {0} must be at least {6} characters long.", MinimumLength = 6)]
+    [StringLength(100, MinimumLength = 6)]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 

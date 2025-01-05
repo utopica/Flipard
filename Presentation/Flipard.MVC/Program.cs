@@ -4,6 +4,7 @@ using Flipard.Infrastructure;
 using Flipard.MVC.Services;
 using Flipard.Persistence;
 using Flipard.Persistence.Concretes;
+using Flipard.Persistence.Contexts;
 using Flipard.Persistence.Contexts.Identity;
 using Flipard.Persistence.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +45,8 @@ builder.Services.AddIdentity<User,Role>(options =>
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvqxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*_-!%^&/=€$@";
     options.User.RequireUniqueEmail = true;
 
-}).AddEntityFrameworkStores<IdentityContext>(); 
+}).AddEntityFrameworkStores<IdentityContext>()
+    .AddDefaultTokenProviders(); 
 
 builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 {
