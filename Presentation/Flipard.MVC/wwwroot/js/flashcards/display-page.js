@@ -238,9 +238,11 @@ function closeQuizSettings() {
 function saveQuizSettings() {
     const settings = {
         modes: {
-            feedback: document.getElementById('feedbackMode').checked
+            feedback: document.getElementById('feedbackMode').checked,
+            againstTime: document.getElementById('againstTimeMode').checked
         },
         questionCount: parseInt(document.getElementById('questionCount').value),
+        timeLimit: calculateTimeLimit(),
         answerWith: document.getElementById('answerWithTerm').checked ? 'term' : 'definition',
         questionTypes: {
             written: document.getElementById('writtenType').checked,
@@ -250,9 +252,29 @@ function saveQuizSettings() {
     };
 
     localStorage.setItem('quizSettings', JSON.stringify(settings));
+    // window.location.href = `/Flashcards/CreateQuiz/${deckId}?settings=${settingsParam}`;
     closeQuizSettings();
 }
 
+function calculateTimeLimit() {
+    if (!document.getElementById('againstTimeMode').checked) {
+        return 0;
+    }
+
+    const value = parseInt(document.getElementById('timeValue').value);
+    const unit = document.getElementById('timeUnit').value;
+
+    switch (unit) {
+        case 'hours':
+            return value * 3600;
+        case 'minutes':
+            return value * 60;
+        case 'seconds':
+            return value;
+        default:
+            return 0;
+    }
+}
 function setQuizOptions(deckId) {
     showQuizSettings();
 }
@@ -268,6 +290,11 @@ function initializeEventListeners() {
         if (e.target.checked) {
             document.getElementById('answerWithTerm').checked = false;
         }
+    });
+    
+    document.getElementById('againstTimeMode').addEventListener('change', function(e) {
+        const timeSettings = document.getElementById('timeSettingsContainer');
+        timeSettings.style.display = e.target.checked ? 'block' : 'none';
     });
 
     window.onclick = function (event) {
