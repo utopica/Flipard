@@ -204,7 +204,7 @@ public class HomeController : Controller
         {
             Username = user!.UserName!,
             Email = user.Email!,
-            Birthdate = user.Birthdate?.ToUniversalTime(),
+            Birthdate = user.Birthdate?.ToLocalTime(),
             ProfilePhotoUrl = user.ProfilePhotoUrl,
         };
 
@@ -225,7 +225,8 @@ public class HomeController : Controller
         user!.UserName = editProfileViewModel.Username;
         user.Email = editProfileViewModel.Email;
         if (editProfileViewModel.Birthdate != null)
-            user.Birthdate = editProfileViewModel.Birthdate.Value.ToUniversalTime();
+            user.Birthdate = editProfileViewModel.Birthdate.Value.UtcDateTime;
+                
     
         if (editProfileViewModel.ProfilePhoto != null)
         {
