@@ -441,6 +441,56 @@ input:checked + .slider:before {
     background-color: var(--card-light-bg-color);
 }
 
+/* Agains Time */
+.quiz-timer{
+    text-align: center;
+    color: var(--white-text-color);
+}
+
+.timer-display {
+    
+}
+
+#timer-value{
+    color: var(--button-red);
+    font-weight: bold;
+    margin-left: 5px;
+    font-size: 1rem;
+}
+
+.time-settings {
+    margin-top: 10px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+.time-unit-select {
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#timeValue {
+    width: 80px;
+}
+
+.quiz-timer.warning {
+    /*background-color: #fff3cd;*/
+    color:  yellow;
+}
+
+.quiz-timer.danger {
+    /*background-color: #f8d7da;*/
+    animation: pulse 1s infinite;
+    color: red
+}
+
+/*@keyframes pulse {*/
+/*    0% { opacity: 1; }*/
+/*    50% { opacity: 0.8; }*/
+/*    100% { opacity: 1; }*/
+/*}*/
 
 /* Responsiveness */
 

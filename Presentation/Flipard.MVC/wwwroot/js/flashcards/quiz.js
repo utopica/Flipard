@@ -14,7 +14,11 @@ const quizState = {
     isMenuCollapsed: false,
     isQuizCompleted: false,
     questionTypes: [],
-    currentQuestionType: null
+    currentQuestionType: null,
+    isAgainstTime : false,
+    timeLimit: 0,
+    timeRemaining: 0,
+    timerInterval: null
 };
 
 function initializeQuiz(quizCards, deck, resultsUrl) {
@@ -62,8 +66,67 @@ function initializeQuiz(quizCards, deck, resultsUrl) {
         }));
     }
 
+    if (settings.modes.againstTime) {
+        quizState.isAgainstTime = true;
+        quizState.timeLimit = settings.timeLimit;
+        quizState.timeRemaining = settings.timeLimit;
+        startTimer();
+        document.getElementById('quiz-timer').style.display = 'block';
+    }
+
     showCard(quizState.currentIndex);
     initializeQuestionsMenu();
+}
+
+function startTimer() {
+    updateTimerDisplay();
+    quizState.timerInterval = setInterval(() => {
+        quizState.timeRemaining -= 1;
+        updateTimerDisplay();
+
+        if (quizState.timeRemaining <= 0) {
+            clearInterval(quizState.timerInterval);
+            handleTimeUp();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(quizState.timeRemaining / 60);
+    const seconds = quizState.timeRemaining % 60;
+    const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    document.getElementById('timer-value').textContent = display;
+}
+
+function handleTimeUp() {
+
+    quizState.isQuizCompleted = true;
+
+    const answeredCount = quizState.answeredQuestions.length;
+    const remainingCount = quizState.cards.length - answeredCount;
+
+    quizState.blankAnswersCount = remainingCount;
+    
+    // Mark all unanswered questions as blank
+    for (let i = 0; i < quizState.cards.length; i++) {
+        const existingAnswer = quizState.answeredQuestions.find(q => q.questionIndex === i);
+        if (!existingAnswer) {
+
+            const answerObject = {
+                questionIndex: i,
+                userAnswer: '',
+                isCorrect: false,
+                isBlank: true,
+                vocabulary: quizState.cards[i].Id,
+                questionType: quizState.questionTypes[i],
+                feedbackShown: false
+            };
+            quizState.answeredQuestions.push(answerObject);
+            quizState.originalAnswers[i] = '';
+            
+        }
+    }
+    showQuizSummary();
 }
 
 function shuffleArray(array) {
@@ -202,7 +265,7 @@ function showCard(index) {
             q => q.questionIndex === quizState.currentIndex
         );
 
-        if (previousAnswer?.feedbackShown) {
+        if (quizState.isQuizCompleted || (previousAnswer?.feedbackShown && quizState.feedbackMode)) {
             if (quizState.currentQuestionType === 'written') {
                     showFeedback(previousAnswer.userAnswer, quizState.cards[index].Term, quizState.currentQuestionType);
             } else {
@@ -539,13 +602,22 @@ function showPreviousCard() {
 }
 
 function showQuizSummary() {
-    const timeTaken = Date.now() - quizState.startTime;
-    const attemptedQuestions = quizState.correctAnswersCount + quizState.wrongAnswerCount;
-    const accuracy = attemptedQuestions > 0
-        ? (quizState.correctAnswersCount / attemptedQuestions) * 100
-        : 0;
 
-    document.getElementById('accuracy-percentage').textContent = Math.round(accuracy);
+    if (quizState.timerInterval) {
+        clearInterval(quizState.timerInterval);
+    }
+
+    const timeTaken = quizState.isAgainstTime ?
+        (quizState.timeLimit - quizState.timeRemaining) * 1000 :
+        Date.now() - quizState.startTime;
+
+    // Calculate accuracy differently for against time mode
+    const totalQuestions = quizState.cards.length;
+    const accuracy = quizState.isAgainstTime ?
+        (quizState.correctAnswersCount / totalQuestions) * 100 :
+        (quizState.correctAnswersCount / (quizState.correctAnswersCount + quizState.wrongAnswerCount)) * 100;
+    
+    document.getElementById('accuracy-percentage').textContent = accuracy.toFixed(1);
     document.getElementById('correct-count').textContent = quizState.correctAnswersCount;
     document.getElementById('incorrect-count').textContent = quizState.wrongAnswerCount;
     document.getElementById('blank-count').textContent = quizState.blankAnswersCount;
@@ -554,46 +626,54 @@ function showQuizSummary() {
     const detailedList = document.getElementById('detailed-answers-list');
     detailedList.innerHTML = '';
 
-    quizState.answeredQuestions.sort((a, b) => a.questionIndex - b.questionIndex)
-        .forEach((answer, index) => {
-            const card = quizState.cards[answer.questionIndex];
-            const listItem = document.createElement('div');
-            listItem.className = 'answer-detail-item';
+    quizState.cards.forEach((card, index) => {
+        const answer = quizState.answeredQuestions.find(a => a.questionIndex === index) || {
+            questionIndex: index,
+            userAnswer: '',
+            isCorrect: false,
+            isBlank: true,
+            vocabulary: card.Id,
+            questionType: quizState.questionTypes[index],
+            feedbackShown: false
+        };
 
-            let statusClass = answer.isCorrect ? 'correct' : (answer.isBlank ? 'blank' : 'incorrect');
-            let statusIcon = answer.isCorrect ? 'fi-br-check' : (answer.isBlank ? 'fi-rr-minus' : 'fi-rr-cross-small');
+        const listItem = document.createElement('div');
+        listItem.className = 'answer-detail-item';
 
-            let questionTypeText = '';
-            switch (answer.questionType) {
-                case 'written':
-                    questionTypeText = 'Written';
-                    break;
-                case 'multipleChoice':
-                    questionTypeText = 'Multiple Choice';
-                    break;
-                case 'trueFalse':
-                    questionTypeText = 'True/False';
-                    break;
-            }
+        let statusClass = answer.isCorrect ? 'correct' : (answer.isBlank ? 'blank' : 'incorrect');
+        let statusIcon = answer.isCorrect ? 'fi-br-check' : (answer.isBlank ? 'fi-rr-minus' : 'fi-rr-cross-small');
 
-            listItem.innerHTML = `
-                <div class="question-number">${answer.questionIndex + 1}</div>
-                <div class="answer-content">
-                    <div class="question-text">
-                        ${card.Meaning}
-                    </div>
-                    <div class="answer-text">
-                        <span class="user-answer ${statusClass}">
-                            ${answer.isBlank ? 'Boş bırakıldı' : answer.userAnswer}
-                            <i class="fi ${statusIcon}"></i>
-                        </span>
-                        ${!answer.isCorrect ? `<span class="correct-answer">Doğru cevap: ${card.Term}</span>` : ''}
-                    </div>
+        let questionTypeText = '';
+        switch (answer.questionType) {
+            case 'written':
+                questionTypeText = 'Written';
+                break;
+            case 'multipleChoice':
+                questionTypeText = 'Multiple Choice';
+                break;
+            case 'trueFalse':
+                questionTypeText = 'True/False';
+                break;
+        }
+
+        listItem.innerHTML = `
+            <div class="question-number">${index + 1}</div>
+            <div class="answer-content">
+                <div class="question-text">
+                    ${card.Meaning}
                 </div>
-            `;
+                <div class="answer-text">
+                    <span class="user-answer ${statusClass}">
+                        ${answer.isBlank ? 'Boş bırakıldı' : answer.userAnswer}
+                        <i class="fi ${statusIcon}"></i>
+                    </span>
+                    ${!answer.isCorrect ? `<span class="correct-answer">Doğru cevap: ${card.Term}</span>` : ''}
+                </div>
+            </div>
+        `;
 
-            detailedList.appendChild(listItem);
-        });
+        detailedList.appendChild(listItem);
+    });
 
     updateProgressCircle(accuracy);
     submitQuizResults();

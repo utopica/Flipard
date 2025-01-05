@@ -37,6 +37,13 @@
     <div class="quiz-card">
         <div class="card-heading">
             <p>Tanım</p>
+            
+            <div id="quiz-timer" class="quiz-timer" style="display: none;">
+                <div class="timer-display">
+                    Time Remaining: <span id="timer-value">00:00</span>
+                </div>
+            </div>
+            
             <p id="progress">
                 @(Model.TermMeanings.Count > 0 ? "1/" + Model.TermMeanings.Count : "0/0")
             </p>
