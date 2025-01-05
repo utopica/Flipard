@@ -26,13 +26,7 @@ namespace Flipard.MVC.Controllers
             _nToastNotifyService = nToastNotifyService;
             _emailService = emailService;
         }
-
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        
         [HttpGet]
         public IActionResult Register()
         {
