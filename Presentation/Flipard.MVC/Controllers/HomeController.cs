@@ -74,8 +74,38 @@ public class HomeController : Controller
             .Take(5)
             .ToList();
 
+        var totalQuizAttempts = _appcontext.QuizAttempts
+            .Count(qa => qa.UserId == user.Id);
+    
+        var currentXp = totalQuizAttempts;
+        var currentLevel = (currentXp / 50) + 1; 
+        var requiredXp = currentLevel * 50; 
+
+        
         var userLevel = _appcontext.UserLevels.FirstOrDefault(x => x.UserId == user.Id);
 
+        if (userLevel == null)
+        {
+            userLevel = new UserLevel
+            {
+                UserId = user.Id,
+                Level = currentLevel,
+                CurrentExperience = currentXp,
+                RequiredExperience = requiredXp,
+                CreatedByUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            };
+            _appcontext.UserLevels.Add(userLevel);
+        }
+        else
+        {
+            userLevel.Level = currentLevel;
+            userLevel.CurrentExperience = currentXp;
+            userLevel.RequiredExperience = requiredXp;
+            _appcontext.UserLevels.Update(userLevel);
+        }
+    
+        _appcontext.SaveChanges();
+        
         var badgeCount = _appcontext.UserBadges.Count(b => b.UserId == user.Id);
 
         var userProfile = new ProfileViewModel()
