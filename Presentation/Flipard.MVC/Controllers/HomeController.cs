@@ -323,8 +323,7 @@ public class HomeController : Controller
         }
 
         var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user != null || (await _userManager.IsEmailConfirmedAsync(user)))
-        {
+        if (user != null){
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         
             var encodedToken = WebUtility.UrlEncode(token);
@@ -341,16 +340,17 @@ public class HomeController : Controller
                 "flipardapp@gmail.com",
                 $"Please reset your password by clicking here: <a href='{callbackUrl}'>Reset Password</a>"
             );
-        } 
+        }
 
-        return Ok(new { Message = "If your email is registered, you will receive a reset password email shortly." });
+        return RedirectToAction(nameof(ForgotPasswordConfirmation));
     }
 
-    // [AllowAnonymous]
-    // public IActionResult ForgotPasswordConfirmation()
-    // {
-    //     return View();
-    // }
+    [AllowAnonymous]
+    [HttpGet]
+    public IActionResult ForgotPasswordConfirmation()
+    {
+        return View();
+    }
 
     [AllowAnonymous]
     [HttpGet]
@@ -378,15 +378,12 @@ public class HomeController : Controller
             return View(model);
         }
 
-        // Find user by email instead of GetUserAsync
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
         {
-            // Don't reveal that the user does not exist
             return RedirectToAction("Login", "Auth");
         }
 
-        // Decode the token
         var decodedToken = WebUtility.UrlDecode(model.Token);
     
         var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.Password);
